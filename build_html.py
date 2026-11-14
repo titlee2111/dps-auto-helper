@@ -199,7 +199,7 @@ html_template = """<!doctype html>
       letter-spacing: 0.02em;
     }
     .hud-soul .hud-val { color: #67e8f9; }
-    .hud-stone .hud-val { color: #60a5fa; }
+    .hud-stone .hud-val { color: #d07eff; }
     .hud-cap .hud-val { color: #6ee7b7; }
 
     .hud-mini-bar {
@@ -470,16 +470,6 @@ html_template = """<!doctype html>
       display: flex;
       flex-direction: column;
       gap: 16px;
-      position: sticky;
-      top: 80px;
-      height: calc(100vh - 120px);
-      min-height: 520px;
-    }
-    @media (max-width: 1024px) {
-      .log-column {
-        position: static;
-        height: 480px;
-      }
     }
 
     /* ==================== CLEAN ACCENT CARDS ==================== */
@@ -815,9 +805,14 @@ html_template = """<!doctype html>
       border-radius: var(--radius-lg);
       display: flex;
       flex-direction: column;
-      flex: 1;
+      height: 620px;
       overflow: hidden;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+    @media (max-width: 1024px) {
+      .log-container {
+        height: 440px;
+      }
     }
     .log-header {
       padding: 14px 20px;
