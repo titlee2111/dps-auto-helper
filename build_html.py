@@ -12,7 +12,7 @@ html_content = f"""<!doctype html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DPS Auto Helper - Tự Động Hóa Kho & Xưởng (Zero Coordinates)</title>
+  <title>DPS Auto Helper - Tự Động Hóa Kho & Xưởng</title>
   <link rel="icon" type="image/png" href="data:image/png;base64,{b64_icon}">
   <style>
     :root {{
@@ -171,157 +171,34 @@ html_content = f"""<!doctype html>
       max-width: 760px;
       width: 100%;
       margin: 0 auto;
-      padding: 24px 16px 64px;
+      padding: 20px 16px 64px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 16px;
     }}
 
-    /* Offline Alert Navigation Banner */
-    .offline-banner {{
-      background: linear-gradient(135deg, rgba(239, 68, 68, 0.18) 0%, rgba(185, 28, 28, 0.08) 100%);
-      border: 1px solid rgba(239, 68, 68, 0.4);
+    /* Horizontal Download Rectangular Bar Across Top */
+    .download-rect-bar {{
+      background: linear-gradient(135deg, rgba(20, 28, 44, 0.95) 0%, rgba(13, 19, 30, 0.98) 100%);
+      border: 1px solid #334768;
       border-radius: var(--radius-md);
-      padding: 14px 18px;
+      padding: 14px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+      transition: all 0.2s ease;
+    }}
+    .download-rect-bar:hover {{
+      border-color: #3b82f6;
+      box-shadow: 0 6px 24px rgba(59, 130, 246, 0.2);
+    }}
+    .rect-left {{
+      display: flex;
+      align-items: center;
       gap: 14px;
       cursor: pointer;
-      box-shadow: 0 4px 16px rgba(239, 68, 68, 0.12);
-      transition: all 0.2s ease;
-      user-select: none;
-    }}
-    .offline-banner:hover {{
-      transform: translateY(-2px);
-      border-color: rgba(239, 68, 68, 0.8);
-      box-shadow: 0 6px 20px rgba(239, 68, 68, 0.22);
-      background: linear-gradient(135deg, rgba(239, 68, 68, 0.24) 0%, rgba(185, 28, 28, 0.14) 100%);
-    }}
-    .offline-info {{
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }}
-    .offline-icon {{
-      font-size: 22px;
-      animation: bounce 1.8s infinite;
-    }}
-    @keyframes bounce {{
-      0%, 100% {{ transform: translateY(0); }}
-      50% {{ transform: translateY(-4px); }}
-    }}
-    .offline-text h4 {{
-      font-size: 13px;
-      font-weight: 700;
-      color: #fca5a5;
-    }}
-    .offline-text p {{
-      font-size: 12px;
-      color: #fecaca;
-    }}
-    .btn-pill-action {{
-      background: #ef4444;
-      color: #fff;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 6px 12px;
-      border-radius: var(--radius-full);
-      white-space: nowrap;
-      box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-    }}
-
-    /* Card Base */
-    .card {{
-      background: var(--card-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius-lg);
-      padding: 22px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }}
-    .card:hover {{
-      border-color: rgba(59, 130, 246, 0.35);
-    }}
-
-    /* Top Hero Card */
-    .hero-card {{
-      background: linear-gradient(145deg, rgba(24, 34, 52, 0.85) 0%, rgba(16, 22, 34, 0.95) 100%);
-      border: 1px solid #334768;
-      position: relative;
-      overflow: hidden;
-    }}
-    .hero-card::before {{
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; height: 3px;
-      background: linear-gradient(90deg, #3b82f6, #60a5fa, #10b981);
-    }}
-    .hero-header {{
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 16px;
-    }}
-    .hero-title h2 {{
-      font-size: 17px;
-      font-weight: 800;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }}
-    .hero-title p {{
-      font-size: 12px;
-      color: var(--dim);
-      margin-top: 4px;
-      line-height: 1.45;
-    }}
-    .hero-features {{
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
-    }}
-    .feature-tag {{
-      background: rgba(59, 130, 246, 0.12);
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      color: #93c5fd;
-      font-size: 11px;
-      font-weight: 600;
-      padding: 3px 10px;
-      border-radius: var(--radius-full);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }}
-
-    /* Horizontal Download Bar */
-    .download-bar {{
-      background: linear-gradient(135deg, rgba(20, 29, 44, 0.9) 0%, rgba(14, 20, 32, 0.95) 100%);
-      border: 1px solid #384e72;
-      border-radius: var(--radius-md);
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-      transition: all 0.2s ease;
-    }}
-    .download-bar:hover {{
-      border-color: #3b82f6;
-      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25);
-    }}
-    .file-info-group {{
-      display: flex;
-      align-items: center;
-      gap: 14px;
       min-width: 0;
     }}
     .file-icon {{
@@ -374,35 +251,127 @@ html_content = f"""<!doctype html>
       font-size: 11px;
     }}
     
-    .btn-download-bar {{
+    .btn-download-rect {{
       background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
       color: #ffffff;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 800;
-      letter-spacing: 0.02em;
-      padding: 12px 22px;
+      letter-spacing: 0.03em;
+      padding: 12px 20px;
       border-radius: var(--radius-sm);
       border: 1px solid #60a5fa;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      text-decoration: none;
       box-shadow: 0 4px 16px rgba(37, 99, 235, 0.45);
       white-space: nowrap;
       flex-shrink: 0;
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }}
-    .btn-download-bar:hover {{
+    .btn-download-rect:hover {{
       background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
       transform: translateY(-2px);
-      box-shadow: 0 6px 22px rgba(37, 99, 235, 0.65);
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.65);
       border-color: #93c5fd;
     }}
-    .btn-download-bar svg {{
+    .btn-download-rect svg {{
       width: 18px;
       height: 18px;
       fill: currentColor;
+    }}
+
+    /* Offline Alert Navigation Banner with Dismiss Button */
+    .offline-banner {{
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.18) 0%, rgba(185, 28, 28, 0.08) 100%);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      border-radius: var(--radius-md);
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      box-shadow: 0 4px 16px rgba(239, 68, 68, 0.12);
+      transition: all 0.2s ease;
+      user-select: none;
+    }}
+    .offline-info {{
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      flex: 1;
+    }}
+    .offline-icon {{
+      font-size: 20px;
+      animation: bounce 1.8s infinite;
+    }}
+    @keyframes bounce {{
+      0%, 100% {{ transform: translateY(0); }}
+      50% {{ transform: translateY(-3px); }}
+    }}
+    .offline-text h4 {{
+      font-size: 13px;
+      font-weight: 700;
+      color: #fca5a5;
+    }}
+    .offline-text p {{
+      font-size: 11px;
+      color: #fecaca;
+    }}
+    .offline-actions {{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }}
+    .btn-pill-action {{
+      background: #ef4444;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      white-space: nowrap;
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+    }}
+    .btn-dismiss-alert {{
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      background: rgba(239, 68, 68, 0.15);
+      color: #fca5a5;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }}
+    .btn-dismiss-alert:hover {{
+      background: #ef4444;
+      color: #fff;
+      border-color: #ef4444;
+    }}
+
+    /* Card Base */
+    .card {{
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }}
+    .card:hover {{
+      border-color: rgba(59, 130, 246, 0.35);
     }}
 
     /* Full Modal Dialog Overlay */
@@ -752,6 +721,7 @@ html_content = f"""<!doctype html>
 
     /* Realtime Activity Notification */
     .activity-bar {{
+      display: none;
       background: rgba(15, 23, 38, 0.9);
       backdrop-filter: blur(8px);
       border: 1px solid var(--card-border);
@@ -759,13 +729,13 @@ html_content = f"""<!doctype html>
       padding: 12px 18px;
       font-size: 13px;
       color: var(--dim);
-      display: flex;
       align-items: center;
       gap: 10px;
       min-height: 46px;
       transition: all 0.25s ease;
     }}
     .activity-bar.active {{
+      display: flex;
       background: rgba(16, 185, 129, 0.1);
       border-color: rgba(16, 185, 129, 0.35);
       color: #6ee7b7;
@@ -787,9 +757,9 @@ html_content = f"""<!doctype html>
     @media (max-width: 640px) {{
       header {{ padding: 12px 16px; }}
       .brand-titles h1 {{ font-size: 14px; }}
-      main {{ padding: 16px 12px 48px; gap: 16px; }}
+      main {{ padding: 16px 12px 48px; gap: 14px; }}
       .card {{ padding: 16px; }}
-      .download-bar {{ flex-direction: column; align-items: stretch; gap: 12px; }}
+      .download-rect-bar {{ flex-direction: column; align-items: stretch; gap: 12px; }}
       .config-row {{ flex-direction: column; align-items: flex-start; gap: 8px; }}
     }}
   </style>
@@ -802,7 +772,7 @@ html_content = f"""<!doctype html>
       <img src="game-icon.png" onerror="this.src='data:image/png;base64,{b64_icon}'" alt="DPS Logo" class="game-logo">
       <div class="brand-titles">
         <h1>DPS Desktop Pension Squad</h1>
-        <div class="brand-badge">⚡ Auto Helper • Zero Coordinates</div>
+        <div class="brand-badge">⚡ Auto Helper</div>
       </div>
     </a>
     <div class="header-status">
@@ -816,58 +786,44 @@ html_content = f"""<!doctype html>
 
   <main>
 
-    <!-- Interactive Offline Navigation Banner (Opens Modal) -->
-    <div id="offlineNotice" class="offline-banner" onclick="openDownloadModal()">
-      <div class="offline-info">
+    <!-- Interactive Offline Navigation Banner with Close Button -->
+    <div id="offlineNotice" class="offline-banner">
+      <div class="offline-info" onclick="openDownloadModal()">
         <span class="offline-icon">⚠️</span>
         <div class="offline-text">
           <h4>Chưa phát hiện game DPS đang chạy!</h4>
           <p>Bấm vào đây để mở bảng tải tool 1-Click &amp; xem hướng dẫn cài đặt ⬇️</p>
         </div>
       </div>
-      <span class="btn-pill-action">Tải Tool &amp; Hướng Dẫn ⬇</span>
+      <div class="offline-actions">
+        <span class="btn-pill-action" onclick="openDownloadModal()">Tải Tool ⬇</span>
+        <button class="btn-dismiss-alert" onclick="dismissOfflineBanner(event)" title="Đóng thông báo">✕</button>
+      </div>
     </div>
 
-    <!-- Activity Notification Bar -->
+    <!-- Activity Notification Bar (Only displays when active) -->
     <div id="actBar" class="activity-bar">
       <span>💬</span>
-      <span id="actMsg">Sẵn sàng nhận lệnh điều khiển.</span>
+      <span id="actMsg"></span>
     </div>
 
-    <!-- TOP HERO SECTION: DOWNLOAD TOOL & MODAL TRIGGER -->
-    <div id="heroDownloadCard" class="card hero-card">
-      <div class="hero-header">
-        <div class="hero-title">
-          <h2><span>🚀</span> Gói Cài Đặt Tự Động Hóa 1-Click</h2>
-          <p>Chuẩn Zero Coordinates: Điều khiển thông qua logic C# IL2CPP ngầm bên trong game. Tuyệt đối không chiếm chuột, không dùng macro giả lập, chạy ổn định bất kể độ phân giải màn hình.</p>
-        </div>
-      </div>
-
-      <div class="hero-features">
-        <span class="feature-tag">🛡️ Không chiếm chuột</span>
-        <span class="feature-tag">🎯 Zero Coordinates</span>
-        <span class="feature-tag">⚡ 1-Click Auto Install</span>
-        <span class="feature-tag">💾 Tự lưu vĩnh viễn</span>
-      </div>
-
-      <!-- Hàng ngang thông tin file & nút bấm mở modal tải -->
-      <div class="download-bar">
-        <div class="file-info-group">
-          <div class="file-icon">📦</div>
-          <div class="file-details">
-            <div class="file-name">DPS_Auto_Helper_1Click.zip</div>
-            <div class="file-meta">
-              <span class="meta-tag">57.19 MB</span>
-              <span class="meta-tag">v1.0.0</span>
-              <span class="meta-desc">Tự động nhận diện Steam &amp; Cài đặt trong 2 giây</span>
-            </div>
+    <!-- TOP SECTION: RECTANGULAR HORIZONTAL BAR FOR 1-CLICK DOWNLOAD -->
+    <div class="download-rect-bar">
+      <div class="rect-left" onclick="openDownloadModal()">
+        <div class="file-icon">📦</div>
+        <div class="file-details">
+          <div class="file-name">DPS_Auto_Helper_1Click.zip</div>
+          <div class="file-meta">
+            <span class="meta-tag">57.19 MB</span>
+            <span class="meta-tag">v1.0.0</span>
+            <span class="meta-desc">Gói cài đặt tự động 1-Click</span>
           </div>
         </div>
-        <button class="btn-download-bar" onclick="openDownloadModal()">
-          <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
-          <span>TẢI MOD &amp; HƯỚNG DẪN</span>
-        </button>
       </div>
+      <button class="btn-download-rect" onclick="openDownloadModal()">
+        <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+        <span>TẢI MOD &amp; HƯỚNG DẪN</span>
+      </button>
     </div>
 
     <!-- MODULE 1: AUTO COMBINE F7 -->
@@ -953,8 +909,8 @@ html_content = f"""<!doctype html>
       <div class="modal-body">
         
         <!-- Hàng ngang tải file nổi bật -->
-        <div class="download-bar" style="background:#141d2c; border-color:#38527a;">
-          <div class="file-info-group">
+        <div class="download-rect-bar" style="background:#141d2c; border-color:#38527a;">
+          <div class="rect-left">
             <div class="file-icon">📦</div>
             <div class="file-details">
               <div class="file-name">DPS_Auto_Helper_1Click.zip</div>
@@ -966,7 +922,7 @@ html_content = f"""<!doctype html>
             </div>
           </div>
           <div style="display:flex; flex-direction:column; gap:6px; align-items:flex-end;">
-            <a href="https://github.com/titlee2111/dps-auto-helper/releases/download/v1.0.0/DPS_Auto_Helper_1Click.zip" class="btn-download-bar">
+            <a href="https://github.com/titlee2111/dps-auto-helper/releases/download/v1.0.0/DPS_Auto_Helper_1Click.zip" class="btn-download-rect">
               <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
               <span>BẮT ĐẦU TẢI (.ZIP)</span>
             </a>
@@ -1027,7 +983,7 @@ html_content = f"""<!doctype html>
   </div>
 
   <footer>
-    DPS Auto Helper • Zero Coordinates (Native C# IL2CPP) • Hoàn toàn không chiếm chuột • Tự động lưu cấu hình vĩnh viễn
+    DPS Auto Helper • Tự Động Hóa Kho &amp; Xưởng • Tự động lưu cấu hình vĩnh viễn
   </footer>
 
   <script>
@@ -1035,6 +991,7 @@ html_content = f"""<!doctype html>
     const API_BASE = 'http://127.0.0.1:47900';
 
     let isOnline = false;
+    let offlineBannerDismissed = false;
 
     // Modal Control Functions
     function openDownloadModal() {{
@@ -1053,6 +1010,12 @@ html_content = f"""<!doctype html>
       }}
     }}
 
+    function dismissOfflineBanner(e) {{
+      if (e) e.stopPropagation();
+      $('offlineNotice').style.display = 'none';
+      offlineBannerDismissed = true;
+    }}
+
     document.addEventListener('keydown', e => {{
       if (e.key === 'Escape' && $('modalDownload').classList.contains('active')) {{
         closeDownloadModal();
@@ -1060,6 +1023,11 @@ html_content = f"""<!doctype html>
     }});
 
     function notify(text, isActive = false) {{
+      if (!text) {{
+        $('actBar').className = 'activity-bar';
+        $('actMsg').textContent = '';
+        return;
+      }}
       $('actMsg').textContent = text;
       $('actBar').className = isActive ? 'activity-bar active' : 'activity-bar';
     }}
@@ -1121,7 +1089,9 @@ html_content = f"""<!doctype html>
         render(data);
       }} catch (err) {{
         isOnline = false;
-        $('offlineNotice').style.display = 'flex';
+        if (!offlineBannerDismissed) {{
+          $('offlineNotice').style.display = 'flex';
+        }}
         $('connBadge').className = 'chip off';
         $('connText').textContent = 'Chưa kết nối game';
         $('pidBadge').textContent = 'PID: -';
