@@ -56,15 +56,17 @@ html_content = f"""<!doctype html>
       display: flex;
       flex-direction: column;
       -webkit-font-smoothing: antialiased;
+      width: 100%;
+      overflow-x: hidden;
     }}
 
-    /* Header */
+    /* Header - Full Width */
     header {{
       background: rgba(13, 18, 28, 0.85);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--card-border);
-      padding: 14px 24px;
+      padding: 14px 28px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -74,6 +76,7 @@ html_content = f"""<!doctype html>
       top: 0;
       z-index: 100;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      width: 100%;
     }}
 
     .brand {{
@@ -166,23 +169,25 @@ html_content = f"""<!doctype html>
       100% {{ opacity: 1; transform: scale(1); }}
     }}
 
-    /* Main Container */
+    /* Main Container - FULL WIDTH WITH PADDING */
     main {{
-      max-width: 760px;
       width: 100%;
-      margin: 0 auto;
-      padding: 20px 16px 64px;
+      max-width: 100%;
+      margin: 0;
+      padding: 20px 28px 64px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 20px;
+      flex: 1;
     }}
 
     /* Horizontal Download Rectangular Bar Across Top */
     .download-rect-bar {{
+      width: 100%;
       background: linear-gradient(135deg, rgba(20, 28, 44, 0.95) 0%, rgba(13, 19, 30, 0.98) 100%);
       border: 1px solid #334768;
       border-radius: var(--radius-md);
-      padding: 14px 20px;
+      padding: 16px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -197,17 +202,17 @@ html_content = f"""<!doctype html>
     .rect-left {{
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 16px;
       cursor: pointer;
       min-width: 0;
     }}
     .file-icon {{
-      font-size: 26px;
+      font-size: 28px;
       background: rgba(59, 130, 246, 0.15);
       border: 1px solid rgba(59, 130, 246, 0.35);
       border-radius: 12px;
-      width: 48px;
-      height: 48px;
+      width: 52px;
+      height: 52px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -221,7 +226,7 @@ html_content = f"""<!doctype html>
       min-width: 0;
     }}
     .file-name {{
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 800;
       color: #ffffff;
       white-space: nowrap;
@@ -248,7 +253,7 @@ html_content = f"""<!doctype html>
     }}
     .meta-desc {{
       color: #94a3b8;
-      font-size: 11px;
+      font-size: 12px;
     }}
     
     .btn-download-rect {{
@@ -257,7 +262,7 @@ html_content = f"""<!doctype html>
       font-size: 13px;
       font-weight: 800;
       letter-spacing: 0.03em;
-      padding: 12px 20px;
+      padding: 13px 24px;
       border-radius: var(--radius-sm);
       border: 1px solid #60a5fa;
       cursor: pointer;
@@ -281,12 +286,13 @@ html_content = f"""<!doctype html>
       fill: currentColor;
     }}
 
-    /* Offline Alert Navigation Banner with Dismiss Button */
+    /* Offline Alert Navigation Banner with Close Button */
     .offline-banner {{
+      width: 100%;
       background: linear-gradient(135deg, rgba(239, 68, 68, 0.18) 0%, rgba(185, 28, 28, 0.08) 100%);
       border: 1px solid rgba(239, 68, 68, 0.4);
       border-radius: var(--radius-md);
-      padding: 12px 18px;
+      padding: 14px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -298,12 +304,12 @@ html_content = f"""<!doctype html>
     .offline-info {{
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       cursor: pointer;
       flex: 1;
     }}
     .offline-icon {{
-      font-size: 20px;
+      font-size: 22px;
       animation: bounce 1.8s infinite;
     }}
     @keyframes bounce {{
@@ -316,13 +322,13 @@ html_content = f"""<!doctype html>
       color: #fca5a5;
     }}
     .offline-text p {{
-      font-size: 11px;
+      font-size: 12px;
       color: #fecaca;
     }}
     .offline-actions {{
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       flex-shrink: 0;
     }}
     .btn-pill-action {{
@@ -330,7 +336,7 @@ html_content = f"""<!doctype html>
       color: #fff;
       font-size: 11px;
       font-weight: 700;
-      padding: 6px 12px;
+      padding: 6px 14px;
       border-radius: var(--radius-full);
       white-space: nowrap;
       box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
@@ -339,8 +345,8 @@ html_content = f"""<!doctype html>
       cursor: pointer;
     }}
     .btn-dismiss-alert {{
-      width: 26px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       border: 1px solid rgba(239, 68, 68, 0.4);
       background: rgba(239, 68, 68, 0.15);
@@ -366,176 +372,34 @@ html_content = f"""<!doctype html>
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--card-border);
       border-radius: var(--radius-lg);
-      padding: 22px;
+      padding: 24px;
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      width: 100%;
     }}
     .card:hover {{
       border-color: rgba(59, 130, 246, 0.35);
     }}
 
-    /* Full Modal Dialog Overlay */
-    .modal-overlay {{
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: rgba(4, 7, 13, 0.88);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      animation: fadeIn 0.2s ease-out;
-    }}
-    .modal-overlay.active {{
-      display: flex;
-    }}
-    @keyframes fadeIn {{
-      from {{ opacity: 0; }}
-      to {{ opacity: 1; }}
-    }}
-    .modal-dialog {{
-      background: #111724;
-      background-image: 
-        radial-gradient(circle at 10% 10%, rgba(59, 130, 246, 0.12) 0%, transparent 40%),
-        radial-gradient(circle at 90% 90%, rgba(16, 185, 129, 0.08) 0%, transparent 40%);
-      border: 1px solid #384e72;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(59, 130, 246, 0.25);
-      border-radius: var(--radius-lg);
-      max-width: 720px;
+    /* MODULES GRID: 2 COLUMNS ON DESKTOP, 1 COLUMN ON MOBILE */
+    .modules-grid {{
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
       width: 100%;
-      max-height: 85vh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      animation: zoomIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    }}
-    @keyframes zoomIn {{
-      from {{ transform: scale(0.95); opacity: 0; }}
-      to {{ transform: scale(1); opacity: 1; }}
-    }}
-    .modal-header {{
-      background: #151f30;
-      border-bottom: 1px solid #28374e;
-      padding: 16px 22px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
-    }}
-    .modal-header h3 {{
-      font-size: 15px;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }}
-    .modal-close {{
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: 1px solid #334768;
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--dim);
-      font-size: 16px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.15s ease;
-    }}
-    .modal-close:hover {{
-      background: #ef4444;
-      border-color: #ef4444;
-      color: #fff;
-    }}
-    .modal-body {{
-      padding: 22px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      scrollbar-width: thin;
-      scrollbar-color: #3b82f6 #111827;
-    }}
-    .modal-body::-webkit-scrollbar {{
-      width: 6px;
-    }}
-    .modal-body::-webkit-scrollbar-track {{
-      background: #111827;
-    }}
-    .modal-body::-webkit-scrollbar-thumb {{
-      background: #3b82f6;
-      border-radius: 999px;
     }}
 
-    /* Guide Steps */
-    .step-timeline {{
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }}
-    .step-card {{
-      background: rgba(22, 30, 44, 0.7);
-      border: 1px solid #233146;
-      border-radius: var(--radius-sm);
-      padding: 14px 16px;
-      display: flex;
-      gap: 14px;
-      align-items: flex-start;
-    }}
-    .step-badge {{
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: var(--primary);
-      color: #ffffff;
-      font-size: 13px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      box-shadow: 0 0 10px var(--primary-glow);
-    }}
-    .step-content h5 {{
-      font-size: 13px;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 4px;
-    }}
-    .step-content p {{
-      font-size: 12px;
-      color: var(--dim);
-      line-height: 1.5;
-    }}
-    .step-content code {{
-      background: #0d121c;
-      border: 1px solid #243247;
-      color: #38bdf8;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-family: Consolas, monospace;
-      font-size: 11px;
-    }}
-    .note-box {{
-      background: rgba(16, 185, 129, 0.08);
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      border-radius: var(--radius-sm);
-      padding: 10px 14px;
-      font-size: 12px;
-      color: #6ee7b7;
-      margin-top: 10px;
-      line-height: 1.45;
+    @media (max-width: 980px) {{
+      .modules-grid {{
+        grid-template-columns: 1fr;
+      }}
     }}
 
-    /* Automation Modules (F7 & F6) */
     .module-card {{
       position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }}
     .module-header {{
       display: flex;
@@ -681,7 +545,7 @@ html_content = f"""<!doctype html>
       font-size: 13px;
       font-weight: 700;
       letter-spacing: 0.03em;
-      padding: 12px 20px;
+      padding: 13px 20px;
       border-radius: var(--radius-sm);
       border: 1px solid transparent;
       cursor: pointer;
@@ -719,6 +583,165 @@ html_content = f"""<!doctype html>
       transform: translateY(-1px);
     }}
 
+    /* Full Modal Dialog Overlay */
+    .modal-overlay {{
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(4, 7, 13, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: fadeIn 0.2s ease-out;
+    }}
+    .modal-overlay.active {{
+      display: flex;
+    }}
+    @keyframes fadeIn {{
+      from {{ opacity: 0; }}
+      to {{ opacity: 1; }}
+    }}
+    .modal-dialog {{
+      background: #111724;
+      background-image: 
+        radial-gradient(circle at 10% 10%, rgba(59, 130, 246, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(16, 185, 129, 0.08) 0%, transparent 40%);
+      border: 1px solid #384e72;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(59, 130, 246, 0.25);
+      border-radius: var(--radius-lg);
+      max-width: 760px;
+      width: 100%;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: zoomIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }}
+    @keyframes zoomIn {{
+      from {{ transform: scale(0.95); opacity: 0; }}
+      to {{ transform: scale(1); opacity: 1; }}
+    }}
+    .modal-header {{
+      background: #151f30;
+      border-bottom: 1px solid #28374e;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }}
+    .modal-header h3 {{
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }}
+    .modal-close {{
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid #334768;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--dim);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }}
+    .modal-close:hover {{
+      background: #ef4444;
+      border-color: #ef4444;
+      color: #fff;
+    }}
+    .modal-body {{
+      padding: 24px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      scrollbar-width: thin;
+      scrollbar-color: #3b82f6 #111827;
+    }}
+    .modal-body::-webkit-scrollbar {{
+      width: 6px;
+    }}
+    .modal-body::-webkit-scrollbar-track {{
+      background: #111827;
+    }}
+    .modal-body::-webkit-scrollbar-thumb {{
+      background: #3b82f6;
+      border-radius: 999px;
+    }}
+
+    /* Guide Steps */
+    .step-timeline {{
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }}
+    .step-card {{
+      background: rgba(22, 30, 44, 0.7);
+      border: 1px solid #233146;
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }}
+    .step-badge {{
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 0 10px var(--primary-glow);
+    }}
+    .step-content h5 {{
+      font-size: 13px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }}
+    .step-content p {{
+      font-size: 12px;
+      color: var(--dim);
+      line-height: 1.5;
+    }}
+    .step-content code {{
+      background: #0d121c;
+      border: 1px solid #243247;
+      color: #38bdf8;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: Consolas, monospace;
+      font-size: 11px;
+    }}
+    .note-box {{
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 12px;
+      color: #6ee7b7;
+      margin-top: 10px;
+      line-height: 1.45;
+    }}
+
     /* Realtime Activity Notification */
     .activity-bar {{
       display: none;
@@ -733,6 +756,7 @@ html_content = f"""<!doctype html>
       gap: 10px;
       min-height: 46px;
       transition: all 0.25s ease;
+      width: 100%;
     }}
     .activity-bar.active {{
       display: flex;
@@ -751,6 +775,7 @@ html_content = f"""<!doctype html>
       color: var(--dimmer);
       border-top: 1px solid var(--line);
       background: rgba(10, 13, 20, 0.8);
+      width: 100%;
     }}
 
     /* Responsive */
@@ -759,7 +784,7 @@ html_content = f"""<!doctype html>
       .brand-titles h1 {{ font-size: 14px; }}
       main {{ padding: 16px 12px 48px; gap: 14px; }}
       .card {{ padding: 16px; }}
-      .download-rect-bar {{ flex-direction: column; align-items: stretch; gap: 12px; }}
+      .download-rect-bar {{ flex-direction: column; align-items: stretch; gap: 12px; padding: 16px; }}
       .config-row {{ flex-direction: column; align-items: flex-start; gap: 8px; }}
     }}
   </style>
@@ -807,7 +832,7 @@ html_content = f"""<!doctype html>
       <span id="actMsg"></span>
     </div>
 
-    <!-- TOP SECTION: RECTANGULAR HORIZONTAL BAR FOR 1-CLICK DOWNLOAD -->
+    <!-- TOP SECTION: FULL WIDTH RECTANGULAR BAR FOR 1-CLICK DOWNLOAD -->
     <div class="download-rect-bar">
       <div class="rect-left" onclick="openDownloadModal()">
         <div class="file-icon">📦</div>
@@ -826,75 +851,84 @@ html_content = f"""<!doctype html>
       </button>
     </div>
 
-    <!-- MODULE 1: AUTO COMBINE F7 -->
-    <div class="card module-card" style="border-top: 3px solid #3b82f6;">
-      <div class="module-header">
-        <div class="module-title" style="color: #60a5fa;">
-          <span>🔨</span> Tự Động Hợp Thành Xưởng (F7)
+    <!-- 2-COLUMN FULL WIDTH RESPONSIVE MODULES GRID -->
+    <div class="modules-grid">
+
+      <!-- MODULE 1: AUTO COMBINE F7 (LEFT COLUMN) -->
+      <div class="card module-card" style="border-top: 3px solid #3b82f6;">
+        <div>
+          <div class="module-header">
+            <div class="module-title" style="color: #60a5fa;">
+              <span>🔨</span> Tự Động Hợp Thành Xưởng (F7)
+            </div>
+            <span id="badgeCombine" class="badge-status">Đã tắt</span>
+          </div>
+
+          <div class="switch-box">
+            <div class="switch-desc">
+              <h4>Bật Tự Động Ghép Đồ Định Kỳ</h4>
+              <p>Tự động lặp lại công thức chế tạo trong Xưởng định kỳ theo số phút đã thiết lập</p>
+            </div>
+            <label class="switch">
+              <input id="toggleCombine" type="checkbox">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="config-row">
+            <label for="combineMin">Chu kỳ chạy mỗi:</label>
+            <input id="combineMin" type="number" min="1" max="60" value="5" style="width: 75px;">
+            <span style="color: var(--ink); font-size: 13px; font-weight: 600;">phút</span>
+            <span style="color: var(--dimmer); font-size: 12px; margin-left: 10px;">(Khuyên dùng: 3 - 5 phút/lần)</span>
+          </div>
         </div>
-        <span id="badgeCombine" class="badge-status">Đã tắt</span>
+
+        <button id="btnCombineNow" class="btn btn-action-f7" style="margin-top: 14px;">
+          🔨 HỢP THÀNH XƯỞNG NGAY LẬP TỨC (F7)
+        </button>
       </div>
 
-      <div class="switch-box">
-        <div class="switch-desc">
-          <h4>Bật Tự Động Ghép Đồ Định Kỳ</h4>
-          <p>Tự động lặp lại công thức chế tạo trong Xưởng định kỳ theo số phút đã thiết lập</p>
+      <!-- MODULE 2: AUTO STASH F6 (RIGHT COLUMN) -->
+      <div class="card module-card" style="border-top: 3px solid #10b981;">
+        <div>
+          <div class="module-header">
+            <div class="module-title" style="color: #34d399;">
+              <span>📦</span> Tự Động Cất Đồ Vào Kho (F6)
+            </div>
+            <span id="badgeStash" class="badge-status">Đã tắt</span>
+          </div>
+
+          <div class="switch-box">
+            <div class="switch-desc">
+              <h4>Bật Tự Động Cất Đồ Định Kỳ</h4>
+              <p>Cất đồ từ túi đồ cá nhân tuần tự vào các ngăn kho đã chọn</p>
+            </div>
+            <label class="switch">
+              <input id="toggleStash" type="checkbox">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="config-row">
+            <label for="stashSec">Chu kỳ chạy mỗi:</label>
+            <input id="stashSec" type="number" min="2" max="600" value="60" style="width: 75px;">
+            <span style="color: var(--ink); font-size: 13px; font-weight: 600;">giây</span>
+
+            <span style="color: var(--line); margin: 0 6px;">|</span>
+
+            <label for="stashStart">Cất từ Kho:</label>
+            <input id="stashStart" type="number" min="1" max="10" value="1" style="width: 60px;">
+
+            <label for="stashEnd">đến Kho:</label>
+            <input id="stashEnd" type="number" min="1" max="10" value="5" style="width: 60px;">
+          </div>
         </div>
-        <label class="switch">
-          <input id="toggleCombine" type="checkbox">
-          <span class="slider"></span>
-        </label>
+
+        <button id="btnStashNow" class="btn btn-action-f6" style="margin-top: 14px;">
+          📦 CẤT ĐỒ VÀO KHO 1 -> 5 NGAY LẬP TỨC (F6)
+        </button>
       </div>
 
-      <div class="config-row">
-        <label for="combineMin">Chu kỳ chạy mỗi:</label>
-        <input id="combineMin" type="number" min="1" max="60" value="5" style="width: 75px;">
-        <span style="color: var(--ink); font-size: 13px; font-weight: 600;">phút</span>
-        <span style="color: var(--dimmer); font-size: 12px; margin-left: 10px;">(Khuyên dùng: 3 - 5 phút/lần)</span>
-      </div>
-
-      <button id="btnCombineNow" class="btn btn-action-f7">
-        🔨 HỢP THÀNH XƯỞNG NGAY LẬP TỨC (F7)
-      </button>
-    </div>
-
-    <!-- MODULE 2: AUTO STASH F6 -->
-    <div class="card module-card" style="border-top: 3px solid #10b981;">
-      <div class="module-header">
-        <div class="module-title" style="color: #34d399;">
-          <span>📦</span> Tự Động Cất Đồ Vào Kho (F6)
-        </div>
-        <span id="badgeStash" class="badge-status">Đã tắt</span>
-      </div>
-
-      <div class="switch-box">
-        <div class="switch-desc">
-          <h4>Bật Tự Động Cất Đồ Định Kỳ</h4>
-          <p>Cất đồ từ túi đồ cá nhân tuần tự vào các ngăn kho đã chọn</p>
-        </div>
-        <label class="switch">
-          <input id="toggleStash" type="checkbox">
-          <span class="slider"></span>
-        </label>
-      </div>
-
-      <div class="config-row">
-        <label for="stashSec">Chu kỳ chạy mỗi:</label>
-        <input id="stashSec" type="number" min="2" max="600" value="60" style="width: 75px;">
-        <span style="color: var(--ink); font-size: 13px; font-weight: 600;">giây</span>
-
-        <span style="color: var(--line); margin: 0 6px;">|</span>
-
-        <label for="stashStart">Cất từ Kho:</label>
-        <input id="stashStart" type="number" min="1" max="10" value="1" style="width: 60px;">
-
-        <label for="stashEnd">đến Kho:</label>
-        <input id="stashEnd" type="number" min="1" max="10" value="5" style="width: 60px;">
-      </div>
-
-      <button id="btnStashNow" class="btn btn-action-f6">
-        📦 CẤT ĐỒ VÀO KHO 1 -> 5 NGAY LẬP TỨC (F6)
-      </button>
     </div>
 
   </main>
