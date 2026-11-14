@@ -4,185 +4,555 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>DPS Auto Helper - Tự Động Hóa Kho & Xưởng (Zero Coordinates)</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <link rel="icon" type="image/png" href="data:image/png;base64,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">
   <style>
     :root {
-      --bg: #0e1217;
-      --panel: #171d26;
-      --panel-hover: #1e2532;
-      --line: #293444;
-      --ink: #f0f4f8;
-      --dim: #8b9bb4;
-      --acc: #4da3ff;
-      --ok: #2fd573;
-      --warn: #ffb830;
-      --err: #ff5252;
+      --bg: #0a0d14;
+      --bg-alt: #101520;
+      --card-bg: rgba(20, 27, 40, 0.75);
+      --card-border: #232f45;
+      --card-glow: rgba(59, 130, 246, 0.15);
+      --line: #1e293b;
+      --ink: #f8fafc;
+      --dim: #94a3b8;
+      --dimmer: #64748b;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --primary-glow: rgba(59, 130, 246, 0.4);
+      --ok: #10b981;
+      --ok-glow: rgba(16, 185, 129, 0.4);
+      --warn: #f59e0b;
+      --warn-glow: rgba(245, 158, 11, 0.35);
+      --err: #ef4444;
+      --err-glow: rgba(239, 68, 68, 0.35);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     body {
       background: var(--bg);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(16, 185, 129, 0.06) 0%, transparent 40%),
+        linear-gradient(180deg, #0a0d14 0%, #0d121c 100%);
+      background-attachment: fixed;
       color: var(--ink);
-      font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+      line-height: 1.5;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      -webkit-font-smoothing: antialiased;
     }
+
+    /* Header */
     header {
-      background: var(--panel);
-      border-bottom: 1px solid var(--line);
-      padding: 16px 24px;
+      background: rgba(13, 18, 28, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 14px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 14px;
       position: sticky;
       top: 0;
       z-index: 100;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     }
+
     .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+    .game-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      box-shadow: 0 0 16px var(--primary-glow);
+      border: 2px solid #3b82f6;
+      object-fit: cover;
+      background: #141c2b;
+      display: block;
+      transition: transform 0.2s ease;
+    }
+    .game-logo:hover {
+      transform: scale(1.05);
+    }
+    .brand-titles {
+      display: flex;
+      flex-direction: column;
+    }
+    .brand-titles h1 {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.2;
+    }
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #38bdf8;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .header-status {
       display: flex;
       align-items: center;
       gap: 10px;
     }
-    .brand-icon {
-      font-size: 24px;
-      background: rgba(77, 163, 255, 0.15);
-      border: 1px solid var(--acc);
-      border-radius: 10px;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .brand-text h1 {
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: .05em;
-      color: #fff;
-    }
-    .brand-text p {
-      font-size: 11px;
-      color: var(--dim);
-    }
-    .status-group {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
     .chip {
       font-size: 12px;
       font-weight: 600;
-      padding: 5px 12px;
-      border-radius: 999px;
-      background: #232b38;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      background: #182234;
       color: var(--dim);
-      border: 1px solid var(--line);
-      display: flex;
+      border: 1px solid var(--card-border);
+      display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      transition: all 0.25s ease;
     }
     .chip.on {
-      color: #0d2616;
-      background: var(--ok);
-      border-color: var(--ok);
+      color: #064e3b;
+      background: #34d399;
+      border-color: #10b981;
+      box-shadow: 0 0 14px var(--ok-glow);
+      font-weight: 700;
     }
     .chip.off {
-      color: #fff;
-      background: #472121;
-      border-color: var(--err);
+      color: #fca5a5;
+      background: rgba(239, 68, 68, 0.12);
+      border-color: rgba(239, 68, 68, 0.35);
     }
-    .dot-indicator {
+    .pulse-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
       background: currentColor;
+      box-shadow: 0 0 8px currentColor;
+      animation: pulseAnim 2s infinite;
+    }
+    @keyframes pulseAnim {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+      100% { opacity: 1; transform: scale(1); }
     }
 
+    /* Main Container */
     main {
-      max-width: 680px;
+      max-width: 760px;
       width: 100%;
       margin: 0 auto;
-      padding: 24px 16px 48px;
+      padding: 24px 16px 64px;
       display: flex;
       flex-direction: column;
       gap: 20px;
     }
 
-    .banner-offline {
-      background: linear-gradient(135deg, #2b1818 0%, #1a151b 100%);
-      border: 1px solid #752929;
-      border-radius: 12px;
-      padding: 16px;
+    /* Offline Alert Navigation Banner */
+    .offline-banner {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.18) 0%, rgba(185, 28, 28, 0.08) 100%);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(239, 68, 68, 0.12);
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .offline-banner:hover {
+      transform: translateY(-2px);
+      border-color: rgba(239, 68, 68, 0.8);
+      box-shadow: 0 6px 20px rgba(239, 68, 68, 0.22);
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.24) 0%, rgba(185, 28, 28, 0.14) 100%);
+    }
+    .offline-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .offline-icon {
+      font-size: 22px;
+      animation: bounce 1.8s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+    .offline-text h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fca5a5;
+    }
+    .offline-text p {
+      font-size: 12px;
+      color: #fecaca;
+    }
+    .btn-pill-action {
+      background: #ef4444;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      white-space: nowrap;
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    /* Card Base */
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      border-color: rgba(59, 130, 246, 0.35);
+    }
+
+    /* Top Hero Card: Download & Instructions */
+    .hero-card {
+      background: linear-gradient(145deg, rgba(24, 34, 52, 0.85) 0%, rgba(16, 22, 34, 0.95) 100%);
+      border: 1px solid #334768;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, #3b82f6, #60a5fa, #10b981);
+    }
+    .hero-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .hero-title h2 {
+      font-size: 17px;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hero-title p {
+      font-size: 12px;
+      color: var(--dim);
+      margin-top: 4px;
+      line-height: 1.45;
+    }
+    .hero-features {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .feature-tag {
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      color: #93c5fd;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Big Download Button */
+    .download-action-group {
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
-    .banner-offline h3 {
-      color: #ff8585;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .banner-offline p {
-      font-size: 12px;
-      color: #e0b0b0;
-      line-height: 1.5;
-    }
-
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 20px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
-    .card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-    .card-title {
-      font-size: 14px;
+    .btn-download-hero {
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: #ffffff;
+      font-size: 15px;
       font-weight: 700;
-      letter-spacing: .05em;
-      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      padding: 16px 24px;
+      border-radius: var(--radius-md);
+      border: 1px solid #60a5fa;
+      cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
+      gap: 12px;
+      text-decoration: none;
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-download-hero:hover {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 26px rgba(37, 99, 235, 0.6);
+      border-color: #93c5fd;
+    }
+    .btn-download-hero:active {
+      transform: translateY(0);
+    }
+    .btn-download-hero svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
     }
 
-    /* Switch toggle */
-    .switch-wrap {
+    /* Sub Download Options */
+    .download-sub-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: #12161d;
-      padding: 14px 16px;
-      border-radius: 10px;
-      border: 1px solid var(--line);
-      margin-bottom: 16px;
+      gap: 10px;
+      flex-wrap: wrap;
     }
-    .switch-info h4 {
-      font-size: 14px;
+    .sub-link {
+      color: var(--dim);
+      font-size: 12px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      transition: all 0.15s ease;
+    }
+    .sub-link:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--primary);
+    }
+    .btn-toggle-guide {
+      background: #182436;
+      border: 1px solid #2d3e58;
+      color: #93c5fd;
+      font-size: 12px;
       font-weight: 600;
-      color: var(--ink);
+      padding: 7px 14px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
     }
-    .switch-info p {
+    .btn-toggle-guide:hover {
+      background: #20314a;
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    /* Scrollable Guide Panel / Drawer */
+    .guide-drawer {
+      margin-top: 16px;
+      background: rgba(10, 15, 24, 0.95);
+      border: 1px solid #28374e;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .guide-drawer-header {
+      background: #131b28;
+      border-bottom: 1px solid #28374e;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .guide-drawer-header h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #93c5fd;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .guide-scroll-container {
+      max-height: 380px;
+      overflow-y: auto;
+      padding: 16px 18px;
+      scrollbar-width: thin;
+      scrollbar-color: #3b82f6 #111827;
+    }
+    .guide-scroll-container::-webkit-scrollbar {
+      width: 6px;
+    }
+    .guide-scroll-container::-webkit-scrollbar-track {
+      background: #111827;
+    }
+    .guide-scroll-container::-webkit-scrollbar-thumb {
+      background: #3b82f6;
+      border-radius: 999px;
+    }
+
+    /* Guide Steps */
+    .step-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .step-card {
+      background: rgba(22, 30, 44, 0.7);
+      border: 1px solid #233146;
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .step-badge {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 0 10px var(--primary-glow);
+    }
+    .step-content h5 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+    .step-content p {
       font-size: 12px;
       color: var(--dim);
-      margin-top: 2px;
+      line-height: 1.5;
     }
+    .step-content code {
+      background: #0d121c;
+      border: 1px solid #243247;
+      color: #38bdf8;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: Consolas, monospace;
+      font-size: 11px;
+    }
+    .note-box {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 12px;
+      color: #6ee7b7;
+      margin-top: 10px;
+      line-height: 1.45;
+    }
+
+    /* Automation Modules (F7 & F6) */
+    .module-card {
+      position: relative;
+    }
+    .module-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .module-title {
+      font-size: 15px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge-status {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+      background: #1e293b;
+      color: var(--dim);
+      border: 1px solid #334155;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: all 0.2s ease;
+    }
+    .badge-status.active {
+      background: rgba(16, 185, 129, 0.16);
+      color: #34d399;
+      border-color: #10b981;
+      box-shadow: 0 0 12px var(--ok-glow);
+    }
+
+    /* Toggle Switch Row */
+    .switch-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(13, 18, 27, 0.8);
+      border: 1px solid #233044;
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      margin-bottom: 18px;
+      transition: border-color 0.2s ease;
+    }
+    .switch-box:hover {
+      border-color: #3b82f6;
+    }
+    .switch-desc h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .switch-desc p {
+      font-size: 12px;
+      color: var(--dim);
+      margin-top: 3px;
+    }
+    
     .switch {
       position: relative;
       display: inline-block;
-      width: 48px;
-      height: 26px;
+      width: 52px;
+      height: 28px;
       flex-shrink: 0;
     }
     .switch input {
@@ -194,231 +564,293 @@
       position: absolute;
       cursor: pointer;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #2a3444;
-      transition: .2s;
+      background-color: #27354a;
+      transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       border-radius: 999px;
-      border: 1px solid var(--line);
+      border: 1px solid #3d4f6c;
     }
     .slider:before {
       position: absolute;
       content: "";
-      height: 18px;
-      width: 18px;
+      height: 20px;
+      width: 20px;
       left: 3px;
       bottom: 3px;
-      background-color: white;
-      transition: .2s;
+      background-color: #ffffff;
+      transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
     }
     input:checked + .slider {
-      background-color: var(--ok);
-      border-color: var(--ok);
+      background-color: #10b981;
+      border-color: #34d399;
+      box-shadow: 0 0 12px var(--ok-glow);
     }
     input:checked + .slider:before {
-      transform: translateX(22px);
+      transform: translateX(24px);
     }
 
-    /* Form rows */
-    .row-config {
+    /* Config Form Rows */
+    .config-row {
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
       flex-wrap: wrap;
+      background: rgba(13, 18, 27, 0.5);
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      border: 1px solid #1c2738;
     }
-    .row-config label {
+    .config-row label {
       color: var(--dim);
       font-size: 13px;
+      font-weight: 600;
     }
     input[type=number] {
-      background: #0f131a;
-      border: 1px solid var(--line);
-      color: #fff;
-      padding: 7px 10px;
-      border-radius: 8px;
-      font-weight: 600;
+      background: #090d14;
+      border: 1px solid #2d3b50;
+      color: #ffffff;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
       font-size: 14px;
       text-align: center;
-      transition: border-color .2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
     input[type=number]:focus {
       outline: none;
-      border-color: var(--acc);
+      border-color: var(--primary);
+      box-shadow: 0 0 10px var(--primary-glow);
     }
 
-    .badge-status {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 6px;
-      background: #232b38;
-      color: var(--dim);
-      border: 1px solid var(--line);
-      text-transform: uppercase;
-      letter-spacing: .04em;
-    }
-    .badge-status.active {
-      background: rgba(47, 213, 115, 0.15);
-      color: var(--ok);
-      border-color: var(--ok);
-    }
-
+    /* Buttons */
     .btn {
       font-family: inherit;
-      font-weight: 600;
       font-size: 13px;
-      padding: 10px 18px;
-      border-radius: 8px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      padding: 12px 20px;
+      border-radius: var(--radius-sm);
       border: 1px solid transparent;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      transition: all .15s ease;
+      transition: all 0.2s ease;
       text-decoration: none;
     }
-    .btn-primary {
-      background: #1d3b5c;
-      color: #7bc0ff;
-      border-color: #2b5484;
-    }
-    .btn-primary:hover {
-      background: #254a73;
-    }
-    .btn-green {
-      background: #163825;
-      color: #55e693;
-      border-color: #245c3c;
-    }
-    .btn-green:hover {
-      background: #1e4a31;
-    }
-    .btn-download {
-      background: linear-gradient(135deg, #1f6feb 0%, #1158c7 100%);
-      color: #fff;
-      font-size: 14px;
-      padding: 14px 24px;
-      border-radius: 10px;
-      box-shadow: 0 4px 16px rgba(31, 111, 235, 0.3);
+    .btn-action-f7 {
+      background: linear-gradient(135deg, #1e3a5f 0%, #172a44 100%);
+      color: #60a5fa;
+      border-color: #2b4c77;
       width: 100%;
-      text-align: center;
     }
-    .btn-download:hover {
-      background: linear-gradient(135deg, #2b7af5 0%, #1664dc 100%);
+    .btn-action-f7:hover {
+      background: linear-gradient(135deg, #254a78 0%, #1d3556 100%);
+      border-color: #3b82f6;
+      box-shadow: 0 4px 16px var(--primary-glow);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+    .btn-action-f6 {
+      background: linear-gradient(135deg, #133e29 0%, #0d281a 100%);
+      color: #34d399;
+      border-color: #1c583b;
+      width: 100%;
+    }
+    .btn-action-f6:hover {
+      background: linear-gradient(135deg, #195237 0%, #123725 100%);
+      border-color: #10b981;
+      box-shadow: 0 4px 16px var(--ok-glow);
+      color: #ffffff;
       transform: translateY(-1px);
     }
 
-    .msg-bar {
-      background: #11151c;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 10px 14px;
-      font-size: 12px;
-      color: #8b9bb4;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      min-height: 40px;
-    }
-    .msg-bar.success {
-      color: #55e693;
-      border-color: rgba(47, 213, 115, 0.3);
-      background: rgba(47, 213, 115, 0.05);
-    }
-
-    /* Guide steps */
-    .step-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 12px;
-    }
-    .step-item {
-      display: flex;
-      gap: 12px;
-      background: #11151c;
-      padding: 12px 14px;
-      border-radius: 8px;
-      border: 1px solid var(--line);
-    }
-    .step-num {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: var(--acc);
-      color: #0b1219;
-      font-weight: 700;
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .step-body h5 {
+    /* Realtime Activity Notification */
+    .activity-bar {
+      background: rgba(15, 23, 38, 0.9);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 12px 18px;
       font-size: 13px;
-      font-weight: 600;
-      color: #fff;
-      margin-bottom: 2px;
-    }
-    .step-body p {
-      font-size: 12px;
       color: var(--dim);
-      line-height: 1.4;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 46px;
+      transition: all 0.25s ease;
+    }
+    .activity-bar.active {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: rgba(16, 185, 129, 0.35);
+      color: #6ee7b7;
+      font-weight: 600;
     }
 
+    /* Footer */
     footer {
       margin-top: auto;
       text-align: center;
-      padding: 20px;
+      padding: 24px;
       font-size: 12px;
-      color: var(--dim);
+      color: var(--dimmer);
       border-top: 1px solid var(--line);
+      background: rgba(10, 13, 20, 0.8);
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      header { padding: 12px 16px; }
+      .brand-titles h1 { font-size: 14px; }
+      main { padding: 16px 12px 48px; gap: 16px; }
+      .card { padding: 16px; }
+      .config-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .download-sub-row { flex-direction: column; align-items: stretch; }
     }
   </style>
 </head>
 <body>
 
+  <!-- Header -->
   <header>
-    <div class="brand">
-      <div class="brand-icon">⚡</div>
-      <div class="brand-text">
-        <h1>DPS AUTO HELPER</h1>
-        <p>Hỗ Trợ Tự Động Hóa Kho & Xưởng (Zero Coordinates)</p>
+    <a href="#" class="brand">
+      <img src="game-icon.png" onerror="this.src='data:image/png;base64,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'" alt="DPS Logo" class="game-logo">
+      <div class="brand-titles">
+        <h1>DPS Desktop Pension Squad</h1>
+        <div class="brand-badge">⚡ Auto Helper • Zero Coordinates</div>
       </div>
-    </div>
-    <div class="status-group">
+    </a>
+    <div class="header-status">
       <span id="pidBadge" class="chip">PID: -</span>
-      <span id="connBadge" class="chip off"><span class="dot-indicator"></span><span id="connText">Chưa kết nối game</span></span>
+      <span id="connBadge" class="chip off">
+        <span class="pulse-dot"></span>
+        <span id="connText">Chưa kết nối game</span>
+      </span>
     </div>
   </header>
 
   <main>
 
-    <!-- Banner khi chưa kết nối -->
-    <div id="offlineNotice" class="banner-offline" style="display: none;">
-      <h3>⚠️ Chưa phát hiện game DPS đang chạy!</h3>
-      <p>Nếu bạn chưa cài đặt mod hỗ trợ, hãy tải gói cài 1-click bên dưới, giải nén vào thư mục game và khởi động game qua Steam. Sau khi game mở, trang web này sẽ tự động nhận diện và kết nối.</p>
+    <!-- Interactive Offline Navigation Banner -->
+    <div id="offlineNotice" class="offline-banner" onclick="scrollToDownloadAndOpen()">
+      <div class="offline-info">
+        <span class="offline-icon">⚠️</span>
+        <div class="offline-text">
+          <h4>Chưa phát hiện game DPS đang chạy!</h4>
+          <p>Bấm vào đây để tải tool 1-Click & xem bảng hướng dẫn cài đặt nhanh ⬇️</p>
+        </div>
+      </div>
+      <span class="btn-pill-action">Tải Tool Ngay ⬇</span>
     </div>
 
-    <!-- Thanh thông báo trạng thái thao tác -->
-    <div id="msgBar" class="msg-bar">
-      <span>💬</span><span id="msgText">Sẵn sàng nhận lệnh điều khiển.</span>
+    <!-- Activity Notification Bar -->
+    <div id="actBar" class="activity-bar">
+      <span>💬</span>
+      <span id="actMsg">Sẵn sàng nhận lệnh điều khiển.</span>
+    </div>
+
+    <!-- TOP HERO SECTION: DOWNLOAD TOOL & SCROLLABLE QUICK GUIDE -->
+    <div id="heroDownloadCard" class="card hero-card">
+      <div class="hero-header">
+        <div class="hero-title">
+          <h2><span>🚀</span> Gói Cài Đặt Tự Động Hóa 1-Click (Dành Cho Bạn Bè)</h2>
+          <p>Chuẩn Zero Coordinates: Điều khiển thông qua logic C# IL2CPP ngầm bên trong game. Tuyệt đối không chiếm chuột, không dùng macro giả lập, chạy ổn định bất kể độ phân giải màn hình.</p>
+        </div>
+      </div>
+
+      <div class="hero-features">
+        <span class="feature-tag">🛡️ Không chiếm chuột</span>
+        <span class="feature-tag">🎯 Zero Coordinates</span>
+        <span class="feature-tag">⚡ 1-Click Auto Install</span>
+        <span class="feature-tag">💾 Tự lưu vĩnh viễn</span>
+      </div>
+
+      <div class="download-action-group">
+        <a id="btnDownloadMain" href="https://github.com/titlee2111/dps-auto-helper/releases/download/v1.0.0/DPS_Auto_Helper_1Click.zip" class="btn-download-hero" onclick="handleDownloadClick(event)">
+          <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+          <span>📥 TẢI MOD HỖ TRỢ 1-CLICK TRỌN GÓI (.ZIP - 57MB)</span>
+        </a>
+
+        <div class="download-sub-row">
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <a href="./DPS_Auto_Helper_1Click.zip" class="sub-link">
+              🔗 Link tải trực tiếp (Local Mirror)
+            </a>
+            <a href="./DPS_Auto_Helper_Installer_Lite.zip" class="sub-link">
+              ⚡ Bản Lite siêu nhẹ (41 KB)
+            </a>
+          </div>
+          <button id="btnToggleGuide" class="btn-toggle-guide" onclick="toggleGuide()">
+            <span id="guideToggleText">📖 Ẩn / Xem Hướng Dẫn</span> <span id="guideArrow">▼</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Scrollable Guide Drawer -->
+      <div id="guideDrawer" class="guide-drawer">
+        <div class="guide-drawer-header">
+          <h3>📋 Bảng Hướng Dẫn Cài Đặt & Sử Dụng (Cuộn chuột để xem)</h3>
+          <span style="font-size:11px; color:var(--dim);">Tự động phát hiện Steam</span>
+        </div>
+        <div class="guide-scroll-container">
+          <div class="step-timeline">
+
+            <div class="step-card">
+              <div class="step-badge">1</div>
+              <div class="step-content">
+                <h5>Tải Gói Cài Đặt 1-Click</h5>
+                <p>Bấm nút màu xanh to ở trên hoặc chọn một trong các link tải để lưu file <code>DPS_Auto_Helper_1Click.zip</code> về máy tính của bạn.</p>
+              </div>
+            </div>
+
+            <div class="step-card">
+              <div class="step-badge">2</div>
+              <div class="step-content">
+                <h5>Giải Nén & Chạy File Cài Đặt Tự Động</h5>
+                <p>Giải nén file zip ra một thư mục bất kỳ. Nhấp đúp chuột chạy file <code>Cai_Dat_Tu_Dong.bat</code>. Script sẽ tự động dò tìm đường dẫn cài game Steam của bạn và copy các file mod cần thiết vào trong đúng 2 giây!</p>
+                <div class="note-box">
+                  💡 <b>Không cần kéo thả thủ công:</b> Script thông minh tự kiểm tra registry Steam và thư mục thư viện game, bạn chỉ cần bấm chạy là xong.
+                </div>
+              </div>
+            </div>
+
+            <div class="step-card">
+              <div class="step-badge">3</div>
+              <div class="step-content">
+                <h5>Mở Game & Điều Khiển Qua Web</h5>
+                <p>Khởi động game <code>DPS Desktop Pension Squad</code> bình thường qua Steam. Sau đó mở trang web này lên, góc phải trên cùng sẽ chuyển sang <b>🟢 ĐÃ KẾT NỐI GAME</b> và bạn có thể bật/tắt F6, F7 tùy thích!</p>
+              </div>
+            </div>
+
+            <div class="step-card">
+              <div class="step-badge">4</div>
+              <div class="step-content">
+                <h5>Gỡ Cài Đặt Bất Cứ Lúc Nào</h5>
+                <p>Nếu không muốn sử dụng nữa, bạn chỉ việc chạy file <code>Go_Cai_Dat.bat</code> đi kèm trong file zip để xóa sạch toàn bộ các file mod, đưa game về nguyên bản 100%.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- MODULE 1: AUTO COMBINE F7 -->
-    <div class="card" style="border-top: 3px solid #4da3ff;">
-      <div class="card-header">
-        <div class="card-title" style="color: #4da3ff;">
+    <div class="card module-card" style="border-top: 3px solid #3b82f6;">
+      <div class="module-header">
+        <div class="module-title" style="color: #60a5fa;">
           <span>🔨</span> Tự Động Hợp Thành Xưởng (F7)
         </div>
         <span id="badgeCombine" class="badge-status">Đã tắt</span>
       </div>
 
-      <div class="switch-wrap">
-        <div class="switch-info">
+      <div class="switch-box">
+        <div class="switch-desc">
           <h4>Bật Tự Động Ghép Đồ Định Kỳ</h4>
-          <p>Tự động lặp lại công thức ghép trong Xưởng theo chu kỳ thời gian đã chọn</p>
+          <p>Tự động lặp lại công thức chế tạo trong Xưởng định kỳ theo số phút đã thiết lập</p>
         </div>
         <label class="switch">
           <input id="toggleCombine" type="checkbox">
@@ -426,32 +858,31 @@
         </label>
       </div>
 
-      <div class="row-config">
+      <div class="config-row">
         <label for="combineMin">Chu kỳ chạy mỗi:</label>
-        <input id="combineMin" type="number" min="1" max="60" value="5" style="width: 70px;">
-        <span style="color: var(--dim); font-size: 13px;">phút</span>
+        <input id="combineMin" type="number" min="1" max="60" value="5" style="width: 75px;">
+        <span style="color: var(--ink); font-size: 13px; font-weight: 600;">phút</span>
+        <span style="color: var(--dimmer); font-size: 12px; margin-left: 10px;">(Khuyên dùng: 3 - 5 phút/lần)</span>
       </div>
 
-      <div style="margin-top: 14px; display: flex; gap: 10px;">
-        <button id="btnCombineNow" class="btn btn-primary" style="flex: 1;">
-          🔨 HỢP THÀNH XƯỞNG NGAY (F7)
-        </button>
-      </div>
+      <button id="btnCombineNow" class="btn btn-action-f7">
+        🔨 HỢP THÀNH XƯỞNG NGAY LẬP TỨC (F7)
+      </button>
     </div>
 
     <!-- MODULE 2: AUTO STASH F6 -->
-    <div class="card" style="border-top: 3px solid #2fd573;">
-      <div class="card-header">
-        <div class="card-title" style="color: #2fd573;">
+    <div class="card module-card" style="border-top: 3px solid #10b981;">
+      <div class="module-header">
+        <div class="module-title" style="color: #34d399;">
           <span>📦</span> Tự Động Cất Đồ Vào Kho (F6)
         </div>
         <span id="badgeStash" class="badge-status">Đã tắt</span>
       </div>
 
-      <div class="switch-wrap">
-        <div class="switch-info">
+      <div class="switch-box">
+        <div class="switch-desc">
           <h4>Bật Tự Động Cất Đồ Định Kỳ</h4>
-          <p>Cất đồ từ túi đồ cá nhân tuần tự vào các ngăn kho đã thiết lập</p>
+          <p>Cất đồ từ túi đồ cá nhân tuần tự vào các ngăn kho đã chọn</p>
         </div>
         <label class="switch">
           <input id="toggleStash" type="checkbox">
@@ -459,82 +890,29 @@
         </label>
       </div>
 
-      <div class="row-config">
+      <div class="config-row">
         <label for="stashSec">Chu kỳ chạy mỗi:</label>
-        <input id="stashSec" type="number" min="2" max="600" value="60" style="width: 70px;">
-        <span style="color: var(--dim); font-size: 13px;">giây</span>
+        <input id="stashSec" type="number" min="2" max="600" value="60" style="width: 75px;">
+        <span style="color: var(--ink); font-size: 13px; font-weight: 600;">giây</span>
 
-        <span style="color: var(--line); margin: 0 4px;">|</span>
+        <span style="color: var(--line); margin: 0 6px;">|</span>
 
         <label for="stashStart">Cất từ Kho:</label>
-        <input id="stashStart" type="number" min="1" max="10" value="1" style="width: 55px;">
+        <input id="stashStart" type="number" min="1" max="10" value="1" style="width: 60px;">
 
         <label for="stashEnd">đến Kho:</label>
-        <input id="stashEnd" type="number" min="1" max="10" value="5" style="width: 55px;">
+        <input id="stashEnd" type="number" min="1" max="10" value="5" style="width: 60px;">
       </div>
 
-      <div style="margin-top: 14px; display: flex; gap: 10px;">
-        <button id="btnStashNow" class="btn btn-green" style="flex: 1;">
-          📦 CẤT ĐỒ VÀO KHO NGAY (F6)
-        </button>
-      </div>
-    </div>
-
-    <!-- MODULE 3: TẢI & CÀI ĐẶT 1-CLICK DÀNH CHO BẠN BÈ -->
-    <div class="card" style="border-color: #2b3d54;">
-      <div class="card-header">
-        <div class="card-title" style="color: #7bc0ff;">
-          <span>📥</span> Gói Cài Đặt 1-Click Cho Bạn Bè
-        </div>
-      </div>
-
-      <p style="font-size: 13px; color: var(--dim); margin-bottom: 16px; line-height: 1.5;">
-        Trang web này chạy trên trình duyệt cần một cổng kết nối ngầm bên trong game để nhận lệnh. Bạn bè của bạn chỉ cần tải gói 1-Click bên dưới và giải nén vào thư mục game là có thể sử dụng trang web này ngay lập tức!
-      </p>
-
-      <div style="display: flex; flex-direction: column; gap: 10px;">
-        <a id="btnDownload" href="https://github.com/titlee2111/dps-auto-helper/releases/download/v1.0.0/DPS_Auto_Helper_1Click.zip" class="btn btn-download">
-          📥 TẢI MOD HỖ TRỢ 1-CLICK TRỌN GÓI (.ZIP)
-        </a>
-        <div style="display: flex; gap: 10px; justify-content: center;">
-          <a href="./DPS_Auto_Helper_1Click.zip" class="btn" style="background:#172230;color:#7bc0ff;font-size:12px;padding:8px 14px;border:1px solid #283a52;">
-            🔗 Link dự phòng (Local)
-          </a>
-          <a href="./DPS_Auto_Helper_Installer_Lite.zip" class="btn" style="background:#172230;color:#55e693;font-size:12px;padding:8px 14px;border:1px solid #283a52;">
-            ⚡ Bản Lite siêu nhẹ (41 KB)
-          </a>
-        </div>
-      </div>
-
-      <div class="step-list">
-        <div class="step-item">
-          <div class="step-num">1</div>
-          <div class="step-body">
-            <h5>Tải file nén</h5>
-            <p>Bấm nút màu xanh ở trên để tải về file <code>DPS_Auto_Helper_1Click.zip</code>.</p>
-          </div>
-        </div>
-        <div class="step-item">
-          <div class="step-num">2</div>
-          <div class="step-body">
-            <h5>Giải nén vào thư mục game</h5>
-            <p>Giải nén file zip vào thư mục cài đặt game <code>DPS Desktop Pension Squad</code> (thường ở <code>Steam\steamapps\common\DPS Desktop Pension Squad</code>) rồi chạy file <code>Cai_Dat_Tu_Dong.bat</code>.</p>
-          </div>
-        </div>
-        <div class="step-item">
-          <div class="step-num">3</div>
-          <div class="step-body">
-            <h5>Vào game và tận hưởng</h5>
-            <p>Mở game qua Steam, sau đó mở trang web này để bật/tắt và tùy chỉnh thời gian cất đồ, ghép đồ hoàn toàn tự động!</p>
-          </div>
-        </div>
-      </div>
+      <button id="btnStashNow" class="btn btn-action-f6">
+        📦 CẤT ĐỒ VÀO KHO 1 -> 5 NGAY LẬP TỨC (F6)
+      </button>
     </div>
 
   </main>
 
   <footer>
-    DPS Auto Helper • Chuẩn Zero Coordinates (Gọi logic C# nội bộ) • Không chiếm chuột • Lưu vĩnh viễn
+    DPS Auto Helper • Zero Coordinates (Native C# IL2CPP) • Hoàn toàn không chiếm chuột • Tự động lưu cấu hình vĩnh viễn
   </footer>
 
   <script>
@@ -543,17 +921,50 @@
 
     let isOnline = false;
 
-    function notify(text, isOk = false) {
-      $('msgText').textContent = text;
-      $('msgBar').className = isOk ? 'msg-bar success' : 'msg-bar';
+    function notify(text, isActive = false) {
+      $('actMsg').textContent = text;
+      $('actBar').className = isActive ? 'activity-bar active' : 'activity-bar';
     }
 
     function updateStashBtnLabel() {
       const s = $('stashStart').value || 1;
       const e = $('stashEnd').value || 5;
-      $('btnStashNow').textContent = `📦 CẤT ĐỒ VÀO KHO ${s} -> ${e} NGAY (F6)`;
+      $('btnStashNow').textContent = `📦 CẤT ĐỒ VÀO KHO ${s} -> ${e} NGAY LẬP TỨC (F6)`;
     }
 
+    // Navigation & Guide Drawer
+    function scrollToDownloadAndOpen() {
+      const hero = $('heroDownloadCard');
+      hero.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      hero.style.boxShadow = '0 0 30px rgba(59, 130, 246, 0.6)';
+      setTimeout(() => { hero.style.boxShadow = ''; }, 1500);
+
+      // Open drawer if closed
+      const drawer = $('guideDrawer');
+      if (drawer.style.display === 'none') {
+        toggleGuide();
+      }
+    }
+
+    function toggleGuide() {
+      const drawer = $('guideDrawer');
+      const isHidden = drawer.style.display === 'none';
+      drawer.style.display = isHidden ? 'block' : 'none';
+      $('guideToggleText').textContent = isHidden ? '📖 Đóng Hướng Dẫn' : '📖 Xem Hướng Dẫn';
+      $('guideArrow').textContent = isHidden ? '▲' : '▼';
+    }
+
+    function handleDownloadClick(e) {
+      // Always ensure the guide is open and scrolled to view
+      const drawer = $('guideDrawer');
+      if (drawer.style.display === 'none') {
+        toggleGuide();
+      }
+      drawer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      notify('📥 Đang tải file cài đặt mod... Hãy làm theo các bước bên dưới để cài đặt!', true);
+    }
+
+    // Realtime Game Sync
     function render(st) {
       isOnline = true;
       $('offlineNotice').style.display = 'none';
@@ -561,7 +972,7 @@
       $('connText').textContent = 'Đã kết nối game';
       $('pidBadge').textContent = 'PID: ' + (st.pid || '-');
 
-      // 1. Dong bo Combine Minutes & Toggle
+      // 1. Dong bo Combine
       if (st.comb_min !== undefined && document.activeElement !== $('combineMin')) {
         $('combineMin').value = st.comb_min;
       }
@@ -572,7 +983,7 @@
         $('badgeCombine').textContent = on ? `ĐANG BẬT (mỗi ${st.comb_min || $('combineMin').value || 5}p)` : 'Đã tắt';
       }
 
-      // 2. Dong bo Stash Seconds, Tabs & Toggle
+      // 2. Dong bo Stash
       if (st.stash_sec !== undefined && document.activeElement !== $('stashSec')) {
         $('stashSec').value = st.stash_sec;
       }
