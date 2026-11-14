@@ -1456,11 +1456,11 @@ html_template = """<!doctype html>
           <div class="modal-dl-row-left">
             <div style="font-size: 32px;">📥</div>
             <div>
-              <div style="font-weight: 700; font-size: 14px; color: #fff;">DPS_Auto_Helper_1Click_Installer.zip</div>
-              <div style="font-size: 12px; color: var(--dim); margin-top: 3px;">Phiên bản mới nhất • Đầy đủ runtime • Kích thước: ~12 MB</div>
+              <div style="font-weight: 700; font-size: 14px; color: #fff;">DPS_Auto_Helper_1Click.zip</div>
+              <div style="font-size: 12px; color: var(--dim); margin-top: 3px;">Phiên bản mới nhất • Đầy đủ runtime • Kích thước: ~57 MB</div>
             </div>
           </div>
-          <a href="https://github.com/titlee2111/dps-auto-helper/raw/main/DPS_Auto_Helper_1Click_Installer.zip" class="btn-download-rect" download>
+          <a href="https://github.com/titlee2111/dps-auto-helper/raw/main/DPS_Auto_Helper_1Click.zip" class="btn-download-rect" download>
             📥 TẢI FILE ZIP
           </a>
         </div>

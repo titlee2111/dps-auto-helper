@@ -42,7 +42,7 @@ def build_package():
     if os.path.exists(SRC_CFG):
         shutil.copy2(SRC_CFG, os.path.join(target_cfg_dir, "dps_workshop.cfg"))
 
-    # 3. Create Cai_Dat_Tu_Dong.bat
+    # 3. Create Cai_Dat_1Click.bat
     print("[3/5] Tạo script cài đặt 1-Click tiếng Việt...")
     bat_content = """@echo off
 chcp 65001 >nul
@@ -58,7 +58,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0install.ps1"
 echo.
 pause
 """
-    with open(os.path.join(STAGE_DIR, "Cai_Dat_Tu_Dong.bat"), "w", encoding="utf-8") as f:
+    with open(os.path.join(STAGE_DIR, "Cai_Dat_1Click.bat"), "w", encoding="utf-8") as f:
         f.write(bat_content)
 
     # 4. Create optimized install.ps1
@@ -165,55 +165,11 @@ Write-Host ""
     with open(os.path.join(STAGE_DIR, "install.ps1"), "w", encoding="utf-8") as f:
         f.write(ps1_content)
 
-    # 5. Create Go_Cai_Dat.bat
-    uninstall_bat = """@echo off
-chcp 65001 >nul
-title Gỡ Cài Đặt DPS Auto Helper
-cls
-echo ============================================================
-echo   GỠ CÀI ĐẶT DPS AUTO HELPER
-echo ============================================================
-echo.
-powershell -NoProfile -ExecutionPolicy Bypass -Command "
-$game = Split-Path -Parent $MyInvocation.MyCommand.Path
-if (-not (Test-Path (Join-Path $game 'DPS.exe'))) {
-    $game = 'G:\\SteamLibrary\\steamapps\\common\\DPS Desktop Pension Squad'
-}
-if (Test-Path (Join-Path $game 'winhttp.dll')) { Remove-Item (Join-Path $game 'winhttp.dll') -Force; Write-Host 'Đã xóa winhttp.dll' -ForegroundColor Yellow }
-if (Test-Path (Join-Path $game 'doorstop_config.ini')) { Remove-Item (Join-Path $game 'doorstop_config.ini') -Force }
-if (Test-Path (Join-Path $game 'BepInEx')) { Remove-Item (Join-Path $game 'BepInEx') -Recurse -Force; Write-Host 'Đã xóa thư mục BepInEx' -ForegroundColor Yellow }
-Write-Host 'ĐÃ GỠ HOÀN TOÀN MOD! Game đã trở về nguyên bản.' -ForegroundColor Green
-"
-echo.
-pause
-"""
-    with open(os.path.join(STAGE_DIR, "Go_Cai_Dat.bat"), "w", encoding="utf-8") as f:
-        f.write(uninstall_bat)
-
-    # 6. Create Huong_Dan.txt
-    guide_txt = """DPS AUTO HELPER - HỖ TRỢ TỰ ĐỘNG HÓA KHO & XƯỞNG
-============================================================
-TÍNH NĂNG:
-- F6: Tự động cất đồ từ túi đồ vào các Kho tùy chọn (Kho 1 -> Kho 5, v.v.)
-- F7: Tự động hợp thành đồ trong Xưởng theo chu kỳ thời gian
-- Zero Coordinates: Điều khiển ngầm bằng logic code nội bộ, KHÔNG chiếm chuột, KHÔNG lệch tọa độ màn hình.
-
-HƯỚNG DẪN CÀI ĐẶT:
-1. Giải nén toàn bộ thư mục này ra.
-2. Chạy file 'Cai_Dat_Tu_Dong.bat' (nó sẽ tự tìm thư mục cài game Steam của bạn và cài trong 2 giây).
-3. Mở game DPS Desktop Pension Squad trên Steam.
-4. Mở trang web điều khiển trên trình duyệt là có thể sử dụng ngay!
-
-Nếu muốn gỡ bỏ mod:
-- Chạy file 'Go_Cai_Dat.bat' là game trở về nguyên bản 100%.
-"""
-    with open(os.path.join(STAGE_DIR, "Huong_Dan.txt"), "w", encoding="utf-8") as f:
-        f.write(guide_txt)
-
-    # Remove old install.bat if present to avoid confusion
-    old_inst = os.path.join(STAGE_DIR, "install.bat")
-    if os.path.exists(old_inst):
-        os.remove(old_inst)
+    # Clean up any huongdan, open ui, remove/uninstall bat files per user request
+    for unnecessary in ["Go_Cai_Dat.bat", "Huong_Dan.txt", "README.txt", "install.bat", "Cai_Dat_Tu_Dong.bat", "open-ui.bat", "remove.bat"]:
+        target_f = os.path.join(STAGE_DIR, unnecessary)
+        if os.path.exists(target_f):
+            os.remove(target_f)
 
     # 7. Zip package
     print("[4/5] Đang nén thành DPS_Auto_Helper_1Click.zip...")
