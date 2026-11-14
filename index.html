@@ -472,8 +472,8 @@
     /* ==================== SPLIT LAYOUT ==================== */
     .split-layout {
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 24px;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 20px;
       width: 100%;
       align-items: start;
     }
@@ -486,7 +486,7 @@
     .controls-column {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 14px;
     }
 
     .log-column {
@@ -498,8 +498,8 @@
     /* ==================== CLEAN ACCENT CARDS ==================== */
     .card {
       background: var(--bg-card);
-      border-radius: var(--radius-lg);
-      padding: 24px;
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
       position: relative;
       border: 1px solid var(--card-border);
@@ -511,7 +511,7 @@
       top: 0; left: 0; right: 0;
       height: 3px;
       background: var(--card-accent);
-      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
     }
     .card:hover {
       transform: translateY(-2px);
@@ -823,71 +823,83 @@
 
     /* ==================== REALTIME LOG BOX ==================== */
     .log-container {
-      background: #0b1120;
-      border: 1px solid var(--line);
-      border-radius: var(--radius-lg);
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: var(--radius-md);
       display: flex;
       flex-direction: column;
-      height: 620px;
-      overflow: hidden;
+      height: 640px;
+      padding: 14px 16px 16px 16px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
     }
     @media (max-width: 1024px) {
       .log-container {
-        height: 440px;
+        height: 480px;
       }
     }
     .log-header {
-      padding: 14px 20px;
-      background: #0f172a;
-      border-bottom: 1px solid var(--line);
+      padding: 0 0 10px 0;
+      background: transparent;
+      border-bottom: 1px solid #21262d;
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
     .log-title {
-      font-size: 13px;
+      font-size: 13.5px;
       font-weight: 700;
-      color: #38bdf8;
+      color: #f0f6fc;
       display: flex;
       align-items: center;
       gap: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.02em;
     }
     .btn-clear-log {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: var(--dim);
+      background: #21262d;
+      border: 1px solid #30363d;
+      color: #8b949e;
       font-size: 11px;
       font-weight: 600;
-      padding: 4px 12px;
-      border-radius: var(--radius-sm);
+      padding: 3px 10px;
+      border-radius: 5px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
     }
     .btn-clear-log:hover {
+      background: #30363d;
       color: #fff;
-      border-color: #0ea5e9;
-      background: rgba(14, 165, 233, 0.15);
+      border-color: #58a6ff;
     }
     .log-feed {
       flex: 1;
-      padding: 16px;
+      background: #000000;
+      border: 1px solid #21262d;
+      border-radius: 6px;
+      padding: 12px 14px;
       overflow-y: auto;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
       font-size: 12px;
-      line-height: 1.6;
+      line-height: 1.65;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 5px;
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.85);
+      min-height: 200px;
     }
     .log-feed::-webkit-scrollbar {
-      width: 6px;
+      width: 7px;
+    }
+    .log-feed::-webkit-scrollbar-track {
+      background: #000000;
+      border-radius: 4px;
     }
     .log-feed::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 3px;
+      background: #21262d;
+      border-radius: 4px;
+    }
+    .log-feed::-webkit-scrollbar-thumb:hover {
+      background: #388bfd;
     }
     .log-entry {
       display: flex;
@@ -896,25 +908,26 @@
       animation: fadeIn 0.15s ease-in;
     }
     .log-time {
-      color: var(--dimmer);
+      color: #58a6ff;
       flex-shrink: 0;
-      font-size: 11px;
+      font-size: 11.5px;
+      font-weight: 600;
     }
     .log-tag {
-      padding: 2px 7px;
+      padding: 1px 7px;
       border-radius: 4px;
-      font-size: 10px;
+      font-size: 10.5px;
       font-weight: 700;
       flex-shrink: 0;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.03em;
     }
-    .log-tag.tag-ok { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); }
-    .log-tag.tag-info { background: rgba(14, 165, 233, 0.2); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.35); }
-    .log-tag.tag-warn { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); }
-    .log-tag.tag-err { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.35); }
-    .log-tag.tag-box { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.35); }
+    .log-tag.tag-ok { background: rgba(35, 134, 54, 0.25); color: #7ee787; border: 1px solid rgba(35, 134, 54, 0.45); }
+    .log-tag.tag-info { background: rgba(31, 111, 235, 0.2); color: #58a6ff; border: 1px solid rgba(56, 139, 253, 0.35); }
+    .log-tag.tag-warn { background: rgba(210, 153, 34, 0.2); color: #e3b341; border: 1px solid rgba(210, 153, 34, 0.45); }
+    .log-tag.tag-err { background: rgba(248, 81, 73, 0.2); color: #ff7b72; border: 1px solid rgba(248, 81, 73, 0.45); }
+    .log-tag.tag-box { background: rgba(163, 113, 247, 0.2); color: #d2a8ff; border: 1px solid rgba(163, 113, 247, 0.45); }
     .log-msg {
-      color: #cbd5e1;
+      color: #e6edf3;
       word-break: break-word;
     }
 
@@ -1398,7 +1411,7 @@
         <div class="log-container">
           <div class="log-header">
             <div class="log-title">
-              <span>⚡</span>
+              <span>📜</span>
               <span>Nhật Ký Hoạt Động Thời Gian Thực</span>
             </div>
             <button class="btn-clear-log" onclick="clearLog()">Xóa Log</button>
