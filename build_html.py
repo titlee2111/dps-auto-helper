@@ -2,10 +2,18 @@ import os
 
 BASE_DIR = r"C:\Users\Son\Desktop\dps-auto-helper"
 ICON_B64_FILE = os.path.join(BASE_DIR, "game_icon_b64.txt")
+QR0_FILE = os.path.join(BASE_DIR, "qr_0.txt")
+QR1_FILE = os.path.join(BASE_DIR, "qr_1.txt")
 HTML_FILE = os.path.join(BASE_DIR, "index.html")
 
 with open(ICON_B64_FILE, "r", encoding="utf-8") as f:
     b64_icon = f.read().strip()
+
+with open(QR0_FILE, "r", encoding="utf-8") as f:
+    mb_qr_src = f.read().strip()
+
+with open(QR1_FILE, "r", encoding="utf-8") as f:
+    binance_qr_src = f.read().strip()
 
 html_content = f"""<!doctype html>
 <html lang="vi">
@@ -129,6 +137,7 @@ html_content = f"""<!doctype html>
       display: flex;
       align-items: center;
       gap: 10px;
+      flex-wrap: wrap;
     }}
     .chip {{
       font-size: 12px;
@@ -167,6 +176,29 @@ html_content = f"""<!doctype html>
       0% {{ opacity: 1; transform: scale(1); }}
       50% {{ opacity: 0.4; transform: scale(0.85); }}
       100% {{ opacity: 1; transform: scale(1); }}
+    }}
+
+    /* Support Button in Header */
+    .btn-support-header {{
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.16) 0%, rgba(217, 119, 6, 0.28) 100%);
+      color: #fbbf24;
+      border: 1px solid #f59e0b;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 10px rgba(245, 158, 11, 0.25);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }}
+    .btn-support-header:hover {{
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.5);
     }}
 
     /* Main Container - FULL WIDTH WITH PADDING */
@@ -789,7 +821,7 @@ html_content = f"""<!doctype html>
       display: none;
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(4, 6, 12, 0.82);
+      background: rgba(4, 6, 12, 0.84);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       z-index: 999;
@@ -943,6 +975,176 @@ html_content = f"""<!doctype html>
       line-height: 1.45;
     }}
 
+    /* DONATE MODAL SPECIFIC STYLES */
+    .donate-dialog {{
+      max-width: 650px;
+      border: 1px solid #d97706;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(245, 158, 11, 0.25);
+      background: #111724;
+      background-image: 
+        radial-gradient(circle at 10% 10%, rgba(245, 158, 11, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(59, 130, 246, 0.08) 0%, transparent 40%);
+    }}
+    .donate-letter-box {{
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(59, 130, 246, 0.06) 100%);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      font-size: 12.5px;
+      line-height: 1.65;
+      color: #e2e8f0;
+    }}
+    .donate-tabs {{
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid #24334a;
+      padding-bottom: 12px;
+      margin-top: 4px;
+    }}
+    .donate-tab-btn {{
+      flex: 1;
+      padding: 9px 12px;
+      font-size: 12.5px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #151d2d;
+      color: var(--dim);
+      border: 1px solid #28374e;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }}
+    .donate-tab-btn:hover {{
+      background: #1d273c;
+      color: #ffffff;
+      border-color: #3b82f6;
+    }}
+    .donate-tab-btn.active {{
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.18) 0%, rgba(217, 119, 6, 0.28) 100%);
+      color: #fbbf24;
+      border-color: #f59e0b;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.3);
+    }}
+    .donate-card {{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 18px;
+      align-items: center;
+      background: #0c121e;
+      border: 1px solid #24334a;
+      border-radius: var(--radius-md);
+      padding: 18px;
+    }}
+    .donate-qr-box {{
+      text-align: center;
+    }}
+    .donate-qr-img {{
+      width: 100%;
+      max-width: 220px;
+      border-radius: 10px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+      border: 1px solid #2e415d;
+      display: inline-block;
+      background: #ffffff;
+      padding: 4px;
+    }}
+    .donate-info-list {{
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 12.5px;
+    }}
+    .donate-field-label {{
+      color: var(--dimmer);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 3px;
+    }}
+    .donate-field-value {{
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #131b2c;
+      padding: 7px 12px;
+      border-radius: 6px;
+      border: 1px solid #233146;
+    }}
+    .btn-copy-small {{
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1px solid #334155;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }}
+    .btn-copy-small:hover {{
+      background: #38bdf8;
+      color: #0c121e;
+      border-color: #38bdf8;
+    }}
+
+    /* FLOATING DISCORD CIRCLE BUTTON */
+    .discord-float {{
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #5865F2;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 18px rgba(88, 101, 242, 0.5), 0 0 10px rgba(88, 101, 242, 0.3);
+      z-index: 990;
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      text-decoration: none;
+      cursor: pointer;
+    }}
+    .discord-float:hover {{
+      transform: scale(1.1) translateY(-3px);
+      background: #4752c4;
+      box-shadow: 0 8px 25px rgba(88, 101, 242, 0.7), 0 0 16px rgba(88, 101, 242, 0.5);
+    }}
+    .discord-float svg {{
+      width: 28px;
+      height: 28px;
+      fill: currentColor;
+    }}
+    .discord-tooltip {{
+      position: absolute;
+      right: 64px;
+      background: #171f30;
+      color: #e2e8f0;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid #334768;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateX(8px);
+      transition: all 0.2s ease;
+    }}
+    .discord-float:hover .discord-tooltip {{
+      opacity: 1;
+      transform: translateX(0);
+    }}
+
     /* Footer */
     footer {{
       margin-top: auto;
@@ -966,6 +1168,8 @@ html_content = f"""<!doctype html>
       .quick-btns-row {{ width: 100%; }}
       .quick-btns-row .btn-compact {{ flex: 1; justify-content: center; }}
       .config-row {{ flex-direction: column; align-items: flex-start; gap: 8px; }}
+      .donate-tabs {{ flex-direction: column; }}
+      .discord-float {{ bottom: 16px; right: 16px; width: 48px; height: 48px; }}
     }}
   </style>
 </head>
@@ -981,6 +1185,9 @@ html_content = f"""<!doctype html>
       </div>
     </a>
     <div class="header-status">
+      <button class="btn-support-header" onclick="openDonateModal()" title="Ủng hộ tác giả cốc cà phê">
+        ☕ Ủng Hộ Tác Giả
+      </button>
       <span id="pidBadge" class="chip">PID: -</span>
       <span id="connBadge" class="chip off">
         <span class="pulse-dot"></span>
@@ -1144,6 +1351,14 @@ html_content = f"""<!doctype html>
 
   </main>
 
+  <!-- FLOATING DISCORD CIRCLE BUTTON -->
+  <a href="https://discord.gg/RuHaQU22K" target="_blank" rel="noopener noreferrer" class="discord-float" title="Tham gia Discord cộng đồng">
+    <svg viewBox="0 0 127.14 96.36">
+      <path fill="currentColor" d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,45.91,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,45.91,96.12,53,91.08,65.69,84.69,65.69Z"/>
+    </svg>
+    <span class="discord-tooltip">💬 Tham gia Discord</span>
+  </a>
+
   <!-- FULL SCREEN MODAL DIALOG: DOWNLOAD & STEP-BY-STEP GUIDE -->
   <div id="modalDownload" class="modal-overlay" onclick="handleOverlayClick(event)">
     <div class="modal-dialog">
@@ -1227,8 +1442,138 @@ html_content = f"""<!doctype html>
     </div>
   </div>
 
+  <!-- FULL SCREEN MODAL DIALOG: SUPPORT THE DEVELOPER / DONATE -->
+  <div id="donateModal" class="modal-overlay" onclick="handleDonateOverlayClick(event)">
+    <div class="modal-dialog donate-dialog">
+      <div class="modal-header">
+        <h3 style="color:#fbbf24;"><span>☕</span> Ủng Hộ Tác Giả / Support Developer</h3>
+        <button class="modal-close" onclick="closeDonateModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        
+        <!-- Heartfelt Message Box -->
+        <div class="donate-letter-box">
+          <div style="font-weight:700; color:#fbbf24; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+            <span>💌</span> <span>Lời Nhắn Từ Tác Giả:</span>
+          </div>
+          <div>
+            Chào bạn! Cảm ơn bạn rất nhiều vì đã tin tưởng và sử dụng <b>DPS Auto Helper</b>.<br>
+            Dự án này được mình phát triển hoàn toàn tâm huyết và miễn phí nhằm hỗ trợ anh em cày cuốc tự động hóa tối đa trong game <b>DPS Desktop Pension Squad</b> (tự động hợp thành công thức xưởng định kỳ, tự động cất đồ tuần tự vào các ngăn kho thông minh, chạy logic ngầm IL2CPP không chiếm chuột, lưu cấu hình vĩnh viễn).<br>
+            Nếu bạn cảm thấy Helper hữu ích và giúp bạn tiết kiệm thời gian hoặc cày game nhàn nhã hơn, hãy ủng hộ mình một ly cà phê ☕ nhé! Mọi đóng góp dù lớn hay nhỏ đều là nguồn động lực to lớn giúp mình duy trì và cập nhật tool tốt hơn nữa. Cảm ơn bạn rất nhiều! ❤️
+          </div>
+        </div>
+
+        <!-- Tab Switcher -->
+        <div class="donate-tabs">
+          <button id="donateTabBtnMb" class="donate-tab-btn active" onclick="switchDonateTab('mb')">
+            <span>🇻🇳</span> <span>Ngân Hàng MB (Việt Nam)</span>
+          </button>
+          <button id="donateTabBtnBinance" class="donate-tab-btn" onclick="switchDonateTab('binance')">
+            <span>🌐</span> <span>Binance Pay (Crypto)</span>
+          </button>
+          <button id="donateTabBtnBmc" class="donate-tab-btn" onclick="switchDonateTab('bmc')">
+            <span>☕</span> <span>Buy Me a Coffee</span>
+          </button>
+        </div>
+
+        <!-- TAB 1: MB BANK (VIETQR) -->
+        <div id="donateTabMb" class="donate-card" style="display:grid;">
+          <div class="donate-qr-box">
+            <img src="{mb_qr_src}" alt="MB Bank VietQR" class="donate-qr-img">
+            <div style="font-size:11px; color:var(--dimmer); margin-top:8px;">📲 Quét bằng ứng dụng Ngân hàng bất kỳ</div>
+          </div>
+          <div class="donate-info-list">
+            <div>
+              <div class="donate-field-label">Ngân Hàng (Bank)</div>
+              <div class="donate-field-value">
+                <span>MB Bank (Ngân Hàng Quân Đội)</span>
+              </div>
+            </div>
+            <div>
+              <div class="donate-field-label">Số Tài Khoản (Account Number)</div>
+              <div class="donate-field-value">
+                <span id="mbAccNum" style="color:#34d399; font-size:14.5px;">0562462346</span>
+                <button class="btn-copy-small" onclick="copyDonateText('0562462346', this)">📋 Sao chép</button>
+              </div>
+            </div>
+            <div>
+              <div class="donate-field-label">Chủ Tài Khoản (Account Holder)</div>
+              <div class="donate-field-value">
+                <span style="color:#60a5fa;">LY THAI SON</span>
+                <button class="btn-copy-small" onclick="copyDonateText('LY THAI SON', this)">📋 Sao chép</button>
+              </div>
+            </div>
+            <div>
+              <div class="donate-field-label">Lời Nhắn Chuyển Khoản (Note)</div>
+              <div class="donate-field-value" style="color:#fbbf24; font-style:italic;">
+                <span>Ủng hộ DPS Auto Helper</span>
+                <button class="btn-copy-small" onclick="copyDonateText('Ủng hộ DPS Auto Helper', this)">📋 Sao chép</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: BINANCE PAY (INTERNATIONAL) -->
+        <div id="donateTabBinance" class="donate-card" style="display:none;">
+          <div class="donate-qr-box">
+            <img src="{binance_qr_src}" alt="Binance Pay QR" class="donate-qr-img">
+            <div style="font-size:11px; color:var(--dimmer); margin-top:8px;">📲 Quét bằng App Binance (Binance Pay)</div>
+          </div>
+          <div class="donate-info-list">
+            <div>
+              <div class="donate-field-label">Nền Tảng (Platform)</div>
+              <div class="donate-field-value">
+                <span style="color:#f0b90b;">🔶 Binance Pay (Crypto)</span>
+              </div>
+            </div>
+            <div>
+              <div class="donate-field-label">Binance Pay ID / Username</div>
+              <div class="donate-field-value">
+                <span id="binanceUser" style="color:#f0b90b; font-size:14.5px;">User-9e11c</span>
+                <button class="btn-copy-small" onclick="copyDonateText('User-9e11c', this)">📋 Sao chép</button>
+              </div>
+            </div>
+            <div>
+              <div class="donate-field-label">Tiền Tệ Hỗ Trợ (Supported Coins)</div>
+              <div class="donate-field-value" style="color:var(--dim); font-size:12px;">
+                <span>USDT, BUSD, BNB, BTC, ETH... (0% phí nội bộ Binance)</span>
+              </div>
+            </div>
+            <div>
+              <div class="donate-field-label">Hướng Dẫn Nhanh (How To Pay)</div>
+              <div class="donate-field-value" style="color:var(--dimmer); font-size:11.5px; line-height:1.4;">
+                Mở App Binance ➔ Bấm biểu tượng Pay hoặc Quét mã QR ➔ Quét mã hoặc nhập Pay ID: User-9e11c.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: BUY ME A COFFEE (GLOBAL) -->
+        <div id="donateTabBmc" style="display:none;">
+          <div style="background:#0c121e; border:1px solid #24334a; border-radius:var(--radius-md); padding:32px 20px; text-align:center;">
+            <div style="font-size:46px; margin-bottom:12px;">☕</div>
+            <div style="font-weight:800; color:#ffffff; font-size:16px; margin-bottom:6px;">Buy Me a Coffee</div>
+            <div style="font-size:12.5px; color:var(--dim); margin-bottom:20px; line-height:1.5;">Ủng hộ tác giả qua Buy Me a Coffee — hỗ trợ thẻ quốc tế (Visa/Mastercard) &amp; PayPal tiện lợi.</div>
+            <a href="https://buymeacoffee.com/titlee" target="_blank" rel="noopener noreferrer" style="display:inline-block; background:#FFDD00; color:#0d1117; font-weight:800; padding:12px 32px; border-radius:26px; text-decoration:none; font-size:14.5px; letter-spacing:0.3px; box-shadow:0 4px 16px rgba(255,221,0,0.3); transition:transform 0.15s ease;">☕ buymeacoffee.com/titlee</a>
+            <div style="font-size:11.5px; color:var(--dimmer); margin-top:14px;">Bấm nút phía trên để mở trang Buy Me a Coffee trong tab mới →</div>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; padding-top:14px; border-top:1px solid #24334a;">
+          <div style="font-size:12px; color:var(--dimmer);">
+            🌟 Chúc bạn chơi game DPS vui vẻ &amp; cày được nhiều loot ngon!
+          </div>
+          <button class="btn-compact" style="background:#1e293b; color:#94a3b8; border:1px solid #334155; padding:8px 18px;" onclick="closeDonateModal()">
+            Đã Hiểu, Đóng Lại
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <footer>
-    DPS Auto Helper • Tự Động Hóa Kho &amp; Xưởng • Bảng Điều Khiển &amp; Nhật Ký Hoạt Động
+    DPS Auto Helper • Tự Động Hóa Kho &amp; Xưởng • <a href="javascript:void(0)" onclick="openDonateModal()" style="color:#fbbf24; text-decoration:none; font-weight:700;">☕ Ủng Hộ Tác Giả</a> • <a href="https://discord.gg/RuHaQU22K" target="_blank" rel="noopener noreferrer" style="color:#818cf8; text-decoration:none; font-weight:700;">💬 Discord Cộng Đồng</a>
   </footer>
 
   <script>
@@ -1243,7 +1588,7 @@ html_content = f"""<!doctype html>
     let prevStatus = null;
     let prevStashCurr = null;
 
-    // Modal Control Functions
+    // Modal Control Functions: Download
     function openDownloadModal() {{
       $('modalDownload').classList.add('active');
       document.body.style.overflow = 'hidden';
@@ -1260,6 +1605,65 @@ html_content = f"""<!doctype html>
       }}
     }}
 
+    // Modal Control Functions: Donate / Support
+    function openDonateModal() {{
+      $('donateModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }}
+
+    function closeDonateModal() {{
+      $('donateModal').classList.remove('active');
+      document.body.style.overflow = '';
+    }}
+
+    function handleDonateOverlayClick(e) {{
+      if (e.target === $('donateModal')) {{
+        closeDonateModal();
+      }}
+    }}
+
+    function switchDonateTab(tab) {{
+      const tabMb = $('donateTabMb');
+      const tabBinance = $('donateTabBinance');
+      const tabBmc = $('donateTabBmc');
+      const btnMb = $('donateTabBtnMb');
+      const btnBinance = $('donateTabBtnBinance');
+      const btnBmc = $('donateTabBtnBmc');
+
+      tabMb.style.display = (tab === 'mb') ? 'grid' : 'none';
+      tabBinance.style.display = (tab === 'binance') ? 'grid' : 'none';
+      tabBmc.style.display = (tab === 'bmc') ? 'block' : 'none';
+
+      btnMb.className = (tab === 'mb') ? 'donate-tab-btn active' : 'donate-tab-btn';
+      btnBinance.className = (tab === 'binance') ? 'donate-tab-btn active' : 'donate-tab-btn';
+      btnBmc.className = (tab === 'bmc') ? 'donate-tab-btn active' : 'donate-tab-btn';
+    }}
+
+    function copyDonateText(text, btn) {{
+      navigator.clipboard.writeText(text).then(() => {{
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '✅ Đã chép!';
+        btn.style.background = '#10b981';
+        btn.style.color = '#ffffff';
+        btn.style.borderColor = '#10b981';
+        setTimeout(() => {{
+          btn.innerHTML = originalText;
+          btn.style.background = '';
+          btn.style.color = '';
+          btn.style.borderColor = '';
+        }}, 2000);
+      }}).catch(() => {{
+        const input = document.createElement('input');
+        input.value = text;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+        btn.innerHTML = '✅ Đã chép!';
+        setTimeout(() => {{ btn.innerHTML = '📋 Sao chép'; }}, 2000);
+      }});
+    }}
+
     function dismissOfflineBanner(e) {{
       if (e) e.stopPropagation();
       $('offlineNotice').style.display = 'none';
@@ -1267,8 +1671,9 @@ html_content = f"""<!doctype html>
     }}
 
     document.addEventListener('keydown', e => {{
-      if (e.key === 'Escape' && $('modalDownload').classList.contains('active')) {{
-        closeDownloadModal();
+      if (e.key === 'Escape') {{
+        if ($('modalDownload').classList.contains('active')) closeDownloadModal();
+        if ($('donateModal').classList.contains('active')) closeDonateModal();
       }}
     }});
 

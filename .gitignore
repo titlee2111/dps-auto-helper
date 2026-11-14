@@ -1,5 +1,8 @@
 .git_tools/
 game_icon_b64.txt
+qr_*.txt
+extract_*.py
+donate_*.html
 staging/
 __pycache__/
 *.pyc
