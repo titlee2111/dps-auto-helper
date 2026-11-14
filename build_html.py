@@ -177,7 +177,7 @@ html_content = f"""<!doctype html>
       padding: 20px 28px 64px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 18px;
       flex: 1;
     }}
 
@@ -187,7 +187,7 @@ html_content = f"""<!doctype html>
       background: linear-gradient(135deg, rgba(20, 28, 44, 0.95) 0%, rgba(13, 19, 30, 0.98) 100%);
       border: 1px solid #334768;
       border-radius: var(--radius-md);
-      padding: 16px 24px;
+      padding: 14px 22px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -202,17 +202,17 @@ html_content = f"""<!doctype html>
     .rect-left {{
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
       cursor: pointer;
       min-width: 0;
     }}
     .file-icon {{
-      font-size: 28px;
+      font-size: 26px;
       background: rgba(59, 130, 246, 0.15);
       border: 1px solid rgba(59, 130, 246, 0.35);
-      border-radius: 12px;
-      width: 52px;
-      height: 52px;
+      border-radius: 10px;
+      width: 48px;
+      height: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -222,11 +222,11 @@ html_content = f"""<!doctype html>
     .file-details {{
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 3px;
       min-width: 0;
     }}
     .file-name {{
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 800;
       color: #ffffff;
       white-space: nowrap;
@@ -259,10 +259,10 @@ html_content = f"""<!doctype html>
     .btn-download-rect {{
       background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
       color: #ffffff;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 800;
       letter-spacing: 0.03em;
-      padding: 13px 24px;
+      padding: 11px 20px;
       border-radius: var(--radius-sm);
       border: 1px solid #60a5fa;
       cursor: pointer;
@@ -282,8 +282,8 @@ html_content = f"""<!doctype html>
       border-color: #93c5fd;
     }}
     .btn-download-rect svg {{
-      width: 18px;
-      height: 18px;
+      width: 17px;
+      height: 17px;
       fill: currentColor;
     }}
 
@@ -293,7 +293,7 @@ html_content = f"""<!doctype html>
       background: linear-gradient(135deg, rgba(239, 68, 68, 0.18) 0%, rgba(185, 28, 28, 0.08) 100%);
       border: 1px solid rgba(239, 68, 68, 0.4);
       border-radius: var(--radius-md);
-      padding: 14px 20px;
+      padding: 12px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -305,12 +305,12 @@ html_content = f"""<!doctype html>
     .offline-info {{
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       cursor: pointer;
       flex: 1;
     }}
     .offline-icon {{
-      font-size: 22px;
+      font-size: 20px;
       animation: bounce 1.8s infinite;
     }}
     @keyframes bounce {{
@@ -337,7 +337,7 @@ html_content = f"""<!doctype html>
       color: #fff;
       font-size: 11px;
       font-weight: 700;
-      padding: 6px 14px;
+      padding: 5px 12px;
       border-radius: var(--radius-full);
       white-space: nowrap;
       box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
@@ -346,13 +346,13 @@ html_content = f"""<!doctype html>
       cursor: pointer;
     }}
     .btn-dismiss-alert {{
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
       border: 1px solid rgba(239, 68, 68, 0.4);
       background: rgba(239, 68, 68, 0.15);
       color: #fca5a5;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: bold;
       cursor: pointer;
       display: flex;
@@ -373,7 +373,7 @@ html_content = f"""<!doctype html>
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--card-border);
       border-radius: var(--radius-lg);
-      padding: 24px;
+      padding: 22px;
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
       width: 100%;
@@ -397,30 +397,102 @@ html_content = f"""<!doctype html>
       }}
     }}
 
-    /* Left Controls Column: Stack the 2 automation cards vertically */
+    /* Left Controls Column: Stack quick buttons on top, then the 2 cards */
     .controls-column {{
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 16px;
       width: 100%;
+    }}
+
+    /* Compact Quick Actions Panel at Top of Controls */
+    .quick-actions-panel {{
+      background: rgba(18, 25, 38, 0.85);
+      border: 1px solid #283952;
+      border-radius: var(--radius-md);
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }}
+    .quick-title {{
+      font-size: 12px;
+      font-weight: 800;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }}
+    .quick-btns-row {{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }}
+    .btn-compact {{
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: 0.02em;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid transparent;
+      outline: none;
+      white-space: nowrap;
+    }}
+    .btn-compact:active {{
+      transform: scale(0.96);
+    }}
+    .btn-compact-combine {{
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.25) 0%, rgba(29, 78, 216, 0.35) 100%);
+      color: #93c5fd;
+      border-color: rgba(96, 165, 250, 0.45);
+    }}
+    .btn-compact-combine:hover {{
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #60a5fa;
+      box-shadow: 0 0 14px rgba(37, 99, 235, 0.5);
+      transform: translateY(-1px);
+    }}
+    .btn-compact-stash {{
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.35) 100%);
+      color: #6ee7b7;
+      border-color: rgba(52, 211, 153, 0.45);
+    }}
+    .btn-compact-stash:hover {{
+      background: #059669;
+      color: #ffffff;
+      border-color: #34d399;
+      box-shadow: 0 0 14px rgba(16, 185, 129, 0.5);
+      transform: translateY(-1px);
     }}
 
     .module-card {{
       position: relative;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: flex-start;
+      gap: 14px;
     }}
     .module-header {{
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 16px;
       padding-bottom: 12px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }}
     .module-title {{
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.04em;
@@ -431,7 +503,7 @@ html_content = f"""<!doctype html>
     .badge-status {{
       font-size: 11px;
       font-weight: 700;
-      padding: 5px 12px;
+      padding: 4px 11px;
       border-radius: var(--radius-full);
       background: #1e293b;
       color: var(--dim);
@@ -456,14 +528,13 @@ html_content = f"""<!doctype html>
       border: 1px solid #233044;
       border-radius: var(--radius-md);
       padding: 14px 18px;
-      margin-bottom: 16px;
       transition: border-color 0.2s ease;
     }}
     .switch-box:hover {{
       border-color: #3b82f6;
     }}
     .switch-desc h4 {{
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 700;
       color: #ffffff;
     }}
@@ -525,7 +596,6 @@ html_content = f"""<!doctype html>
       align-items: center;
       gap: 12px;
       flex-wrap: wrap;
-      margin-bottom: 16px;
     }}
     .config-row label {{
       font-size: 13px;
@@ -538,9 +608,9 @@ html_content = f"""<!doctype html>
       border-radius: var(--radius-sm);
       color: #38bdf8;
       font-family: Consolas, monospace;
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 700;
-      padding: 7px 10px;
+      padding: 6px 10px;
       outline: none;
       transition: all 0.2s ease;
       text-align: center;
@@ -549,50 +619,6 @@ html_content = f"""<!doctype html>
       border-color: #38bdf8;
       box-shadow: 0 0 8px rgba(56, 189, 248, 0.35);
       background: #141d2e;
-    }}
-
-    /* Action Buttons (F6 / F7) */
-    .btn {{
-      padding: 13px 20px;
-      border-radius: var(--radius-sm);
-      font-size: 13px;
-      font-weight: 800;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      border: none;
-      outline: none;
-      width: 100%;
-    }}
-    .btn:active {{
-      transform: scale(0.98);
-    }}
-    .btn-action-f7 {{
-      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-      color: #ffffff;
-      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4);
-      border: 1px solid #60a5fa;
-    }}
-    .btn-action-f7:hover {{
-      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-      box-shadow: 0 6px 22px rgba(37, 99, 235, 0.6);
-      transform: translateY(-2px);
-    }}
-    .btn-action-f6 {{
-      background: linear-gradient(135deg, #059669 0%, #047857 100%);
-      color: #ffffff;
-      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
-      border: 1px solid #34d399;
-    }}
-    .btn-action-f6:hover {{
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      box-shadow: 0 6px 22px rgba(16, 185, 129, 0.6);
-      transform: translateY(-2px);
     }}
 
     /* RIGHT COLUMN: REALTIME ACTIVITY LOG CARD */
@@ -608,14 +634,14 @@ html_content = f"""<!doctype html>
       height: 100%;
       border-top: 3px solid #8b5cf6;
       padding: 20px 22px;
-      min-height: 520px;
+      min-height: 480px;
     }}
 
     .log-header {{
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       padding-bottom: 12px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       flex-wrap: wrap;
@@ -634,7 +660,7 @@ html_content = f"""<!doctype html>
     .log-controls {{
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }}
     .btn-tool {{
       background: #182234;
@@ -647,7 +673,7 @@ html_content = f"""<!doctype html>
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       transition: all 0.2s ease;
     }}
     .btn-tool:hover {{
@@ -686,8 +712,8 @@ html_content = f"""<!doctype html>
       border-radius: var(--radius-md);
       padding: 14px 16px;
       flex: 1;
-      min-height: 380px;
-      max-height: 480px;
+      min-height: 360px;
+      max-height: 450px;
       overflow-y: auto;
       font-family: 'JetBrains Mono', Consolas, 'Courier New', monospace;
       font-size: 12px;
@@ -744,8 +770,8 @@ html_content = f"""<!doctype html>
     }}
     .tag-sys {{ background: rgba(139, 92, 246, 0.18); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.35); }}
     .tag-conn {{ background: rgba(56, 189, 248, 0.18); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.35); }}
-    .tag-f6 {{ background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); }}
-    .tag-f7 {{ background: rgba(59, 130, 246, 0.18); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.35); }}
+    .tag-stash {{ background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); }}
+    .tag-comb {{ background: rgba(59, 130, 246, 0.18); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.35); }}
     .tag-cfg {{ background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); }}
     .tag-warn {{ background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.35); }}
 
@@ -935,7 +961,10 @@ html_content = f"""<!doctype html>
       .brand-titles h1 {{ font-size: 14px; }}
       main {{ padding: 16px 12px 48px; gap: 14px; }}
       .card {{ padding: 16px; }}
-      .download-rect-bar {{ flex-direction: column; align-items: stretch; gap: 12px; padding: 16px; }}
+      .download-rect-bar {{ flex-direction: column; align-items: stretch; gap: 12px; padding: 14px; }}
+      .quick-actions-panel {{ flex-direction: column; align-items: stretch; gap: 10px; }}
+      .quick-btns-row {{ width: 100%; }}
+      .quick-btns-row .btn-compact {{ flex: 1; justify-content: center; }}
       .config-row {{ flex-direction: column; align-items: flex-start; gap: 8px; }}
     }}
   </style>
@@ -999,82 +1028,85 @@ html_content = f"""<!doctype html>
     <!-- 2-COLUMN SPLIT WORKSPACE: LEFT CONTROLS, RIGHT REALTIME ACTION LOG -->
     <div class="workspace-split">
 
-      <!-- LEFT COLUMN: MODULE CONTROLS (F7 ON TOP, F6 BELOW) -->
+      <!-- LEFT COLUMN: MODULE CONTROLS -->
       <div class="controls-column">
 
-        <!-- MODULE 1: AUTO COMBINE F7 -->
-        <div class="card module-card" style="border-top: 3px solid #3b82f6;">
-          <div>
-            <div class="module-header">
-              <div class="module-title" style="color: #60a5fa;">
-                <span>🔨</span> Tự Động Hợp Thành Xưởng (F7)
-              </div>
-              <span id="badgeCombine" class="badge-status">Đã tắt</span>
-            </div>
-
-            <div class="switch-box">
-              <div class="switch-desc">
-                <h4>Bật Tự Động Ghép Đồ Định Kỳ</h4>
-                <p>Tự động lặp lại công thức chế tạo trong Xưởng định kỳ theo số phút đã thiết lập</p>
-              </div>
-              <label class="switch">
-                <input id="toggleCombine" type="checkbox">
-                <span class="slider"></span>
-              </label>
-            </div>
-
-            <div class="config-row">
-              <label for="combineMin">Chu kỳ chạy mỗi:</label>
-              <input id="combineMin" type="number" min="1" max="60" value="5" style="width: 75px;">
-              <span style="color: var(--ink); font-size: 13px; font-weight: 600;">phút</span>
-              <span style="color: var(--dimmer); font-size: 12px; margin-left: 10px;">(Khuyên dùng: 3 - 5 phút/lần)</span>
-            </div>
+        <!-- THAO TÁC NHANH (NHO NHỎ PHÍA TRÊN) -->
+        <div class="quick-actions-panel">
+          <div class="quick-title">
+            <span>⚡</span> Thao Tác Nhanh:
           </div>
-
-          <button id="btnCombineNow" class="btn btn-action-f7" style="margin-top: 6px;">
-            🔨 HỢP THÀNH XƯỞNG NGAY LẬP TỨC (F7)
-          </button>
+          <div class="quick-btns-row">
+            <button id="btnCombineNow" class="btn-compact btn-compact-combine" title="Kích hoạt ghép đồ lặp lại trong Xưởng ngay lập tức">
+              🔨 Ghép Đồ Ngay
+            </button>
+            <button id="btnStashNow" class="btn-compact btn-compact-stash" title="Kích hoạt cất toàn bộ đồ từ Balo vào các ngăn Kho đã chọn">
+              📦 Cất Đồ Ngay
+            </button>
+          </div>
         </div>
 
-        <!-- MODULE 2: AUTO STASH F6 -->
-        <div class="card module-card" style="border-top: 3px solid #10b981;">
-          <div>
-            <div class="module-header">
-              <div class="module-title" style="color: #34d399;">
-                <span>📦</span> Tự Động Cất Đồ Vào Kho (F6)
-              </div>
-              <span id="badgeStash" class="badge-status">Đã tắt</span>
+        <!-- MODULE 1: TỰ ĐỘNG HỢP THÀNH XƯỞNG -->
+        <div class="card module-card" style="border-top: 3px solid #3b82f6;">
+          <div class="module-header">
+            <div class="module-title" style="color: #60a5fa;">
+              <span>🔨</span> Tự Động Hợp Thành Xưởng
             </div>
-
-            <div class="switch-box">
-              <div class="switch-desc">
-                <h4>Bật Tự Động Cất Đồ Định Kỳ</h4>
-                <p>Cất đồ từ túi đồ cá nhân tuần tự vào các ngăn kho đã chọn</p>
-              </div>
-              <label class="switch">
-                <input id="toggleStash" type="checkbox">
-                <span class="slider"></span>
-              </label>
-            </div>
-
-            <div class="config-row">
-              <label for="stashSec">Chu kỳ chạy mỗi:</label>
-              <input id="stashSec" type="number" min="2" max="600" value="60" style="width: 75px;">
-              <span style="color: var(--ink); font-size: 13px; font-weight: 600;">giây</span>
-
-              <span style="color: var(--line); margin: 0 6px;">|</span>
-
-              <label for="stashStart">Cất từ Kho:</label>
-              <input id="stashStart" type="number" min="1" max="10" value="1" style="width: 60px;">
-
-              <label for="stashEnd">đến Kho:</label>
-              <input id="stashEnd" type="number" min="1" max="10" value="5" style="width: 60px;">
-            </div>
+            <span id="badgeCombine" class="badge-status">Đã tắt</span>
           </div>
 
-          <button id="btnStashNow" class="btn btn-action-f6" style="margin-top: 6px;">
-            📦 CẤT ĐỒ VÀO KHO 1 -> 5 NGAY LẬP TỨC (F6)
-          </button>
+          <div class="switch-box">
+            <div class="switch-desc">
+              <h4>Bật Tự Động Ghép Đồ Định Kỳ</h4>
+              <p>Tự động lặp lại công thức chế tạo trong Xưởng định kỳ theo số phút đã thiết lập</p>
+            </div>
+            <label class="switch">
+              <input id="toggleCombine" type="checkbox">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="config-row">
+            <label for="combineMin">Chu kỳ chạy mỗi:</label>
+            <input id="combineMin" type="number" min="1" max="60" value="5" style="width: 75px;">
+            <span style="color: var(--ink); font-size: 13px; font-weight: 600;">phút</span>
+            <span style="color: var(--dimmer); font-size: 12px; margin-left: 10px;">(Khuyên dùng: 3 - 5 phút/lần)</span>
+          </div>
+        </div>
+
+        <!-- MODULE 2: TỰ ĐỘNG CẤT ĐỒ VÀO KHO -->
+        <div class="card module-card" style="border-top: 3px solid #10b981;">
+          <div class="module-header">
+            <div class="module-title" style="color: #34d399;">
+              <span>📦</span> Tự Động Cất Đồ Vào Kho
+            </div>
+            <span id="badgeStash" class="badge-status">Đã tắt</span>
+          </div>
+
+          <div class="switch-box">
+            <div class="switch-desc">
+              <h4>Bật Tự Động Cất Đồ Định Kỳ</h4>
+              <p>Cất đồ từ túi đồ cá nhân tuần tự vào các ngăn kho đã chọn</p>
+            </div>
+            <label class="switch">
+              <input id="toggleStash" type="checkbox">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="config-row">
+            <label for="stashSec">Chu kỳ chạy mỗi:</label>
+            <input id="stashSec" type="number" min="2" max="600" value="60" style="width: 75px;">
+            <span style="color: var(--ink); font-size: 13px; font-weight: 600;">giây</span>
+
+            <span style="color: var(--line); margin: 0 6px;">|</span>
+
+            <label for="stashStart">Cất từ Kho:</label>
+            <input id="stashStart" type="number" min="1" max="10" value="1" style="width: 60px;">
+
+            <label for="stashEnd">đến Kho:</label>
+            <input id="stashEnd" type="number" min="1" max="10" value="5" style="width: 60px;">
+          </div>
         </div>
 
       </div>
@@ -1130,7 +1162,7 @@ html_content = f"""<!doctype html>
               <div class="file-meta">
                 <span class="meta-tag">57.19 MB</span>
                 <span class="meta-tag">v1.0.0</span>
-                <span class="meta-desc">Trọn gói BepInEx 6 + Mod F6/F7</span>
+                <span class="meta-desc">Trọn gói BepInEx 6 + Mod Tự Động</span>
               </div>
             </div>
           </div>
@@ -1171,7 +1203,7 @@ html_content = f"""<!doctype html>
             <div class="step-badge">3</div>
             <div class="step-content">
               <h5>Mở Game &amp; Điều Khiển Qua Web</h5>
-              <p>Khởi động game <code>DPS Desktop Pension Squad</code> bình thường qua Steam. Sau đó quay lại trang web này, góc phải trên cùng sẽ chuyển sang <b>🟢 ĐÃ KẾT NỐI GAME</b> và bạn có thể bật/tắt F6, F7 tùy ý!</p>
+              <p>Khởi động game <code>DPS Desktop Pension Squad</code> bình thường qua Steam. Sau đó quay lại trang web này, góc phải trên cùng sẽ chuyển sang <b>🟢 ĐÃ KẾT NỐI GAME</b> và bạn có thể bật/tắt tự động tùy ý!</p>
             </div>
           </div>
 
@@ -1186,7 +1218,7 @@ html_content = f"""<!doctype html>
         </div>
 
         <div style="text-align: center; margin-top: 10px;">
-          <button class="btn" style="background:#1e293b; color:#94a3b8; border:1px solid #334155;" onclick="closeDownloadModal()">
+          <button class="btn-compact" style="background:#1e293b; color:#94a3b8; border:1px solid #334155; padding:9px 20px;" onclick="closeDownloadModal()">
             Đã Hiểu, Đóng Lại
           </button>
         </div>
@@ -1264,15 +1296,13 @@ html_content = f"""<!doctype html>
           tagClass = 'tag-conn';
           tagLabel = 'KẾT NỐI';
           break;
-        case 'f6':
         case 'cất đồ':
-          tagClass = 'tag-f6';
-          tagLabel = 'F6 CẤT ĐỒ';
+          tagClass = 'tag-stash';
+          tagLabel = 'CẤT ĐỒ';
           break;
-        case 'f7':
         case 'hợp thành':
-          tagClass = 'tag-f7';
-          tagLabel = 'F7 HỢP THÀNH';
+          tagClass = 'tag-comb';
+          tagLabel = 'HỢP THÀNH';
           break;
         case 'cfg':
         case 'cấu hình':
@@ -1328,7 +1358,7 @@ html_content = f"""<!doctype html>
     function updateStashBtnLabel() {{
       const s = $('stashStart').value || 1;
       const e = $('stashEnd').value || 5;
-      $('btnStashNow').textContent = `📦 CẤT ĐỒ VÀO KHO ${{s}} -> ${{e}} NGAY LẬP TỨC (F6)`;
+      $('btnStashNow').textContent = `📦 Cất Đồ Ngay (Kho ${{s}} -> ${{e}})`;
     }}
 
     // Realtime Game Sync
@@ -1379,11 +1409,11 @@ html_content = f"""<!doctype html>
       // 3. Phat hien tien trinh cat do
       if (st.stash_step && st.stash_step > 0) {{
         if (st.stash_curr !== prevStashCurr) {{
-          addLog('f6', `⏳ Đang cất đồ vào Kho ${{st.stash_curr || 1}} (Lộ trình Kho ${{st.stash_start || 1}} -> ${{st.stash_end || 5}})...`);
+          addLog('cất đồ', `⏳ Đang cất đồ vào Kho ${{st.stash_curr || 1}} (Lộ trình Kho ${{st.stash_start || 1}} -> ${{st.stash_end || 5}})...`);
           prevStashCurr = st.stash_curr;
         }}
       }} else if (prevStashCurr !== null) {{
-        addLog('f6', `✅ Đã hoàn tất chu kỳ cất đồ Kho ${{st.stash_start || 1}} -> ${{st.stash_end || 5}}!`, true);
+        addLog('cất đồ', `✅ Đã hoàn tất chu kỳ cất đồ Kho ${{st.stash_start || 1}} -> ${{st.stash_end || 5}}!`, true);
         prevStashCurr = null;
       }}
 
@@ -1438,7 +1468,7 @@ html_content = f"""<!doctype html>
       const m = $('combineMin').value || 5;
       $('badgeCombine').className = on ? 'badge-status active' : 'badge-status';
       $('badgeCombine').textContent = on ? `ĐANG BẬT (mỗi ${{m}}p)` : 'Đã tắt';
-      addLog('f7', on ? `ĐÃ BẬT Tự động Hợp Thành Xưởng (chu kỳ ${{m}} phút/lần)` : 'ĐÃ TẮT Tự động Hợp Thành Xưởng', true);
+      addLog('hợp thành', on ? `ĐÃ BẬT Tự động Hợp Thành Xưởng (chu kỳ ${{m}} phút/lần)` : 'ĐÃ TẮT Tự động Hợp Thành Xưởng', true);
       await sendCommand('auto_comb', on ? '1' : '0');
     }};
 
@@ -1450,10 +1480,10 @@ html_content = f"""<!doctype html>
     }};
 
     $('btnCombineNow').onclick = async () => {{
-      addLog('f7', 'Đang gửi lệnh kích hoạt Hợp Thành Xưởng lặp lại (F7)...');
+      addLog('hợp thành', 'Đang gửi lệnh kích hoạt Hợp Thành Xưởng...');
       try {{
         await sendCommand('combine', '1');
-        addLog('f7', '✅ ĐÃ KÍCH HOẠT HỢP THÀNH XƯỞNG THÀNH CÔNG (F7)!', true);
+        addLog('hợp thành', '✅ ĐÃ KÍCH HOẠT HỢP THÀNH XƯỞNG THÀNH CÔNG!', true);
       }} catch (err) {{
         addLog('warn', 'Lỗi gửi lệnh hợp thành xưởng.');
       }}
@@ -1467,7 +1497,7 @@ html_content = f"""<!doctype html>
       const end = $('stashEnd').value || 5;
       $('badgeStash').className = on ? 'badge-status active' : 'badge-status';
       $('badgeStash').textContent = on ? `ĐANG BẬT (mỗi ${{s}}s)` : 'Đã tắt';
-      addLog('f6', on ? `ĐÃ BẬT Tự động Cất Đồ (mỗi ${{s}} giây, Kho ${{start}} -> ${{end}})` : 'ĐÃ TẮT Tự động Cất Đồ', true);
+      addLog('cất đồ', on ? `ĐÃ BẬT Tự động Cất Đồ (mỗi ${{s}} giây, Kho ${{start}} -> ${{end}})` : 'ĐÃ TẮT Tự động Cất Đồ', true);
       await sendCommand('auto_stash', on ? '1' : '0');
     }};
 
@@ -1497,10 +1527,10 @@ html_content = f"""<!doctype html>
     $('btnStashNow').onclick = async () => {{
       const s = $('stashStart').value || 1;
       const e = $('stashEnd').value || 5;
-      addLog('f6', `Đang gửi lệnh cất đồ tuần tự từ Kho ${{s}} đến Kho ${{e}} (F6)...`);
+      addLog('cất đồ', `Đang gửi lệnh cất đồ tuần tự từ Kho ${{s}} đến Kho ${{e}}...`);
       try {{
         await sendCommand('stash', '1');
-        addLog('f6', `✅ ĐÃ KÍCH HOẠT CẤT ĐỒ KHO ${{s}} -> ${{e}} THÀNH CÔNG (F6)!`, true);
+        addLog('cất đồ', `✅ ĐÃ KÍCH HOẠT CẤT ĐỒ KHO ${{s}} -> ${{e}} THÀNH CÔNG!`, true);
       }} catch (err) {{
         addLog('warn', 'Lỗi gửi lệnh cất đồ.');
       }}
