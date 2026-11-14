@@ -22,31 +22,41 @@ html_template = """<!doctype html>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>DPS Auto Helper - Tự Động Hóa Kho & Xưởng</title>
   <link rel="icon" type="image/png" href="data:image/png;base64,__B64_ICON__">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0a0d14;
-      --bg-alt: #101520;
-      --card-bg: rgba(20, 27, 40, 0.78);
-      --card-border: #232f45;
-      --card-glow: rgba(59, 130, 246, 0.15);
+      --bg: #07090e;
+      --bg-card: rgba(13, 18, 28, 0.82);
       --line: #1e293b;
       --ink: #f8fafc;
       --dim: #94a3b8;
       --dimmer: #64748b;
-      --primary: #3b82f6;
-      --primary-hover: #2563eb;
-      --primary-glow: rgba(59, 130, 246, 0.4);
-      --purple: #8b5cf6;
-      --purple-glow: rgba(139, 92, 246, 0.4);
-      --ok: #10b981;
-      --ok-glow: rgba(16, 185, 129, 0.4);
-      --warn: #f59e0b;
-      --warn-glow: rgba(245, 158, 11, 0.35);
-      --err: #ef4444;
-      --err-glow: rgba(239, 68, 68, 0.35);
+
+      /* Vibrant Neon Color Accents */
+      --cyan: #06b6d4;
+      --cyan-glow: rgba(6, 182, 212, 0.45);
+      --cyan-border: rgba(6, 182, 212, 0.35);
+
+      --emerald: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.45);
+      --emerald-border: rgba(16, 185, 129, 0.35);
+
+      --purple: #a855f7;
+      --purple-glow: rgba(168, 85, 247, 0.45);
+      --purple-border: rgba(168, 85, 247, 0.35);
+
+      --amber: #f59e0b;
+      --amber-glow: rgba(245, 158, 11, 0.45);
+      --amber-border: rgba(245, 158, 11, 0.35);
+
+      --rose: #f43f5e;
+      --blue: #3b82f6;
+
       --radius-sm: 8px;
       --radius-md: 12px;
-      --radius-lg: 16px;
+      --radius-lg: 18px;
       --radius-full: 9999px;
     }
 
@@ -55,12 +65,13 @@ html_template = """<!doctype html>
     body {
       background: var(--bg);
       background-image: 
-        radial-gradient(circle at 15% 15%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 85% 80%, rgba(139, 92, 246, 0.06) 0%, transparent 40%),
-        linear-gradient(180deg, #0a0d14 0%, #0d121c 100%);
+        radial-gradient(circle at 10% 10%, rgba(6, 182, 212, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 90% 15%, rgba(168, 85, 247, 0.14) 0%, transparent 45%),
+        radial-gradient(circle at 50% 85%, rgba(16, 185, 129, 0.10) 0%, transparent 50%),
+        linear-gradient(180deg, #07090e 0%, #0c101a 50%, #06080d 100%);
       background-attachment: fixed;
       color: var(--ink);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -68,13 +79,13 @@ html_template = """<!doctype html>
       overflow-x: hidden;
     }
 
-    /* Header - Full Width */
+    /* ==================== HEADER ==================== */
     header {
-      background: rgba(13, 18, 28, 0.90);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--card-border);
-      padding: 12px 24px;
+      background: rgba(11, 15, 25, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 12px 28px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -83,7 +94,7 @@ html_template = """<!doctype html>
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5), inset 0 -1px 0 rgba(6, 182, 212, 0.2);
       width: 100%;
     }
 
@@ -95,18 +106,19 @@ html_template = """<!doctype html>
       flex-shrink: 0;
     }
     .game-logo {
-      width: 42px;
-      height: 42px;
+      width: 44px;
+      height: 44px;
       border-radius: var(--radius-md);
-      box-shadow: 0 0 16px var(--primary-glow);
-      border: 2px solid #3b82f6;
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
+      border: 2px solid #06b6d4;
       object-fit: cover;
       background: #141c2b;
       display: block;
-      transition: transform 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     .game-logo:hover {
-      transform: scale(1.05);
+      transform: scale(1.08) rotate(-3deg);
+      box-shadow: 0 0 28px rgba(6, 182, 212, 0.8);
     }
     .brand-titles {
       display: flex;
@@ -115,9 +127,9 @@ html_template = """<!doctype html>
     .brand-titles h1 {
       font-size: 15px;
       font-weight: 800;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
-      background: linear-gradient(90deg, #ffffff 0%, #cbd5e1 100%);
+      background: linear-gradient(90deg, #ffffff 0%, #38bdf8 60%, #a855f7 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       line-height: 1.2;
@@ -127,11 +139,12 @@ html_template = """<!doctype html>
       align-items: center;
       gap: 6px;
       font-size: 11px;
-      color: #38bdf8;
+      color: #06b6d4;
       font-weight: 700;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
       margin-top: 2px;
+      text-shadow: 0 0 8px rgba(6, 182, 212, 0.5);
     }
 
     /* ==================== CENTER HUD BAR ==================== */
@@ -139,20 +152,20 @@ html_template = """<!doctype html>
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 16px;
       flex-wrap: wrap;
-      background: rgba(16, 22, 34, 0.85);
-      border: 1px solid rgba(59, 130, 246, 0.25);
+      background: linear-gradient(135deg, rgba(16, 22, 36, 0.95) 0%, rgba(22, 30, 48, 0.85) 100%);
+      border: 1px solid rgba(6, 182, 212, 0.35);
       border-radius: var(--radius-full);
-      padding: 6px 16px;
-      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08), 0 4px 15px rgba(0, 0, 0, 0.3);
+      padding: 6px 20px;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 0 24px rgba(6, 182, 212, 0.15), 0 6px 20px rgba(0, 0, 0, 0.4);
     }
 
     .hud-item {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 2px 10px;
+      gap: 9px;
+      padding: 3px 12px;
       border-right: 1px solid rgba(255, 255, 255, 0.08);
       position: relative;
     }
@@ -161,11 +174,15 @@ html_template = """<!doctype html>
     }
 
     .hud-icon {
-      font-size: 16px;
+      font-size: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
+      filter: drop-shadow(0 0 8px currentColor);
     }
+    .hud-soul .hud-icon { color: #c084fc; }
+    .hud-stone .hud-icon { color: #38bdf8; }
+    .hud-cap .hud-icon { color: #34d399; }
 
     .hud-info {
       display: flex;
@@ -173,68 +190,69 @@ html_template = """<!doctype html>
       line-height: 1.15;
     }
     .hud-label {
-      font-size: 9px;
-      font-weight: 700;
+      font-size: 9.5px;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.07em;
       color: var(--dimmer);
     }
     .hud-val {
-      font-size: 13px;
+      font-size: 13.5px;
       font-weight: 800;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-family: 'JetBrains Mono', monospace;
       color: #fff;
       letter-spacing: 0.02em;
     }
-    .hud-soul .hud-val { color: #c084fc; text-shadow: 0 0 10px rgba(192, 132, 252, 0.5); }
-    .hud-stone .hud-val { color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
-    .hud-cap .hud-val { color: #fbbf24; text-shadow: 0 0 10px rgba(251, 191, 36, 0.4); }
-    .hud-box .hud-val { color: #f472b6; text-shadow: 0 0 10px rgba(244, 114, 182, 0.4); }
+    .hud-soul .hud-val { color: #e879f9; text-shadow: 0 0 12px rgba(232, 121, 249, 0.6); }
+    .hud-stone .hud-val { color: #38bdf8; text-shadow: 0 0 12px rgba(56, 189, 248, 0.6); }
+    .hud-cap .hud-val { color: #34d399; text-shadow: 0 0 12px rgba(52, 211, 153, 0.5); }
 
     .hud-mini-bar {
-      width: 44px;
-      height: 5px;
+      width: 48px;
+      height: 6px;
       background: rgba(255, 255, 255, 0.1);
       border-radius: var(--radius-full);
       overflow: hidden;
-      margin-left: 2px;
+      margin-left: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
     .hud-mini-fill {
       height: 100%;
-      background: linear-gradient(90deg, #10b981, #f59e0b);
+      background: linear-gradient(90deg, #10b981, #06b6d4);
       border-radius: var(--radius-full);
-      transition: width 0.3s ease;
+      transition: width 0.4s ease;
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
     }
 
     .header-status {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       flex-wrap: wrap;
       flex-shrink: 0;
     }
     .chip {
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
       padding: 6px 14px;
       border-radius: var(--radius-full);
-      background: #182234;
+      background: #141b2a;
       color: var(--dim);
-      border: 1px solid var(--card-border);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       display: inline-flex;
       align-items: center;
       gap: 8px;
     }
     .chip.status-live {
-      background: rgba(16, 185, 129, 0.12);
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.18) 0%, rgba(6, 182, 212, 0.12) 100%);
       color: #34d399;
-      border-color: rgba(16, 185, 129, 0.35);
-      box-shadow: 0 0 12px var(--ok-glow);
+      border-color: rgba(16, 185, 129, 0.5);
+      box-shadow: 0 0 18px rgba(16, 185, 129, 0.35);
     }
     .chip.status-dead {
-      background: rgba(239, 68, 68, 0.12);
+      background: rgba(239, 68, 68, 0.15);
       color: #f87171;
-      border-color: rgba(239, 68, 68, 0.35);
+      border-color: rgba(239, 68, 68, 0.4);
     }
     .dot {
       width: 8px;
@@ -244,45 +262,45 @@ html_template = """<!doctype html>
       display: inline-block;
     }
     .dot.pulse {
-      box-shadow: 0 0 8px currentColor;
-      animation: pulse 1.8s infinite;
+      box-shadow: 0 0 10px currentColor;
+      animation: pulse 1.6s infinite;
     }
 
     /* Donate Button */
     .btn-donate-gold {
-      background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 60%, #b45309 100%);
       color: #fff;
       font-size: 12px;
-      font-weight: 700;
-      padding: 6px 14px;
+      font-weight: 800;
+      padding: 7px 16px;
       border-radius: var(--radius-full);
-      border: 1px solid #f59e0b;
+      border: 1px solid #fbbf24;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
       text-decoration: none;
-      box-shadow: 0 0 14px rgba(245, 158, 11, 0.35);
-      transition: all 0.2s ease;
+      box-shadow: 0 0 18px rgba(245, 158, 11, 0.45);
+      transition: all 0.25s ease;
     }
     .btn-donate-gold:hover {
-      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-      box-shadow: 0 0 20px rgba(245, 158, 11, 0.6);
-      transform: translateY(-1px);
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 60%, #d97706 100%);
+      box-shadow: 0 0 28px rgba(245, 158, 11, 0.7);
+      transform: translateY(-2px) scale(1.03);
     }
 
     @keyframes pulse {
       0% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(1.15); }
+      50% { opacity: 0.3; transform: scale(1.2); }
       100% { opacity: 1; transform: scale(1); }
     }
 
-    /* Main Container */
+    /* ==================== MAIN CONTAINER ==================== */
     .container {
       max-width: 100%;
       width: 100%;
       margin: 0;
-      padding: 20px 28px;
+      padding: 22px 28px;
       display: flex;
       flex-direction: column;
       gap: 20px;
@@ -291,44 +309,45 @@ html_template = """<!doctype html>
 
     /* Dismissible Alert Banner */
     .alert-banner {
-      background: rgba(245, 158, 11, 0.08);
-      border: 1px solid rgba(245, 158, 11, 0.25);
+      background: linear-gradient(90deg, rgba(245, 158, 11, 0.12) 0%, rgba(217, 119, 6, 0.08) 100%);
+      border: 1px solid rgba(245, 158, 11, 0.35);
       border-radius: var(--radius-md);
       padding: 12px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 14px;
-      position: relative;
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.12);
     }
     .alert-banner-content {
       display: flex;
       align-items: center;
       gap: 12px;
-      color: #fbbf24;
+      color: #fcd34d;
       font-size: 13px;
       line-height: 1.4;
       flex: 1;
     }
     .alert-banner-btn {
-      background: rgba(245, 158, 11, 0.2);
-      border: 1px solid rgba(245, 158, 11, 0.4);
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.3) 0%, rgba(217, 119, 6, 0.4) 100%);
+      border: 1px solid #f59e0b;
       color: #fff;
       font-size: 12px;
       font-weight: 700;
-      padding: 6px 14px;
+      padding: 7px 16px;
       border-radius: var(--radius-sm);
       cursor: pointer;
       white-space: nowrap;
-      transition: all 0.15s ease;
-      text-decoration: none;
+      transition: all 0.2s ease;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.25);
     }
     .alert-banner-btn:hover {
-      background: rgba(245, 158, 11, 0.35);
-      border-color: #f59e0b;
+      background: #f59e0b;
+      color: #000;
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
     }
     .alert-close-btn {
       background: none;
@@ -340,110 +359,112 @@ html_template = """<!doctype html>
       padding: 0 4px;
       transition: opacity 0.15s;
     }
-    .alert-close-btn:hover {
-      opacity: 1;
-    }
+    .alert-close-btn:hover { opacity: 1; }
 
-    /* Horizontal Download Bar */
+    /* Vibrant Horizontal Download Bar */
     .download-strip {
-      background: linear-gradient(90deg, rgba(30, 41, 59, 0.9) 0%, rgba(20, 27, 40, 0.95) 100%);
-      border: 1px solid rgba(59, 130, 246, 0.3);
+      background: linear-gradient(90deg, rgba(16, 25, 42, 0.95) 0%, rgba(24, 18, 38, 0.95) 100%);
+      border: 1px solid rgba(6, 182, 212, 0.4);
       border-radius: var(--radius-md);
-      padding: 14px 24px;
+      padding: 16px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
     .download-strip-info {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 16px;
     }
     .download-strip-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: var(--radius-sm);
-      background: rgba(59, 130, 246, 0.15);
-      border: 1px solid rgba(59, 130, 246, 0.35);
-      color: #60a5fa;
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.25) 0%, rgba(168, 85, 247, 0.25) 100%);
+      border: 1px solid #06b6d4;
+      color: #38bdf8;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      font-size: 22px;
       flex-shrink: 0;
+      box-shadow: 0 0 18px rgba(6, 182, 212, 0.4);
     }
     .download-strip-text h3 {
-      font-size: 14px;
-      font-weight: 700;
-      color: #fff;
+      font-size: 14.5px;
+      font-weight: 800;
+      background: linear-gradient(90deg, #fff 0%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 0.03em;
     }
     .download-strip-text p {
       font-size: 12px;
       color: var(--dim);
-      margin-top: 2px;
-    }
-    .download-strip-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      margin-top: 3px;
     }
     .btn-download-trigger {
-      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      background: linear-gradient(135deg, #0284c7 0%, #2563eb 50%, #7c3aed 100%);
       color: #fff;
       font-size: 13px;
-      font-weight: 700;
-      padding: 8px 18px;
+      font-weight: 800;
+      padding: 10px 22px;
       border-radius: var(--radius-sm);
-      border: 1px solid #3b82f6;
+      border: 1px solid #38bdf8;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      box-shadow: 0 0 14px var(--primary-glow);
-      transition: all 0.2s ease;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.45);
+      transition: all 0.25s ease;
     }
     .btn-download-trigger:hover {
-      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-      box-shadow: 0 0 20px var(--primary-glow);
-      transform: translateY(-1px);
+      background: linear-gradient(135deg, #38bdf8 0%, #3b82f6 50%, #a855f7 100%);
+      box-shadow: 0 0 30px rgba(56, 189, 248, 0.7);
+      transform: translateY(-2px);
     }
 
     /* Top Mini Action Bar */
     .mini-actions-bar {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       flex-wrap: wrap;
     }
     .btn-mini-action {
-      background: #162032;
-      border: 1px solid #283955;
+      background: linear-gradient(135deg, rgba(20, 28, 44, 0.9) 0%, rgba(15, 23, 36, 0.9) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       color: #e2e8f0;
       font-size: 12px;
       font-weight: 700;
-      padding: 7px 14px;
+      padding: 8px 16px;
       border-radius: var(--radius-sm);
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      transition: all 0.15s ease;
+      gap: 7px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
-    .btn-mini-action:hover {
-      background: #1e2c45;
-      border-color: #3b82f6;
-      color: #fff;
-      box-shadow: 0 0 10px rgba(59, 130, 246, 0.25);
+    .btn-mini-action.btn-mini-comb:hover {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(37, 99, 235, 0.25) 100%);
+      border-color: #06b6d4;
+      color: #38bdf8;
+      box-shadow: 0 0 16px rgba(6, 182, 212, 0.4);
+      transform: translateY(-1px);
     }
-    .btn-mini-action.btn-mini-box:hover {
-      border-color: #ec4899;
-      box-shadow: 0 0 10px rgba(236, 72, 153, 0.3);
+    .btn-mini-action.btn-mini-stash:hover {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.25) 100%);
+      border-color: #10b981;
+      color: #34d399;
+      box-shadow: 0 0 16px rgba(16, 185, 129, 0.4);
+      transform: translateY(-1px);
     }
 
-    /* Split Layout: Left Controls, Right Realtime Log */
+    /* ==================== SPLIT LAYOUT ==================== */
     .split-layout {
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
@@ -479,29 +500,87 @@ html_template = """<!doctype html>
       }
     }
 
-    /* Card Styling */
+    /* ==================== VIBRANT CARD SYSTEM ==================== */
     .card {
-      background: var(--card-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid var(--card-border);
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-radius: var(--radius-lg);
-      padding: 22px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+      padding: 24px;
+      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.45);
       position: relative;
+      border: 1px solid var(--card-border);
+      transition: all 0.25s ease;
+      overflow: hidden;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--card-top-glow, transparent);
+      opacity: 0.8;
     }
     .card:hover {
-      border-color: #2e3e5c;
+      transform: translateY(-2px);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6);
     }
-    .card.active-card {
-      border-color: rgba(59, 130, 246, 0.45);
-      box-shadow: 0 8px 30px rgba(59, 130, 246, 0.12);
+
+    /* THEME 1: COMBINE (Electric Cyan) */
+    .card-cyan {
+      --card-border: var(--cyan-border);
+      --card-top-glow: linear-gradient(90deg, transparent, #06b6d4, transparent);
     }
-    .card.card-purple {
-      border-color: rgba(139, 92, 246, 0.3);
+    .card-cyan:hover {
+      border-color: #06b6d4;
+      box-shadow: 0 10px 36px rgba(6, 182, 212, 0.25);
     }
-    .card.card-purple:hover {
-      border-color: rgba(139, 92, 246, 0.5);
+    .card-cyan .card-title {
+      color: #38bdf8;
+      text-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
+    }
+
+    /* THEME 2: STASH (Neon Emerald) */
+    .card-emerald {
+      --card-border: var(--emerald-border);
+      --card-top-glow: linear-gradient(90deg, transparent, #10b981, transparent);
+    }
+    .card-emerald:hover {
+      border-color: #10b981;
+      box-shadow: 0 10px 36px rgba(16, 185, 129, 0.25);
+    }
+    .card-emerald .card-title {
+      color: #34d399;
+      text-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+    }
+
+    /* THEME 3: AUTO BOX (Vivid Violet / Magenta) */
+    .card-purple {
+      --card-border: var(--purple-border);
+      --card-top-glow: linear-gradient(90deg, transparent, #a855f7, transparent);
+    }
+    .card-purple:hover {
+      border-color: #a855f7;
+      box-shadow: 0 10px 36px rgba(168, 85, 247, 0.25);
+    }
+    .card-purple .card-title {
+      color: #c084fc;
+      text-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
+    }
+
+    /* THEME 4: DLC FORGE (Radiant Amber / Gold) */
+    .card-amber {
+      --card-border: var(--amber-border);
+      --card-top-glow: linear-gradient(90deg, transparent, #f59e0b, transparent);
+      background: linear-gradient(180deg, rgba(28, 22, 14, 0.85) 0%, rgba(18, 14, 10, 0.85) 100%);
+    }
+    .card-amber:hover {
+      border-color: #f59e0b;
+      box-shadow: 0 10px 36px rgba(245, 158, 11, 0.25);
+    }
+    .card-amber .card-title {
+      color: #fbbf24;
+      text-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
     }
 
     .card-header {
@@ -512,34 +591,33 @@ html_template = """<!doctype html>
       gap: 12px;
     }
     .card-title {
-      font-size: 14px;
+      font-size: 14.5px;
       font-weight: 800;
-      color: #fff;
       display: flex;
       align-items: center;
-      gap: 8px;
-      letter-spacing: 0.04em;
+      gap: 9px;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
     }
     .card-icon {
-      font-size: 18px;
+      font-size: 20px;
     }
     .status-badge {
       font-size: 11px;
-      font-weight: 700;
-      padding: 4px 10px;
+      font-weight: 800;
+      padding: 4px 12px;
       border-radius: var(--radius-full);
-      background: #182234;
+      background: #141b2a;
       color: var(--dimmer);
-      border: 1px solid var(--card-border);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
     }
     .status-badge.active {
-      background: rgba(16, 185, 129, 0.15);
+      background: rgba(16, 185, 129, 0.2);
       color: #34d399;
-      border-color: rgba(16, 185, 129, 0.4);
-      box-shadow: 0 0 10px var(--ok-glow);
+      border-color: #10b981;
+      box-shadow: 0 0 14px rgba(16, 185, 129, 0.5);
     }
 
     .form-row {
@@ -548,60 +626,72 @@ html_template = """<!doctype html>
       justify-content: space-between;
       gap: 16px;
       padding: 12px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
     .form-row:last-child {
       border-bottom: none;
       padding-bottom: 0;
     }
     .form-label {
-      font-size: 13px;
-      font-weight: 600;
-      color: #e2e8f0;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #f1f5f9;
     }
     .form-sublabel {
       font-size: 12px;
-      color: var(--dimmer);
-      margin-top: 2px;
+      color: var(--dim);
+      margin-top: 3px;
     }
 
-    /* Switch */
+    /* Switch - Glowing Theme Adaptation */
     .switch {
       position: relative;
       display: inline-block;
-      width: 48px;
-      height: 26px;
+      width: 50px;
+      height: 28px;
       flex-shrink: 0;
     }
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
+    .switch input { opacity: 0; width: 0; height: 0; }
     .slider {
       position: absolute;
       cursor: pointer;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #232f45;
-      transition: .25s ease;
+      background-color: #1e293b;
+      transition: .25s cubic-bezier(0.4, 0, 0.2, 1);
       border-radius: 34px;
-      border: 1px solid #334460;
+      border: 1px solid rgba(255, 255, 255, 0.12);
     }
     .slider:before {
       position: absolute;
       content: "";
-      height: 18px;
-      width: 18px;
+      height: 20px;
+      width: 20px;
       left: 3px;
       bottom: 3px;
       background-color: #94a3b8;
-      transition: .25s ease;
+      transition: .25s cubic-bezier(0.4, 0, 0.2, 1);
       border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
     }
     input:checked + .slider {
-      background-color: #2563eb;
-      border-color: #3b82f6;
-      box-shadow: 0 0 12px var(--primary-glow);
+      background-color: #06b6d4;
+      border-color: #38bdf8;
+      box-shadow: 0 0 16px rgba(6, 182, 212, 0.6);
+    }
+    .card-emerald input:checked + .slider {
+      background-color: #10b981;
+      border-color: #34d399;
+      box-shadow: 0 0 16px rgba(16, 185, 129, 0.6);
+    }
+    .card-purple input:checked + .slider {
+      background-color: #a855f7;
+      border-color: #c084fc;
+      box-shadow: 0 0 16px rgba(168, 85, 247, 0.6);
+    }
+    .card-amber input:checked + .slider {
+      background-color: #f59e0b;
+      border-color: #fbbf24;
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.6);
     }
     input:checked + .slider:before {
       transform: translateX(22px);
@@ -613,10 +703,10 @@ html_template = """<!doctype html>
       align-items: center;
       gap: 12px;
       margin-top: 14px;
-      background: rgba(15, 23, 42, 0.6);
-      padding: 10px 14px;
+      background: rgba(10, 15, 26, 0.7);
+      padding: 10px 16px;
       border-radius: var(--radius-sm);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.06);
       flex-wrap: wrap;
     }
     .config-group {
@@ -625,25 +715,27 @@ html_template = """<!doctype html>
       gap: 8px;
     }
     .config-label {
-      font-size: 12px;
+      font-size: 12.5px;
       color: var(--dim);
+      font-weight: 600;
     }
     .num-input {
       width: 58px;
-      background: #182234;
-      border: 1px solid #283955;
+      background: #151d2e;
+      border: 1px solid rgba(255, 255, 255, 0.15);
       color: #fff;
-      font-size: 13px;
-      font-weight: 700;
+      font-size: 13.5px;
+      font-weight: 800;
       padding: 5px 8px;
       border-radius: var(--radius-sm);
       text-align: center;
       outline: none;
-      font-family: inherit;
+      font-family: 'JetBrains Mono', monospace;
+      transition: all 0.2s;
     }
     .num-input:focus {
-      border-color: #3b82f6;
-      box-shadow: 0 0 8px var(--primary-glow);
+      border-color: #06b6d4;
+      box-shadow: 0 0 12px rgba(6, 182, 212, 0.5);
     }
     .config-unit {
       font-size: 12px;
@@ -652,155 +744,149 @@ html_template = """<!doctype html>
 
     /* Capacity Progress Box */
     .capacity-box {
-      background: rgba(15, 23, 42, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      border-radius: var(--radius-sm);
-      padding: 12px 14px;
+      background: linear-gradient(135deg, rgba(14, 24, 38, 0.8) 0%, rgba(10, 18, 28, 0.9) 100%);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
       margin-top: 14px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+    }
+    .capacity-placeholder {
+      background: rgba(14, 20, 32, 0.6);
+      border: 1px dashed rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      margin-top: 14px;
+      font-size: 12.5px;
+      color: var(--dimmer);
+      text-align: center;
     }
     .cap-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 12px;
+      font-size: 12.5px;
     }
     .cap-title {
-      color: var(--dim);
-      font-weight: 600;
+      color: #e2e8f0;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
     .cap-stat {
-      color: #fbbf24;
-      font-weight: 700;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: #34d399;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      text-shadow: 0 0 10px rgba(52, 211, 153, 0.5);
     }
     .cap-progress-track {
       width: 100%;
-      height: 7px;
+      height: 8px;
       background: rgba(255, 255, 255, 0.08);
       border-radius: var(--radius-full);
       overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
     .cap-progress-bar {
       height: 100%;
-      background: linear-gradient(90deg, #10b981, #059669);
+      background: linear-gradient(90deg, #10b981 0%, #06b6d4 100%);
       border-radius: var(--radius-full);
-      transition: width 0.3s ease, background 0.3s ease;
+      transition: width 0.4s ease, background 0.4s ease;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
     }
     .cap-details {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 11px;
-      color: var(--dimmer);
+      font-size: 11.5px;
+      color: var(--dim);
       flex-wrap: wrap;
       gap: 8px;
       padding-top: 2px;
     }
     .cap-details b {
-      color: #e2e8f0;
+      color: #38bdf8;
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    /* DLC Card & Warning */
-    .dlc-card {
-      border-color: rgba(245, 158, 11, 0.3);
-      background: rgba(25, 20, 15, 0.75);
-    }
+    /* DLC Warning */
     .dlc-warning-box {
-      background: rgba(245, 158, 11, 0.1);
-      border: 1px solid rgba(245, 158, 11, 0.3);
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.4);
       border-radius: var(--radius-sm);
       padding: 12px 14px;
-      font-size: 12px;
+      font-size: 12.5px;
       line-height: 1.5;
-      color: #fcd34d;
+      color: #fde68a;
       margin-bottom: 14px;
     }
     .dlc-warning-title {
       font-weight: 800;
-      color: #f59e0b;
+      color: #fbbf24;
       margin-bottom: 4px;
       display: flex;
       align-items: center;
       gap: 6px;
     }
     .dlc-warning-highlight {
-      margin-top: 6px;
-      padding: 6px 10px;
-      background: rgba(239, 68, 68, 0.15);
+      margin-top: 8px;
+      padding: 8px 12px;
+      background: rgba(239, 68, 68, 0.2);
       border-left: 3px solid #ef4444;
       color: #fca5a5;
-      font-size: 11.5px;
+      font-size: 12px;
       border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-weight: 600;
     }
     .dlc-toggle-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      padding: 8px 0;
+      padding: 10px 0;
     }
     .dlc-toggle-name {
-      font-size: 13.5px;
-      font-weight: 700;
+      font-size: 14px;
+      font-weight: 800;
       color: #fff;
     }
     .dlc-toggle-desc {
-      font-size: 11.5px;
-      color: var(--dimmer);
+      font-size: 12px;
+      color: var(--dim);
       margin-top: 3px;
     }
 
-    /* Buttons */
-    .btn-primary {
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      border: 1px solid #3b82f6;
-      color: #fff;
-      font-size: 12.5px;
-      font-weight: 700;
-      padding: 9px 16px;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      transition: all 0.2s;
-    }
-    .btn-primary:hover {
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
-      box-shadow: 0 0 15px var(--primary-glow);
-    }
-
     .box-count-badge {
-      background: rgba(236, 72, 153, 0.15);
-      color: #f472b6;
-      border: 1px solid rgba(236, 72, 153, 0.35);
-      font-size: 11.5px;
-      font-weight: 700;
-      padding: 3px 10px;
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%);
+      color: #e879f9;
+      border: 1px solid rgba(236, 72, 153, 0.4);
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 12px;
       border-radius: var(--radius-full);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-family: 'JetBrains Mono', monospace;
+      box-shadow: 0 0 12px rgba(236, 72, 153, 0.3);
     }
 
-    /* Log Box */
+    /* ==================== REALTIME LOG BOX ==================== */
     .log-container {
-      background: rgba(10, 14, 22, 0.95);
-      border: 1px solid var(--card-border);
+      background: rgba(8, 12, 20, 0.95);
+      border: 1px solid rgba(6, 182, 212, 0.25);
       border-radius: var(--radius-lg);
       display: flex;
       flex-direction: column;
       flex: 1;
       overflow: hidden;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 10px 36px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
     .log-header {
-      padding: 14px 18px;
-      background: #121824;
-      border-bottom: 1px solid var(--card-border);
+      padding: 14px 20px;
+      background: linear-gradient(90deg, #0e1524 0%, #131b2e 100%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -808,37 +894,47 @@ html_template = """<!doctype html>
     .log-title {
       font-size: 13px;
       font-weight: 800;
-      color: #e2e8f0;
+      color: #38bdf8;
       display: flex;
       align-items: center;
       gap: 8px;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
+      text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
     }
     .btn-clear-log {
-      background: none;
-      border: 1px solid #283955;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       color: var(--dim);
       font-size: 11px;
-      padding: 4px 10px;
+      font-weight: 700;
+      padding: 4px 12px;
       border-radius: var(--radius-sm);
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all 0.2s;
     }
     .btn-clear-log:hover {
       color: #fff;
-      border-color: #3b82f6;
+      border-color: #06b6d4;
+      background: rgba(6, 182, 212, 0.2);
     }
     .log-feed {
       flex: 1;
-      padding: 14px;
+      padding: 16px;
       overflow-y: auto;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
-      line-height: 1.6;
+      line-height: 1.65;
       display: flex;
       flex-direction: column;
       gap: 6px;
+    }
+    .log-feed::-webkit-scrollbar {
+      width: 6px;
+    }
+    .log-feed::-webkit-scrollbar-thumb {
+      background: rgba(6, 182, 212, 0.3);
+      border-radius: 3px;
     }
     .log-entry {
       display: flex;
@@ -852,17 +948,18 @@ html_template = """<!doctype html>
       font-size: 11px;
     }
     .log-tag {
-      padding: 1px 6px;
+      padding: 2px 7px;
       border-radius: 4px;
       font-size: 10px;
-      font-weight: 700;
+      font-weight: 800;
       flex-shrink: 0;
+      letter-spacing: 0.04em;
     }
-    .log-tag.tag-ok { background: rgba(16, 185, 129, 0.2); color: #34d399; }
-    .log-tag.tag-info { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
-    .log-tag.tag-warn { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
-    .log-tag.tag-err { background: rgba(239, 68, 68, 0.2); color: #f87171; }
-    .log-tag.tag-box { background: rgba(236, 72, 153, 0.2); color: #f472b6; }
+    .log-tag.tag-ok { background: rgba(16, 185, 129, 0.25); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+    .log-tag.tag-info { background: rgba(6, 182, 212, 0.25); color: #38bdf8; border: 1px solid rgba(6, 182, 212, 0.4); }
+    .log-tag.tag-warn { background: rgba(245, 158, 11, 0.25); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+    .log-tag.tag-err { background: rgba(239, 68, 68, 0.25); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+    .log-tag.tag-box { background: rgba(168, 85, 247, 0.25); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }
     .log-msg {
       color: #cbd5e1;
       word-break: break-word;
@@ -873,14 +970,14 @@ html_template = """<!doctype html>
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* MODAL OVERLAY STYLES */
+    /* MODAL OVERLAY */
     .modal-overlay {
       display: none;
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(5, 8, 15, 0.85);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      background: rgba(4, 7, 14, 0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       z-index: 9999;
       align-items: center;
       justify-content: center;
@@ -888,21 +985,21 @@ html_template = """<!doctype html>
       animation: fadeIn 0.2s ease;
     }
     .modal-card {
-      background: #101623;
-      border: 1px solid #233048;
+      background: #0f1624;
+      border: 1px solid rgba(6, 182, 212, 0.35);
       border-radius: var(--radius-lg);
       width: 100%;
       max-width: 720px;
       max-height: 85vh;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(59, 130, 246, 0.15);
+      box-shadow: 0 10px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(6, 182, 212, 0.2);
       overflow: hidden;
     }
     .modal-header {
       padding: 16px 24px;
-      background: #141c2c;
-      border-bottom: 1px solid #233048;
+      background: #141d30;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -910,7 +1007,7 @@ html_template = """<!doctype html>
     .modal-title {
       font-size: 16px;
       font-weight: 800;
-      color: #fff;
+      color: #38bdf8;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -924,9 +1021,7 @@ html_template = """<!doctype html>
       line-height: 1;
       transition: color 0.15s;
     }
-    .modal-close-btn:hover {
-      color: #fff;
-    }
+    .modal-close-btn:hover { color: #fff; }
     .modal-body {
       padding: 24px;
       overflow-y: auto;
@@ -936,12 +1031,11 @@ html_template = """<!doctype html>
       gap: 20px;
     }
 
-    /* Download Row inside modal */
     .modal-dl-row {
-      background: #162032;
-      border: 1px solid #2a3b5c;
+      background: #151e30;
+      border: 1px solid rgba(6, 182, 212, 0.3);
       border-radius: var(--radius-md);
-      padding: 16px 20px;
+      padding: 18px 22px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -958,7 +1052,7 @@ html_template = """<!doctype html>
       color: #fff;
       font-size: 13px;
       font-weight: 800;
-      padding: 10px 22px;
+      padding: 11px 24px;
       border-radius: var(--radius-sm);
       border: 1px solid #34d399;
       cursor: pointer;
@@ -966,26 +1060,25 @@ html_template = """<!doctype html>
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      box-shadow: 0 0 16px var(--ok-glow);
-      transition: all 0.2s ease;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+      transition: all 0.25s ease;
       white-space: nowrap;
     }
     .btn-download-rect:hover {
       background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
-      box-shadow: 0 0 24px var(--ok-glow);
-      transform: translateY(-1px);
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.8);
+      transform: translateY(-2px);
     }
 
-    /* Donate Tabs inside modal */
     .donate-tabs {
       display: flex;
       gap: 8px;
-      border-bottom: 1px solid #233048;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       padding-bottom: 12px;
     }
     .donate-tab-btn {
       background: #141c2c;
-      border: 1px solid #233048;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       color: var(--dim);
       font-size: 13px;
       font-weight: 700;
@@ -995,9 +1088,10 @@ html_template = """<!doctype html>
       transition: all 0.2s;
     }
     .donate-tab-btn.active {
-      background: #2563eb;
-      border-color: #3b82f6;
+      background: #0284c7;
+      border-color: #38bdf8;
       color: #fff;
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.4);
     }
     .donate-tab-content {
       display: none;
@@ -1006,21 +1100,19 @@ html_template = """<!doctype html>
       gap: 14px;
       text-align: center;
     }
-    .donate-tab-content.active {
-      display: flex;
-    }
+    .donate-tab-content.active { display: flex; }
     .qr-img {
       width: 200px;
       height: 200px;
       border-radius: var(--radius-md);
-      border: 2px solid #233048;
+      border: 2px solid rgba(255, 255, 255, 0.15);
       background: #fff;
       padding: 6px;
     }
     .copy-pill {
       background: #162032;
-      border: 1px solid #2a3b5c;
-      padding: 8px 14px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 8px 16px;
       border-radius: var(--radius-sm);
       font-size: 13px;
       display: inline-flex;
@@ -1028,10 +1120,12 @@ html_template = """<!doctype html>
       gap: 10px;
       cursor: pointer;
       color: #93c5fd;
+      transition: all 0.2s;
     }
     .copy-pill:hover {
-      border-color: #3b82f6;
+      border-color: #38bdf8;
       color: #fff;
+      background: rgba(56, 189, 248, 0.15);
     }
 
     /* Floating Discord Circle Button */
@@ -1047,16 +1141,16 @@ html_template = """<!doctype html>
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 20px rgba(88, 101, 242, 0.45);
-      border: 2px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 24px rgba(88, 101, 242, 0.55);
+      border: 2px solid rgba(255, 255, 255, 0.3);
       z-index: 990;
       cursor: pointer;
       transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       text-decoration: none;
     }
     .discord-float:hover {
-      transform: scale(1.1) translateY(-3px);
-      box-shadow: 0 8px 25px rgba(88, 101, 242, 0.65);
+      transform: scale(1.12) translateY(-4px);
+      box-shadow: 0 8px 30px rgba(88, 101, 242, 0.85);
     }
     .discord-tooltip {
       position: absolute;
@@ -1072,7 +1166,7 @@ html_template = """<!doctype html>
       opacity: 0;
       transform: translateX(10px);
       transition: all 0.2s ease;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
       border: 1px solid #2b2d31;
     }
     .discord-float:hover .discord-tooltip {
@@ -1083,12 +1177,12 @@ html_template = """<!doctype html>
     /* Footer */
     footer {
       margin-top: auto;
-      border-top: 1px solid var(--card-border);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
       padding: 16px 28px;
       font-size: 12px;
       color: var(--dimmer);
       text-align: center;
-      background: rgba(10, 13, 20, 0.95);
+      background: rgba(6, 9, 14, 0.95);
       width: 100%;
     }
   </style>
@@ -1105,7 +1199,7 @@ html_template = """<!doctype html>
       </div>
     </a>
 
-    <!-- CENTER HUD: Soul, Soul Stone, Inventory / Storage, Chests -->
+    <!-- CENTER HUD: Soul, Soul Stone, Dung Lượng Kho (Removed Box Widget) -->
     <div class="header-hud">
       <div class="hud-item hud-soul" title="Linh Hồn Nhân Vật">
         <div class="hud-icon">🟣</div>
@@ -1133,14 +1227,6 @@ html_template = """<!doctype html>
           <div class="hud-mini-fill" id="hudCapacityFill" style="width: 0%"></div>
         </div>
       </div>
-
-      <div class="hud-item hud-box" title="Rương Báu Chưa Mở Trong Trận">
-        <div class="hud-icon">🎁</div>
-        <div class="hud-info">
-          <span class="hud-label">Rương Báu</span>
-          <span class="hud-val" id="hudBoxCount">0 Rương</span>
-        </div>
-      </div>
     </div>
 
     <!-- RIGHT STATUS -->
@@ -1165,7 +1251,7 @@ html_template = """<!doctype html>
     <!-- Dismissible Alert Banner -->
     <div class="alert-banner" id="topAlert">
       <div class="alert-banner-content">
-        <span style="font-size:18px;">⚠️</span>
+        <span style="font-size:20px;">⚠️</span>
         <span><b>Lưu ý quan trọng:</b> Tool điều khiển trực tiếp thông qua game. Bạn cần tải gói cài đặt 1-Click để kích hoạt mod bên trong thư mục game Steam trước khi sử dụng.</span>
       </div>
       <div style="display:flex; align-items:center; gap:8px;">
@@ -1192,11 +1278,10 @@ html_template = """<!doctype html>
       </div>
     </div>
 
-    <!-- Top Mini Action Bar -->
+    <!-- Top Mini Action Bar (Ghép đồ & Cất đồ) -->
     <div class="mini-actions-bar">
-      <button class="btn-mini-action" onclick="triggerCombine()"><span class="btn-icon">⚡</span> GHÉP ĐỒ NGAY</button>
-      <button class="btn-mini-action" onclick="triggerStash()"><span class="btn-icon">📥</span> CẤT ĐỒ NGAY</button>
-      <button class="btn-mini-action btn-mini-box" onclick="triggerOpenBox()"><span class="btn-icon">🎁</span> MỞ RƯƠNG NGAY</button>
+      <button class="btn-mini-action btn-mini-comb" onclick="triggerCombine()"><span class="btn-icon">⚡</span> GHÉP ĐỒ NGAY</button>
+      <button class="btn-mini-action btn-mini-stash" onclick="triggerStash()"><span class="btn-icon">📥</span> CẤT ĐỒ NGAY</button>
     </div>
 
     <!-- Split Layout -->
@@ -1205,8 +1290,8 @@ html_template = """<!doctype html>
       <!-- LEFT: Controls Column -->
       <div class="controls-column">
 
-        <!-- MODULE 1: AUTO COMBINE -->
-        <div class="card active-card" id="cardCombine">
+        <!-- MODULE 1: AUTO COMBINE (Cyan Glow) -->
+        <div class="card card-cyan" id="cardCombine">
           <div class="card-header">
             <div class="card-title">
               <span class="card-icon">⚡</span> TỰ ĐỘNG HỢP THÀNH (LÒ RÈN / XƯỞNG)
@@ -1233,8 +1318,8 @@ html_template = """<!doctype html>
           </div>
         </div>
 
-        <!-- MODULE 2: AUTO STASH & CAPACITY -->
-        <div class="card active-card" id="cardStash">
+        <!-- MODULE 2: AUTO STASH & CAPACITY (Emerald Glow) -->
+        <div class="card card-emerald" id="cardStash">
           <div class="card-header">
             <div class="card-title">
               <span class="card-icon">📦</span> TỰ ĐỘNG CẤT ĐỒ VÀO KHO
@@ -1245,7 +1330,7 @@ html_template = """<!doctype html>
           <div class="form-row">
             <div>
               <div class="form-label">Bật Tự Động Cất Đồ Định Kỳ</div>
-              <div class="form-sublabel">Cất đồ từ túi đồ cá nhân tuần tự vào các ngăn kho đã chọn</div>
+              <div class="form-sublabel">Cất đồ từ túi cá nhân tuần tự vào các ngăn kho đã chọn</div>
             </div>
             <label class="switch">
               <input type="checkbox" id="toggleAutoStash" onchange="toggleAutoStash(this.checked)">
@@ -1263,24 +1348,27 @@ html_template = """<!doctype html>
             <input type="number" id="stashEnd" class="num-input" value="5" min="1" max="10" onchange="updateStashTabs()">
           </div>
 
-          <!-- Capacity Breakdown Box -->
-          <div class="capacity-box">
+          <!-- Capacity Breakdown Box (Only shown when connected) -->
+          <div class="capacity-box" id="capacityBox" style="display: none;">
             <div class="cap-header">
               <span class="cap-title">📊 Dung Lượng Kho Đồ Hiện Tại</span>
-              <span class="cap-stat" id="capSummary">65 / 128 Slot (51%)</span>
+              <span class="cap-stat" id="capSummary">-- / -- Slot</span>
             </div>
             <div class="cap-progress-track">
-              <div class="cap-progress-bar" id="capProgressBar" style="width: 51%"></div>
+              <div class="cap-progress-bar" id="capProgressBar" style="width: 0%"></div>
             </div>
             <div class="cap-details">
-              <span id="capInvDetail">🎒 Túi đồ: <b>1 / 32</b> slot</span>
-              <span id="capStorDetail">📦 Kho tổng: <b>64 / 96</b> slot</span>
-              <span id="capAvailDetail">🟢 Còn trống: <b>63</b> slot</span>
+              <span id="capInvDetail">🎒 Túi đồ: <b>-- / --</b> slot</span>
+              <span id="capStorDetail">📦 Kho tổng: <b>-- / --</b> slot</span>
+              <span id="capAvailDetail">🟢 Còn trống: <b>--</b> slot</span>
             </div>
+          </div>
+          <div class="capacity-placeholder" id="capacityPlaceholder">
+            <span>⏳ Kết nối game để theo dõi dung lượng kho và túi đồ theo thời gian thực</span>
           </div>
         </div>
 
-        <!-- MODULE 3: AUTO OPEN CHEST -->
+        <!-- MODULE 3: AUTO OPEN CHEST (Purple Glow) - Removed Open All button -->
         <div class="card card-purple" id="cardBox">
           <div class="card-header">
             <div class="card-title">
@@ -1292,7 +1380,7 @@ html_template = """<!doctype html>
           <div class="form-row">
             <div>
               <div class="form-label">Bật Tự Động Mở Rương Định Kỳ</div>
-              <div class="form-sublabel">Tự động mở sạch tất cả rương rơi trên sàn đấu (Normal, Stage, Elite) ngầm theo chu kỳ</div>
+              <div class="form-sublabel">Tự động phát hiện và mở sạch tất cả rương rơi trên sàn đấu (Normal, Stage, Elite) ngầm</div>
             </div>
             <label class="switch">
               <input type="checkbox" id="toggleAutoBox" onchange="toggleAutoBox(this.checked)">
@@ -1309,18 +1397,12 @@ html_template = """<!doctype html>
               <span class="box-count-badge" id="boxBadge">0 Rương</span>
             </div>
           </div>
-
-          <div style="margin-top:14px;">
-            <button class="btn-primary" style="background:linear-gradient(135deg, #8b5cf6, #6d28d9); border-color:#a78bfa;" onclick="triggerOpenBox()">
-              🎁 MỞ TẤT CẢ RƯƠNG NGAY LẬP TỨC
-            </button>
-          </div>
         </div>
 
-        <!-- MODULE 4: UNLOCK DLC FORGE (TOGGLE ON/OFF) -->
-        <div class="card dlc-card" id="cardDlc">
+        <!-- MODULE 4: UNLOCK DLC FORGE (Amber Glow - Toggle ON/OFF) -->
+        <div class="card card-amber" id="cardDlc">
           <div class="card-header">
-            <div class="card-title" style="color:#f59e0b;">
+            <div class="card-title">
               <span class="card-icon">🔓</span> MỞ KHÓA DLC LÒ RÈN / XƯỞNG
             </div>
             <span class="status-badge" id="dlcStatusBadge">CHƯA KẾT NỐI</span>
@@ -1352,7 +1434,7 @@ html_template = """<!doctype html>
         <div class="log-container">
           <div class="log-header">
             <div class="log-title">
-              <span style="color:#38bdf8;">⚡</span> NHẬT KÝ HOẠT ĐỘNG THỜI GIAN THỰC
+              <span>⚡</span> NHẬT KÝ HOẠT ĐỘNG THỜI GIAN THỰC
             </div>
             <button class="btn-clear-log" onclick="clearLog()">Xóa Log</button>
           </div>
@@ -1390,10 +1472,10 @@ html_template = """<!doctype html>
       <div class="modal-body">
         <div class="modal-dl-row">
           <div class="modal-dl-row-left">
-            <div style="font-size:28px;">🗜️</div>
+            <div style="font-size:32px;">🗜️</div>
             <div>
-              <div style="font-weight:700; color:#fff; font-size:14px;">DPS_Auto_Helper_1Click.zip</div>
-              <div style="font-size:12px; color:var(--dim); margin-top:2px;">Bản cài đặt tự động 1-Click trọn gói • Tốc độ cao qua GitHub Release</div>
+              <div style="font-weight:800; color:#fff; font-size:14.5px;">DPS_Auto_Helper_1Click.zip</div>
+              <div style="font-size:12px; color:var(--dim); margin-top:3px;">Bản cài đặt tự động 1-Click trọn gói • Tốc độ cao qua GitHub Release</div>
             </div>
           </div>
           <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
@@ -1406,15 +1488,15 @@ html_template = """<!doctype html>
           </div>
         </div>
 
-        <div style="background:rgba(15,23,42,0.8); border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius-md); padding:18px;">
-          <h4 style="color:#38bdf8; font-size:13px; text-transform:uppercase; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
+        <div style="background:rgba(12,18,30,0.9); border:1px solid rgba(6,182,212,0.25); border-radius:var(--radius-md); padding:20px;">
+          <h4 style="color:#38bdf8; font-size:13px; text-transform:uppercase; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
             <span>📖</span> CÁCH CÀI ĐẶT TRONG 2 BƯỚC:
           </h4>
-          <ol style="padding-left:20px; font-size:12.5px; color:#cbd5e1; line-height:1.8;">
+          <ol style="padding-left:20px; font-size:13px; color:#cbd5e1; line-height:1.85;">
             <li>Tải file <code>DPS_Auto_Helper_1Click.zip</code> và giải nén ra bất kỳ thư mục nào trên máy tính.</li>
             <li>Chạy file <code>Cai_Dat_Tu_Dong.bat</code>. Script sẽ tự động phát hiện thư mục game Steam của bạn và cài đặt mod runtime trong 2 giây.</li>
             <li>Mở game <b>DPS Desktop Pension Squad</b> trên Steam.</li>
-            <li>F5 lại trang web này là công cụ sẽ tự động kết nối và hiển thị trạng thái xanh!</li>
+            <li>F5 lại trang web này là công cụ sẽ tự động kết nối và hiển thị trạng thái xanh rực rỡ!</li>
           </ol>
         </div>
       </div>
@@ -1425,7 +1507,7 @@ html_template = """<!doctype html>
   <div class="modal-overlay" id="donateModal" onclick="closeModalOnBg(event, 'donateModal')">
     <div class="modal-card" style="max-width:540px;">
       <div class="modal-header">
-        <div class="modal-title">
+        <div class="modal-title" style="color:#fbbf24;">
           <span>☕</span> ỦNG HỘ TÁC GIẢ (DONATE)
         </div>
         <button class="modal-close-btn" onclick="closeDonateModal()">✕</button>
@@ -1444,14 +1526,14 @@ html_template = """<!doctype html>
         <!-- MB Bank Tab -->
         <div class="donate-tab-content active" id="tabMb">
           <img src="__MB_QR__" alt="VietQR MB Bank" class="qr-img">
-          <div style="display:flex; flex-direction:column; gap:6px; width:100%; align-items:center;">
+          <div style="display:flex; flex-direction:column; gap:8px; width:100%; align-items:center;">
             <div class="copy-pill" onclick="copyText('0562462346', 'Đã copy STK MB Bank!')">
-              <span>STK: <b>0562462346</b> (MB Bank)</span>
+              <span>STK: <b style="color:#fff;">0562462346</b> (MB Bank)</span>
               <span style="font-size:11px; opacity:0.8;">📋 Copy</span>
             </div>
-            <div style="font-size:12px; color:#cbd5e1;">Chủ TK: <b>LY THAI SON</b></div>
+            <div style="font-size:12.5px; color:#cbd5e1;">Chủ TK: <b>LY THAI SON</b></div>
             <div class="copy-pill" onclick="copyText('Ung ho DPS Auto Helper', 'Đã copy nội dung chuyển khoản!')">
-              <span>Lời nhắn: <b>Ung ho DPS Auto Helper</b></span>
+              <span>Lời nhắn: <b style="color:#fff;">Ung ho DPS Auto Helper</b></span>
               <span style="font-size:11px; opacity:0.8;">📋 Copy</span>
             </div>
           </div>
@@ -1461,7 +1543,7 @@ html_template = """<!doctype html>
         <div class="donate-tab-content" id="tabBinance">
           <img src="__BINANCE_QR__" alt="Binance Pay" class="qr-img">
           <div class="copy-pill" onclick="copyText('User-9e11c', 'Đã copy Binance Pay ID!')">
-            <span>Binance Pay ID: <b>User-9e11c</b></span>
+            <span>Binance Pay ID: <b style="color:#fff;">User-9e11c</b></span>
             <span style="font-size:11px; opacity:0.8;">📋 Copy</span>
           </div>
         </div>
@@ -1469,9 +1551,9 @@ html_template = """<!doctype html>
         <!-- Buy Me a Coffee Tab -->
         <div class="donate-tab-content" id="tabBmc">
           <div style="padding:30px 10px; display:flex; flex-direction:column; align-items:center; gap:16px;">
-            <div style="font-size:42px;">☕</div>
-            <p style="font-size:13px; color:#cbd5e1;">Ủng hộ nhanh qua nền tảng quốc tế Buy Me a Coffee:</p>
-            <a href="https://buymeacoffee.com/titlee" target="_blank" rel="noopener noreferrer" class="btn-download-rect" style="background:linear-gradient(135deg, #FFDD00 0%, #FBBF24 100%); color:#000; border-color:#d97706;">
+            <div style="font-size:46px;">☕</div>
+            <p style="font-size:13.5px; color:#cbd5e1;">Ủng hộ nhanh qua nền tảng quốc tế Buy Me a Coffee:</p>
+            <a href="https://buymeacoffee.com/titlee" target="_blank" rel="noopener noreferrer" class="btn-download-rect" style="background:linear-gradient(135deg, #FFDD00 0%, #FBBF24 100%); color:#000; border-color:#d97706; font-weight:800;">
               ☕ Mời Tác Giả 1 Ly Cà Phê
             </a>
           </div>
@@ -1584,7 +1666,7 @@ html_template = """<!doctype html>
       }
       if (valPid) valPid.innerText = st.pid || '--';
 
-      // 1. Center HUD: Soul, Soul Stone, Capacity, Chests
+      // 1. Center HUD: Soul, Soul Stone, Capacity (Only active when connected)
       const hudSoul = document.getElementById('hudSoul');
       const hudSoulStone = document.getElementById('hudSoulStone');
       if (hudSoul) {
@@ -1610,6 +1692,12 @@ html_template = """<!doctype html>
       if (hudCap) hudCap.innerText = `${totalCur} / ${totalMax} Slot`;
       if (hudCapFill) hudCapFill.style.width = `${pct}%`;
 
+      // Show capacity breakdown in Module 2 when connected
+      const capBox = document.getElementById('capacityBox');
+      const capPlaceholder = document.getElementById('capacityPlaceholder');
+      if (capBox) capBox.style.display = 'flex';
+      if (capPlaceholder) capPlaceholder.style.display = 'none';
+
       const capSummary = document.getElementById('capSummary');
       const capProgressBar = document.getElementById('capProgressBar');
       const capInvDetail = document.getElementById('capInvDetail');
@@ -1621,17 +1709,15 @@ html_template = """<!doctype html>
         capProgressBar.style.width = `${pct}%`;
         if (pct >= 90) capProgressBar.style.background = 'linear-gradient(90deg, #ef4444, #dc2626)';
         else if (pct >= 75) capProgressBar.style.background = 'linear-gradient(90deg, #f59e0b, #d97706)';
-        else capProgressBar.style.background = 'linear-gradient(90deg, #10b981, #059669)';
+        else capProgressBar.style.background = 'linear-gradient(90deg, #10b981, #06b6d4)';
       }
       if (capInvDetail) capInvDetail.innerHTML = `🎒 Túi đồ: <b>${invCur} / ${invMax}</b> slot`;
       if (capStorDetail) capStorDetail.innerHTML = `📦 Kho tổng: <b>${storCur} / ${storMax}</b> slot`;
       if (capAvailDetail) capAvailDetail.innerHTML = `🟢 Còn trống: <b>${totalMax - totalCur}</b> slot`;
 
-      // Chest count
+      // Chest count badge in Module 3
       const boxCount = st.box_count !== undefined ? st.box_count : 0;
-      const hudBox = document.getElementById('hudBoxCount');
       const boxBadge = document.getElementById('boxBadge');
-      if (hudBox) hudBox.innerText = `${boxCount} Rương`;
       if (boxBadge) boxBadge.innerText = `${boxCount} Rương`;
 
       // 2. Auto Combine module
@@ -1685,7 +1771,7 @@ html_template = """<!doctype html>
         }
         if (dlcText) {
           dlcText.innerHTML = isDlcActive 
-            ? '<span style="color:#10b981; font-weight:700;">Đang Bật Mở Khóa DLC (ON)</span>'
+            ? '<span style="color:#10b981; font-weight:800;">Đang Bật Mở Khóa DLC (ON)</span>'
             : '<span style="color:#94a3b8;">Đang Tắt Mở Khóa DLC (OFF)</span>';
         }
       }
@@ -1700,6 +1786,22 @@ html_template = """<!doctype html>
         txtStatus.innerText = 'Chưa kết nối game';
       }
       if (valPid) valPid.innerText = '--';
+
+      // Reset HUD
+      const hudSoul = document.getElementById('hudSoul');
+      const hudSoulStone = document.getElementById('hudSoulStone');
+      const hudCap = document.getElementById('hudCapacity');
+      const hudCapFill = document.getElementById('hudCapacityFill');
+      if (hudSoul) hudSoul.innerText = '--';
+      if (hudSoulStone) hudSoulStone.innerText = '--';
+      if (hudCap) hudCap.innerText = '-- / --';
+      if (hudCapFill) hudCapFill.style.width = '0%';
+
+      // Hide capacity box when disconnected
+      const capBox = document.getElementById('capacityBox');
+      const capPlaceholder = document.getElementById('capacityPlaceholder');
+      if (capBox) capBox.style.display = 'none';
+      if (capPlaceholder) capPlaceholder.style.display = 'block';
 
       ['badgeCombine', 'badgeStash', 'badgeBox', 'dlcStatusBadge'].forEach(id => {
         const b = document.getElementById(id);
@@ -1733,20 +1835,6 @@ html_template = """<!doctype html>
         }
       } catch (err) {
         addLog('LỖI', 'Không thể kết nối đến game: ' + err.message, 'err');
-      }
-    }
-
-    async function triggerOpenBox() {
-      addLog('MỞ RƯƠNG', '🎁 Đang thực hiện mở tất cả rương báu trong trận...', 'box');
-      try {
-        const res = await fetch(`${API_BASE}/set?open_box=1`);
-        if (res.ok) {
-          const data = await res.json();
-          updateStatus(data);
-          addLog('MỞ RƯƠNG', '✅ Đã mở sạch toàn bộ rương báu thành công!', 'ok');
-        }
-      } catch (err) {
-        addLog('MỞ RƯƠNG', '✅ Lệnh mở rương báu đã được phát vào game!', 'ok');
       }
     }
 
@@ -1788,7 +1876,10 @@ html_template = """<!doctype html>
       if (checked) {
         if (autoBoxTimer) clearInterval(autoBoxTimer);
         autoBoxTimer = setInterval(() => {
-          triggerOpenBox();
+          fetch(`${API_BASE}/set?open_box=1`).then(r => r.json()).then(data => {
+            updateStatus(data);
+            addLog('MỞ RƯƠNG', '🎁 Đã tự động mở sạch rương rơi trên sàn đấu!', 'box');
+          }).catch(() => {});
         }, boxIntervalSec * 1000);
       } else {
         if (autoBoxTimer) {
@@ -1807,11 +1898,11 @@ html_template = """<!doctype html>
       const input = document.getElementById('boxInterval');
       if (!input) return;
       boxIntervalSec = Math.max(1, parseInt(input.value) || 3);
-      addLog('CẤU HÌNH RƯƠNG', `Đã cập nhật chu kỳ mở rương thành: ${boxIntervalSec} giây.`, 'info');
+      addLog('CẤU HÌNH RƯƠNG', `Đã cập nhật chu kỳ mở rương: ${boxIntervalSec} giây.`, 'info');
       if (autoBoxTimer) {
         clearInterval(autoBoxTimer);
         autoBoxTimer = setInterval(() => {
-          triggerOpenBox();
+          fetch(`${API_BASE}/set?open_box=1`).catch(() => {});
         }, boxIntervalSec * 1000);
       }
     }
