@@ -273,6 +273,7 @@ html_content = f"""<!doctype html>
       white-space: nowrap;
       flex-shrink: 0;
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
     }}
     .btn-download-rect:hover {{
       background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
@@ -381,18 +382,27 @@ html_content = f"""<!doctype html>
       border-color: rgba(59, 130, 246, 0.35);
     }}
 
-    /* MODULES GRID: 2 COLUMNS ON DESKTOP, 1 COLUMN ON MOBILE */
-    .modules-grid {{
+    /* 2-COLUMN SPLIT LAYOUT: LEFT = CONTROLS, RIGHT = REALTIME LOG */
+    .workspace-split {{
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 1fr 1fr;
       gap: 20px;
       width: 100%;
+      align-items: stretch;
     }}
 
     @media (max-width: 980px) {{
-      .modules-grid {{
+      .workspace-split {{
         grid-template-columns: 1fr;
       }}
+    }}
+
+    /* Left Controls Column: Stack the 2 automation cards vertically */
+    .controls-column {{
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
     }}
 
     .module-card {{
@@ -405,8 +415,8 @@ html_content = f"""<!doctype html>
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 18px;
-      padding-bottom: 14px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }}
     .module-title {{
@@ -445,8 +455,8 @@ html_content = f"""<!doctype html>
       background: rgba(13, 18, 27, 0.8);
       border: 1px solid #233044;
       border-radius: var(--radius-md);
-      padding: 16px 18px;
-      margin-bottom: 18px;
+      padding: 14px 18px;
+      margin-bottom: 16px;
       transition: border-color 0.2s ease;
     }}
     .switch-box:hover {{
@@ -505,93 +515,258 @@ html_content = f"""<!doctype html>
       transform: translateX(24px);
     }}
 
-    /* Config Form Rows */
+    /* Inputs Config Row */
     .config-row {{
+      background: rgba(13, 18, 27, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 16px;
       flex-wrap: wrap;
-      background: rgba(13, 18, 27, 0.5);
-      padding: 12px 16px;
-      border-radius: var(--radius-sm);
-      border: 1px solid #1c2738;
+      margin-bottom: 16px;
     }}
     .config-row label {{
-      color: var(--dim);
       font-size: 13px;
+      color: var(--dim);
       font-weight: 600;
     }}
-    input[type=number] {{
-      background: #090d14;
-      border: 1px solid #2d3b50;
-      color: #ffffff;
-      padding: 8px 12px;
+    .config-row input[type="number"] {{
+      background: #0f1623;
+      border: 1px solid #2d3e58;
       border-radius: var(--radius-sm);
-      font-weight: 700;
+      color: #38bdf8;
+      font-family: Consolas, monospace;
       font-size: 14px;
-      text-align: center;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }}
-    input[type=number]:focus {{
+      font-weight: 700;
+      padding: 7px 10px;
       outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 10px var(--primary-glow);
+      transition: all 0.2s ease;
+      text-align: center;
+    }}
+    .config-row input[type="number"]:focus {{
+      border-color: #38bdf8;
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.35);
+      background: #141d2e;
     }}
 
-    /* Action Buttons */
+    /* Action Buttons (F6 / F7) */
     .btn {{
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.03em;
       padding: 13px 20px;
       border-radius: var(--radius-sm);
-      border: 1px solid transparent;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      outline: none;
+      width: 100%;
+    }}
+    .btn:active {{
+      transform: scale(0.98);
+    }}
+    .btn-action-f7 {{
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4);
+      border: 1px solid #60a5fa;
+    }}
+    .btn-action-f7:hover {{
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      box-shadow: 0 6px 22px rgba(37, 99, 235, 0.6);
+      transform: translateY(-2px);
+    }}
+    .btn-action-f6 {{
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+      border: 1px solid #34d399;
+    }}
+    .btn-action-f6:hover {{
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      box-shadow: 0 6px 22px rgba(16, 185, 129, 0.6);
+      transform: translateY(-2px);
+    }}
+
+    /* RIGHT COLUMN: REALTIME ACTIVITY LOG CARD */
+    .log-column {{
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }}
+
+    .log-card {{
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      border-top: 3px solid #8b5cf6;
+      padding: 20px 22px;
+      min-height: 520px;
+    }}
+
+    .log-header {{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      flex-wrap: wrap;
+      gap: 10px;
+    }}
+    .log-title {{
+      font-size: 14px;
+      font-weight: 800;
+      color: #c084fc;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }}
+    .log-controls {{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }}
+    .btn-tool {{
+      background: #182234;
+      border: 1px solid #28374e;
+      color: var(--dim);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: var(--radius-sm);
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
+      gap: 6px;
       transition: all 0.2s ease;
-      text-decoration: none;
     }}
-    .btn-action-f7 {{
-      background: linear-gradient(135deg, #1e3a5f 0%, #172a44 100%);
-      color: #60a5fa;
-      border-color: #2b4c77;
-      width: 100%;
-    }}
-    .btn-action-f7:hover {{
-      background: linear-gradient(135deg, #254a78 0%, #1d3556 100%);
+    .btn-tool:hover {{
+      background: #233148;
+      color: #fff;
       border-color: #3b82f6;
-      box-shadow: 0 4px 16px var(--primary-glow);
-      color: #ffffff;
-      transform: translateY(-1px);
     }}
-    .btn-action-f6 {{
-      background: linear-gradient(135deg, #133e29 0%, #0d281a 100%);
+    .btn-tool.active {{
+      background: rgba(16, 185, 129, 0.16);
       color: #34d399;
-      border-color: #1c583b;
-      width: 100%;
-    }}
-    .btn-action-f6:hover {{
-      background: linear-gradient(135deg, #195237 0%, #123725 100%);
       border-color: #10b981;
-      box-shadow: 0 4px 16px var(--ok-glow);
-      color: #ffffff;
-      transform: translateY(-1px);
     }}
 
-    /* Full Modal Dialog Overlay */
+    /* Log Meta Stats Strip */
+    .log-meta-strip {{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(11, 15, 24, 0.7);
+      border: 1px solid #1c273a;
+      border-radius: var(--radius-sm);
+      padding: 8px 14px;
+      font-size: 11px;
+      color: var(--dim);
+      margin-bottom: 12px;
+      font-family: Consolas, monospace;
+    }}
+    .log-meta-strip span b {{
+      color: #38bdf8;
+    }}
+
+    /* Terminal Window Feed */
+    .log-feed {{
+      background: #080c14;
+      border: 1px solid #1c2638;
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      flex: 1;
+      min-height: 380px;
+      max-height: 480px;
+      overflow-y: auto;
+      font-family: 'JetBrains Mono', Consolas, 'Courier New', monospace;
+      font-size: 12px;
+      line-height: 1.65;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      scrollbar-width: thin;
+      scrollbar-color: #8b5cf6 #0e1420;
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.6);
+    }}
+    .log-feed::-webkit-scrollbar {{
+      width: 6px;
+    }}
+    .log-feed::-webkit-scrollbar-track {{
+      background: #0e1420;
+      border-radius: 4px;
+    }}
+    .log-feed::-webkit-scrollbar-thumb {{
+      background: #4c1d95;
+      border-radius: 4px;
+    }}
+    .log-feed::-webkit-scrollbar-thumb:hover {{
+      background: #8b5cf6;
+    }}
+
+    /* Log Entry Rows */
+    .log-row {{
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      word-break: break-word;
+      animation: logRowFade 0.2s ease-in;
+    }}
+    @keyframes logRowFade {{
+      from {{ opacity: 0; transform: translateY(3px); }}
+      to {{ opacity: 1; transform: translateY(0); }}
+    }}
+    .log-time {{
+      color: #64748b;
+      font-size: 11px;
+      flex-shrink: 0;
+      user-select: none;
+    }}
+    .log-tag {{
+      font-size: 10px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      flex-shrink: 0;
+      letter-spacing: 0.03em;
+      user-select: none;
+    }}
+    .tag-sys {{ background: rgba(139, 92, 246, 0.18); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.35); }}
+    .tag-conn {{ background: rgba(56, 189, 248, 0.18); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.35); }}
+    .tag-f6 {{ background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); }}
+    .tag-f7 {{ background: rgba(59, 130, 246, 0.18); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.35); }}
+    .tag-cfg {{ background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); }}
+    .tag-warn {{ background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.35); }}
+
+    .log-msg {{
+      color: #e2e8f0;
+      flex: 1;
+    }}
+    .log-msg.highlight {{
+      color: #ffffff;
+      font-weight: 600;
+    }}
+
+    /* Modal Full Screen Popup */
     .modal-overlay {{
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: rgba(4, 7, 13, 0.88);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
       display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(4, 6, 12, 0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 999;
       align-items: center;
       justify-content: center;
       padding: 20px;
@@ -742,30 +917,6 @@ html_content = f"""<!doctype html>
       line-height: 1.45;
     }}
 
-    /* Realtime Activity Notification */
-    .activity-bar {{
-      display: none;
-      background: rgba(15, 23, 38, 0.9);
-      backdrop-filter: blur(8px);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius-md);
-      padding: 12px 18px;
-      font-size: 13px;
-      color: var(--dim);
-      align-items: center;
-      gap: 10px;
-      min-height: 46px;
-      transition: all 0.25s ease;
-      width: 100%;
-    }}
-    .activity-bar.active {{
-      display: flex;
-      background: rgba(16, 185, 129, 0.1);
-      border-color: rgba(16, 185, 129, 0.35);
-      color: #6ee7b7;
-      font-weight: 600;
-    }}
-
     /* Footer */
     footer {{
       margin-top: auto;
@@ -826,12 +977,6 @@ html_content = f"""<!doctype html>
       </div>
     </div>
 
-    <!-- Activity Notification Bar (Only displays when active) -->
-    <div id="actBar" class="activity-bar">
-      <span>💬</span>
-      <span id="actMsg"></span>
-    </div>
-
     <!-- TOP SECTION: FULL WIDTH RECTANGULAR BAR FOR 1-CLICK DOWNLOAD -->
     <div class="download-rect-bar">
       <div class="rect-left" onclick="openDownloadModal()">
@@ -851,82 +996,116 @@ html_content = f"""<!doctype html>
       </button>
     </div>
 
-    <!-- 2-COLUMN FULL WIDTH RESPONSIVE MODULES GRID -->
-    <div class="modules-grid">
+    <!-- 2-COLUMN SPLIT WORKSPACE: LEFT CONTROLS, RIGHT REALTIME ACTION LOG -->
+    <div class="workspace-split">
 
-      <!-- MODULE 1: AUTO COMBINE F7 (LEFT COLUMN) -->
-      <div class="card module-card" style="border-top: 3px solid #3b82f6;">
-        <div>
-          <div class="module-header">
-            <div class="module-title" style="color: #60a5fa;">
-              <span>🔨</span> Tự Động Hợp Thành Xưởng (F7)
+      <!-- LEFT COLUMN: MODULE CONTROLS (F7 ON TOP, F6 BELOW) -->
+      <div class="controls-column">
+
+        <!-- MODULE 1: AUTO COMBINE F7 -->
+        <div class="card module-card" style="border-top: 3px solid #3b82f6;">
+          <div>
+            <div class="module-header">
+              <div class="module-title" style="color: #60a5fa;">
+                <span>🔨</span> Tự Động Hợp Thành Xưởng (F7)
+              </div>
+              <span id="badgeCombine" class="badge-status">Đã tắt</span>
             </div>
-            <span id="badgeCombine" class="badge-status">Đã tắt</span>
-          </div>
 
-          <div class="switch-box">
-            <div class="switch-desc">
-              <h4>Bật Tự Động Ghép Đồ Định Kỳ</h4>
-              <p>Tự động lặp lại công thức chế tạo trong Xưởng định kỳ theo số phút đã thiết lập</p>
+            <div class="switch-box">
+              <div class="switch-desc">
+                <h4>Bật Tự Động Ghép Đồ Định Kỳ</h4>
+                <p>Tự động lặp lại công thức chế tạo trong Xưởng định kỳ theo số phút đã thiết lập</p>
+              </div>
+              <label class="switch">
+                <input id="toggleCombine" type="checkbox">
+                <span class="slider"></span>
+              </label>
             </div>
-            <label class="switch">
-              <input id="toggleCombine" type="checkbox">
-              <span class="slider"></span>
-            </label>
+
+            <div class="config-row">
+              <label for="combineMin">Chu kỳ chạy mỗi:</label>
+              <input id="combineMin" type="number" min="1" max="60" value="5" style="width: 75px;">
+              <span style="color: var(--ink); font-size: 13px; font-weight: 600;">phút</span>
+              <span style="color: var(--dimmer); font-size: 12px; margin-left: 10px;">(Khuyên dùng: 3 - 5 phút/lần)</span>
+            </div>
           </div>
 
-          <div class="config-row">
-            <label for="combineMin">Chu kỳ chạy mỗi:</label>
-            <input id="combineMin" type="number" min="1" max="60" value="5" style="width: 75px;">
-            <span style="color: var(--ink); font-size: 13px; font-weight: 600;">phút</span>
-            <span style="color: var(--dimmer); font-size: 12px; margin-left: 10px;">(Khuyên dùng: 3 - 5 phút/lần)</span>
-          </div>
+          <button id="btnCombineNow" class="btn btn-action-f7" style="margin-top: 6px;">
+            🔨 HỢP THÀNH XƯỞNG NGAY LẬP TỨC (F7)
+          </button>
         </div>
 
-        <button id="btnCombineNow" class="btn btn-action-f7" style="margin-top: 14px;">
-          🔨 HỢP THÀNH XƯỞNG NGAY LẬP TỨC (F7)
-        </button>
+        <!-- MODULE 2: AUTO STASH F6 -->
+        <div class="card module-card" style="border-top: 3px solid #10b981;">
+          <div>
+            <div class="module-header">
+              <div class="module-title" style="color: #34d399;">
+                <span>📦</span> Tự Động Cất Đồ Vào Kho (F6)
+              </div>
+              <span id="badgeStash" class="badge-status">Đã tắt</span>
+            </div>
+
+            <div class="switch-box">
+              <div class="switch-desc">
+                <h4>Bật Tự Động Cất Đồ Định Kỳ</h4>
+                <p>Cất đồ từ túi đồ cá nhân tuần tự vào các ngăn kho đã chọn</p>
+              </div>
+              <label class="switch">
+                <input id="toggleStash" type="checkbox">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="config-row">
+              <label for="stashSec">Chu kỳ chạy mỗi:</label>
+              <input id="stashSec" type="number" min="2" max="600" value="60" style="width: 75px;">
+              <span style="color: var(--ink); font-size: 13px; font-weight: 600;">giây</span>
+
+              <span style="color: var(--line); margin: 0 6px;">|</span>
+
+              <label for="stashStart">Cất từ Kho:</label>
+              <input id="stashStart" type="number" min="1" max="10" value="1" style="width: 60px;">
+
+              <label for="stashEnd">đến Kho:</label>
+              <input id="stashEnd" type="number" min="1" max="10" value="5" style="width: 60px;">
+            </div>
+          </div>
+
+          <button id="btnStashNow" class="btn btn-action-f6" style="margin-top: 6px;">
+            📦 CẤT ĐỒ VÀO KHO 1 -> 5 NGAY LẬP TỨC (F6)
+          </button>
+        </div>
+
       </div>
 
-      <!-- MODULE 2: AUTO STASH F6 (RIGHT COLUMN) -->
-      <div class="card module-card" style="border-top: 3px solid #10b981;">
-        <div>
-          <div class="module-header">
-            <div class="module-title" style="color: #34d399;">
-              <span>📦</span> Tự Động Cất Đồ Vào Kho (F6)
+      <!-- RIGHT COLUMN: REALTIME ACTIVITY & EXECUTION LOG -->
+      <div class="log-column">
+        <div class="card log-card">
+          <div class="log-header">
+            <div class="log-title">
+              <span>📜</span> NHẬT KÝ HOẠT ĐỘNG THỜI GIAN THỰC
             </div>
-            <span id="badgeStash" class="badge-status">Đã tắt</span>
+            <div class="log-controls">
+              <button id="btnAutoScroll" class="btn-tool active" onclick="toggleAutoScroll()">
+                ⬇️ Tự Cuộn: BẬT
+              </button>
+              <button class="btn-tool" onclick="clearLogs()">
+                🗑️ Xóa Log
+              </button>
+            </div>
           </div>
 
-          <div class="switch-box">
-            <div class="switch-desc">
-              <h4>Bật Tự Động Cất Đồ Định Kỳ</h4>
-              <p>Cất đồ từ túi đồ cá nhân tuần tự vào các ngăn kho đã chọn</p>
-            </div>
-            <label class="switch">
-              <input id="toggleStash" type="checkbox">
-              <span class="slider"></span>
-            </label>
+          <div class="log-meta-strip">
+            <span>Tổng sự kiện: <b id="logCount">0</b></span>
+            <span>Trạng thái: <b id="logStatusText" style="color:#34d399;">ĐANG ĐỒNG BỘ</b></span>
           </div>
 
-          <div class="config-row">
-            <label for="stashSec">Chu kỳ chạy mỗi:</label>
-            <input id="stashSec" type="number" min="2" max="600" value="60" style="width: 75px;">
-            <span style="color: var(--ink); font-size: 13px; font-weight: 600;">giây</span>
-
-            <span style="color: var(--line); margin: 0 6px;">|</span>
-
-            <label for="stashStart">Cất từ Kho:</label>
-            <input id="stashStart" type="number" min="1" max="10" value="1" style="width: 60px;">
-
-            <label for="stashEnd">đến Kho:</label>
-            <input id="stashEnd" type="number" min="1" max="10" value="5" style="width: 60px;">
+          <!-- Scrollable Log Terminal -->
+          <div id="logFeed" class="log-feed">
+            <!-- Dynamic entries will be inserted here -->
           </div>
         </div>
-
-        <button id="btnStashNow" class="btn btn-action-f6" style="margin-top: 14px;">
-          📦 CẤT ĐỒ VÀO KHO 1 -> 5 NGAY LẬP TỨC (F6)
-        </button>
       </div>
 
     </div>
@@ -1017,7 +1196,7 @@ html_content = f"""<!doctype html>
   </div>
 
   <footer>
-    DPS Auto Helper • Tự Động Hóa Kho &amp; Xưởng • Tự động lưu cấu hình vĩnh viễn
+    DPS Auto Helper • Tự Động Hóa Kho &amp; Xưởng • Bảng Điều Khiển &amp; Nhật Ký Hoạt Động
   </footer>
 
   <script>
@@ -1026,6 +1205,11 @@ html_content = f"""<!doctype html>
 
     let isOnline = false;
     let offlineBannerDismissed = false;
+    let autoScrollEnabled = true;
+    let logCounter = 0;
+
+    let prevStatus = null;
+    let prevStashCurr = null;
 
     // Modal Control Functions
     function openDownloadModal() {{
@@ -1056,14 +1240,89 @@ html_content = f"""<!doctype html>
       }}
     }});
 
-    function notify(text, isActive = false) {{
-      if (!text) {{
-        $('actBar').className = 'activity-bar';
-        $('actMsg').textContent = '';
-        return;
+    // Log Feed System
+    function getTimeStr() {{
+      const d = new Date();
+      const pad = n => n.toString().padStart(2, '0');
+      return `[${{pad(d.getHours())}}:${{pad(d.getMinutes())}}:${{pad(d.getSeconds())}}]`;
+    }}
+
+    function addLog(tagType, message, highlight = false) {{
+      logCounter++;
+      $('logCount').textContent = logCounter;
+
+      const feed = $('logFeed');
+      const row = document.createElement('div');
+      row.className = 'log-row';
+
+      let tagClass = 'tag-sys';
+      let tagLabel = tagType.toUpperCase();
+
+      switch (tagType.toLowerCase()) {{
+        case 'conn':
+        case 'kết nối':
+          tagClass = 'tag-conn';
+          tagLabel = 'KẾT NỐI';
+          break;
+        case 'f6':
+        case 'cất đồ':
+          tagClass = 'tag-f6';
+          tagLabel = 'F6 CẤT ĐỒ';
+          break;
+        case 'f7':
+        case 'hợp thành':
+          tagClass = 'tag-f7';
+          tagLabel = 'F7 HỢP THÀNH';
+          break;
+        case 'cfg':
+        case 'cấu hình':
+          tagClass = 'tag-cfg';
+          tagLabel = 'CẤU HÌNH';
+          break;
+        case 'warn':
+        case 'cảnh báo':
+        case 'lỗi':
+          tagClass = 'tag-warn';
+          tagLabel = 'CẢNH BÁO';
+          break;
       }}
-      $('actMsg').textContent = text;
-      $('actBar').className = isActive ? 'activity-bar active' : 'activity-bar';
+
+      row.innerHTML = `
+        <span class="log-time">${{getTimeStr()}}</span>
+        <span class="log-tag ${{tagClass}}">${{tagLabel}}</span>
+        <span class="log-msg ${{highlight ? 'highlight' : ''}}">${{message}}</span>
+      `;
+
+      feed.appendChild(row);
+
+      // Keep maximum 300 entries to prevent memory bloat
+      while (feed.children.length > 300) {{
+        feed.removeChild(feed.firstChild);
+      }}
+
+      if (autoScrollEnabled) {{
+        feed.scrollTop = feed.scrollHeight;
+      }}
+    }}
+
+    function toggleAutoScroll() {{
+      autoScrollEnabled = !autoScrollEnabled;
+      const btn = $('btnAutoScroll');
+      if (autoScrollEnabled) {{
+        btn.className = 'btn-tool active';
+        btn.innerHTML = '⬇️ Tự Cuộn: BẬT';
+        $('logFeed').scrollTop = $('logFeed').scrollHeight;
+      }} else {{
+        btn.className = 'btn-tool';
+        btn.innerHTML = '⏸️ Tự Cuộn: TẮT';
+      }}
+    }}
+
+    function clearLogs() {{
+      $('logFeed').innerHTML = '';
+      logCounter = 0;
+      $('logCount').textContent = '0';
+      addLog('sys', 'Đã làm sạch màn hình nhật ký hoạt động.');
     }}
 
     function updateStashBtnLabel() {{
@@ -1074,11 +1333,18 @@ html_content = f"""<!doctype html>
 
     // Realtime Game Sync
     function render(st) {{
+      const wasOnline = isOnline;
       isOnline = true;
       $('offlineNotice').style.display = 'none';
       $('connBadge').className = 'chip on';
       $('connText').textContent = 'Đã kết nối game';
       $('pidBadge').textContent = 'PID: ' + (st.pid || '-');
+      $('logStatusText').textContent = 'ĐANG ĐỒNG BỘ';
+      $('logStatusText').style.color = '#34d399';
+
+      if (!wasOnline) {{
+        addLog('conn', `Kết nối thành công tới DPS.exe (PID: ${{st.pid || '30976'}}, Cổng: ${{st.port || '47900'}})`, true);
+      }}
 
       // 1. Dong bo Combine
       if (st.comb_min !== undefined && document.activeElement !== $('combineMin')) {{
@@ -1110,9 +1376,18 @@ html_content = f"""<!doctype html>
         $('badgeStash').textContent = on ? `ĐANG BẬT (mỗi ${{st.stash_sec || $('stashSec').value || 60}}s)` : 'Đã tắt';
       }}
 
+      // 3. Phat hien tien trinh cat do
       if (st.stash_step && st.stash_step > 0) {{
-        notify(`⏳ Đang cất đồ vào Kho ${{st.stash_curr || 1}} (Kho ${{st.stash_start || 1}} -> ${{st.stash_end || 5}})...`, true);
+        if (st.stash_curr !== prevStashCurr) {{
+          addLog('f6', `⏳ Đang cất đồ vào Kho ${{st.stash_curr || 1}} (Lộ trình Kho ${{st.stash_start || 1}} -> ${{st.stash_end || 5}})...`);
+          prevStashCurr = st.stash_curr;
+        }}
+      }} else if (prevStashCurr !== null) {{
+        addLog('f6', `✅ Đã hoàn tất chu kỳ cất đồ Kho ${{st.stash_start || 1}} -> ${{st.stash_end || 5}}!`, true);
+        prevStashCurr = null;
       }}
+
+      prevStatus = st;
     }}
 
     async function poll() {{
@@ -1122,6 +1397,9 @@ html_content = f"""<!doctype html>
         const data = await res.json();
         render(data);
       }} catch (err) {{
+        if (isOnline) {{
+          addLog('warn', 'Mất kết nối với game DPS.exe. Đang thử kết nối lại...', true);
+        }}
         isOnline = false;
         if (!offlineBannerDismissed) {{
           $('offlineNotice').style.display = 'flex';
@@ -1133,12 +1411,14 @@ html_content = f"""<!doctype html>
         $('badgeCombine').textContent = 'Chưa kết nối';
         $('badgeStash').className = 'badge-status';
         $('badgeStash').textContent = 'Chưa kết nối';
+        $('logStatusText').textContent = 'CHƯA KẾT NỐI';
+        $('logStatusText').style.color = '#ef4444';
       }}
     }}
 
     async function sendCommand(key, val) {{
       if (!isOnline) {{
-        notify('⚠️ Game chưa mở hoặc chưa cài mod!', false);
+        addLog('warn', 'Không thể gửi lệnh: Chưa kết nối tới game!');
         return;
       }}
       try {{
@@ -1148,7 +1428,7 @@ html_content = f"""<!doctype html>
           render(data);
         }}
       }} catch (err) {{
-        notify('⚠️ Lỗi gửi lệnh đến game: ' + err.message, false);
+        addLog('warn', `Lỗi gửi lệnh đến game: ${{err.message}}`);
       }}
     }}
 
@@ -1158,24 +1438,24 @@ html_content = f"""<!doctype html>
       const m = $('combineMin').value || 5;
       $('badgeCombine').className = on ? 'badge-status active' : 'badge-status';
       $('badgeCombine').textContent = on ? `ĐANG BẬT (mỗi ${{m}}p)` : 'Đã tắt';
-      notify(on ? `ĐÃ BẬT Tự động Hợp Thành (mỗi ${{m}} phút khi mở xưởng)!` : 'ĐÃ TẮT Tự động Hợp Thành!', true);
+      addLog('f7', on ? `ĐÃ BẬT Tự động Hợp Thành Xưởng (chu kỳ ${{m}} phút/lần)` : 'ĐÃ TẮT Tự động Hợp Thành Xưởng', true);
       await sendCommand('auto_comb', on ? '1' : '0');
     }};
 
     $('combineMin').onchange = async (e) => {{
       const m = Math.max(1, parseInt(e.target.value) || 5);
       e.target.value = m;
+      addLog('cfg', `Cập nhật chu kỳ Hợp Thành Xưởng: ${{m}} phút`);
       await sendCommand('comb_min', m.toString());
-      notify(`Đã cập nhật chu kỳ Hợp Thành: ${{m}} phút.`, true);
     }};
 
     $('btnCombineNow').onclick = async () => {{
-      notify('Đang kiểm tra bảng Xưởng & kích hoạt ghép đồ lặp lại...', true);
+      addLog('f7', 'Đang gửi lệnh kích hoạt Hợp Thành Xưởng lặp lại (F7)...');
       try {{
         await sendCommand('combine', '1');
-        notify('ĐÃ KÍCH HOẠT HỢP THÀNH XƯỞNG THÀNH CÔNG (F7)!', true);
+        addLog('f7', '✅ ĐÃ KÍCH HOẠT HỢP THÀNH XƯỞNG THÀNH CÔNG (F7)!', true);
       }} catch (err) {{
-        notify('Lỗi gửi lệnh ghép đồ.', false);
+        addLog('warn', 'Lỗi gửi lệnh hợp thành xưởng.');
       }}
     }};
 
@@ -1183,47 +1463,52 @@ html_content = f"""<!doctype html>
     $('toggleStash').onchange = async (e) => {{
       const on = e.target.checked;
       const s = $('stashSec').value || 60;
+      const start = $('stashStart').value || 1;
+      const end = $('stashEnd').value || 5;
       $('badgeStash').className = on ? 'badge-status active' : 'badge-status';
       $('badgeStash').textContent = on ? `ĐANG BẬT (mỗi ${{s}}s)` : 'Đã tắt';
-      notify(on ? `ĐÃ BẬT Tự động Cất Đồ (mỗi ${{s}} giây)!` : 'ĐÃ TẮT Tự động Cất Đồ!', true);
+      addLog('f6', on ? `ĐÃ BẬT Tự động Cất Đồ (mỗi ${{s}} giây, Kho ${{start}} -> ${{end}})` : 'ĐÃ TẮT Tự động Cất Đồ', true);
       await sendCommand('auto_stash', on ? '1' : '0');
     }};
 
     $('stashSec').onchange = async (e) => {{
       const s = Math.max(2, parseInt(e.target.value) || 60);
       e.target.value = s;
+      addLog('cfg', `Cập nhật chu kỳ cất đồ: ${{s}} giây`);
       await sendCommand('stash_sec', s.toString());
-      notify(`Đã cập nhật chu kỳ Cất Đồ: ${{s}} giây.`, true);
     }};
 
     $('stashStart').onchange = async (e) => {{
       const start = Math.max(1, parseInt(e.target.value) || 1);
       e.target.value = start;
       updateStashBtnLabel();
+      addLog('cfg', `Cập nhật cấu hình: Bắt đầu cất từ Kho ${{start}}`);
       await sendCommand('stash_start', start.toString());
-      notify(`Đã cập nhật cất từ Kho: ${{start}}`, true);
     }};
 
     $('stashEnd').onchange = async (e) => {{
       const end = Math.max(1, parseInt(e.target.value) || 5);
       e.target.value = end;
       updateStashBtnLabel();
+      addLog('cfg', `Cập nhật cấu hình: Cất đến Kho ${{end}}`);
       await sendCommand('stash_end', end.toString());
-      notify(`Đã cập nhật cất đến Kho: ${{end}}`, true);
     }};
 
     $('btnStashNow').onclick = async () => {{
       const s = $('stashStart').value || 1;
       const e = $('stashEnd').value || 5;
-      notify(`Đang kích hoạt cất đồ tuần tự Kho ${{s}} -> Kho ${{e}}...`, true);
+      addLog('f6', `Đang gửi lệnh cất đồ tuần tự từ Kho ${{s}} đến Kho ${{e}} (F6)...`);
       try {{
         await sendCommand('stash', '1');
-        notify(`ĐÃ KÍCH HOẠT CẤT ĐỒ KHO ${{s}} -> ${{e}} THÀNH CÔNG (F6)!`, true);
+        addLog('f6', `✅ ĐÃ KÍCH HOẠT CẤT ĐỒ KHO ${{s}} -> ${{e}} THÀNH CÔNG (F6)!`, true);
       }} catch (err) {{
-        notify('Lỗi gửi lệnh cất đồ.', false);
+        addLog('warn', 'Lỗi gửi lệnh cất đồ.');
       }}
     }};
 
+    // Initialization
+    addLog('sys', 'Hệ thống DPS Auto Helper v1.0.0 đã sẵn sàng.');
+    addLog('conn', 'Đang kết nối tới dịch vụ điều khiển ngầm...');
     updateStashBtnLabel();
     poll();
     setInterval(poll, 1000);
