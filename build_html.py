@@ -248,7 +248,7 @@ html_content = f"""<!doctype html>
       border-color: rgba(59, 130, 246, 0.35);
     }}
 
-    /* Top Hero Card: Download & Instructions */
+    /* Top Hero Card */
     .hero-card {{
       background: linear-gradient(145deg, rgba(24, 34, 52, 0.85) 0%, rgba(16, 22, 34, 0.95) 100%);
       border: 1px solid #334768;
@@ -301,132 +301,205 @@ html_content = f"""<!doctype html>
       gap: 5px;
     }}
 
-    /* Big Download Button */
-    .download-action-group {{
+    /* Horizontal Download Bar */
+    .download-bar {{
+      background: linear-gradient(135deg, rgba(20, 29, 44, 0.9) 0%, rgba(14, 20, 32, 0.95) 100%);
+      border: 1px solid #384e72;
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+      transition: all 0.2s ease;
+    }}
+    .download-bar:hover {{
+      border-color: #3b82f6;
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25);
+    }}
+    .file-info-group {{
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }}
+    .file-icon {{
+      font-size: 26px;
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      border-radius: 12px;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 0 14px rgba(59, 130, 246, 0.25);
+    }}
+    .file-details {{
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 4px;
+      min-width: 0;
     }}
-    .btn-download-hero {{
+    .file-name {{
+      font-size: 14px;
+      font-weight: 800;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      letter-spacing: 0.02em;
+    }}
+    .file-meta {{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 12px;
+      color: var(--dim);
+    }}
+    .meta-tag {{
+      background: rgba(59, 130, 246, 0.14);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      color: #93c5fd;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+    }}
+    .meta-desc {{
+      color: #94a3b8;
+      font-size: 11px;
+    }}
+    
+    .btn-download-bar {{
       background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
       color: #ffffff;
-      font-size: 15px;
-      font-weight: 700;
+      font-size: 14px;
+      font-weight: 800;
       letter-spacing: 0.02em;
-      padding: 16px 24px;
-      border-radius: var(--radius-md);
+      padding: 12px 22px;
+      border-radius: var(--radius-sm);
       border: 1px solid #60a5fa;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.45);
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }}
+    .btn-download-bar:hover {{
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(37, 99, 235, 0.65);
+      border-color: #93c5fd;
+    }}
+    .btn-download-bar svg {{
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }}
+
+    /* Full Modal Dialog Overlay */
+    .modal-overlay {{
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(4, 7, 13, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      animation: fadeIn 0.2s ease-out;
+    }}
+    .modal-overlay.active {{
+      display: flex;
+    }}
+    @keyframes fadeIn {{
+      from {{ opacity: 0; }}
+      to {{ opacity: 1; }}
+    }}
+    .modal-dialog {{
+      background: #111724;
+      background-image: 
+        radial-gradient(circle at 10% 10%, rgba(59, 130, 246, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(16, 185, 129, 0.08) 0%, transparent 40%);
+      border: 1px solid #384e72;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(59, 130, 246, 0.25);
+      border-radius: var(--radius-lg);
+      max-width: 720px;
+      width: 100%;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: zoomIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }}
+    @keyframes zoomIn {{
+      from {{ transform: scale(0.95); opacity: 0; }}
+      to {{ transform: scale(1); opacity: 1; }}
+    }}
+    .modal-header {{
+      background: #151f30;
+      border-bottom: 1px solid #28374e;
+      padding: 16px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }}
+    .modal-header h3 {{
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }}
+    .modal-close {{
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid #334768;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--dim);
+      font-size: 16px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      text-decoration: none;
-      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    }}
-    .btn-download-hero:hover {{
-      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 26px rgba(37, 99, 235, 0.6);
-      border-color: #93c5fd;
-    }}
-    .btn-download-hero:active {{
-      transform: translateY(0);
-    }}
-    .btn-download-hero svg {{
-      width: 20px;
-      height: 20px;
-      fill: currentColor;
-    }}
-
-    /* Sub Download Options */
-    .download-sub-row {{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-    }}
-    .sub-link {{
-      color: var(--dim);
-      font-size: 12px;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border-radius: var(--radius-sm);
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--card-border);
       transition: all 0.15s ease;
     }}
-    .sub-link:hover {{
+    .modal-close:hover {{
+      background: #ef4444;
+      border-color: #ef4444;
       color: #fff;
-      background: rgba(255, 255, 255, 0.08);
-      border-color: var(--primary);
     }}
-    .btn-toggle-guide {{
-      background: #182436;
-      border: 1px solid #2d3e58;
-      color: #93c5fd;
-      font-size: 12px;
-      font-weight: 600;
-      padding: 7px 14px;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s ease;
-    }}
-    .btn-toggle-guide:hover {{
-      background: #20314a;
-      color: #ffffff;
-      border-color: var(--primary);
-    }}
-
-    /* Scrollable Guide Panel / Drawer */
-    .guide-drawer {{
-      margin-top: 16px;
-      background: rgba(10, 15, 24, 0.95);
-      border: 1px solid #28374e;
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      transition: all 0.3s ease;
-    }}
-    .guide-drawer-header {{
-      background: #131b28;
-      border-bottom: 1px solid #28374e;
-      padding: 12px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }}
-    .guide-drawer-header h3 {{
-      font-size: 13px;
-      font-weight: 700;
-      color: #93c5fd;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }}
-    .guide-scroll-container {{
-      max-height: 380px;
+    .modal-body {{
+      padding: 22px;
       overflow-y: auto;
-      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
       scrollbar-width: thin;
       scrollbar-color: #3b82f6 #111827;
     }}
-    .guide-scroll-container::-webkit-scrollbar {{
+    .modal-body::-webkit-scrollbar {{
       width: 6px;
     }}
-    .guide-scroll-container::-webkit-scrollbar-track {{
+    .modal-body::-webkit-scrollbar-track {{
       background: #111827;
     }}
-    .guide-scroll-container::-webkit-scrollbar-thumb {{
+    .modal-body::-webkit-scrollbar-thumb {{
       background: #3b82f6;
       border-radius: 999px;
     }}
@@ -633,7 +706,7 @@ html_content = f"""<!doctype html>
       box-shadow: 0 0 10px var(--primary-glow);
     }}
 
-    /* Buttons */
+    /* Action Buttons */
     .btn {{
       font-family: inherit;
       font-size: 13px;
@@ -716,8 +789,8 @@ html_content = f"""<!doctype html>
       .brand-titles h1 {{ font-size: 14px; }}
       main {{ padding: 16px 12px 48px; gap: 16px; }}
       .card {{ padding: 16px; }}
+      .download-bar {{ flex-direction: column; align-items: stretch; gap: 12px; }}
       .config-row {{ flex-direction: column; align-items: flex-start; gap: 8px; }}
-      .download-sub-row {{ flex-direction: column; align-items: stretch; }}
     }}
   </style>
 </head>
@@ -743,16 +816,16 @@ html_content = f"""<!doctype html>
 
   <main>
 
-    <!-- Interactive Offline Navigation Banner -->
-    <div id="offlineNotice" class="offline-banner" onclick="scrollToDownloadAndOpen()">
+    <!-- Interactive Offline Navigation Banner (Opens Modal) -->
+    <div id="offlineNotice" class="offline-banner" onclick="openDownloadModal()">
       <div class="offline-info">
         <span class="offline-icon">⚠️</span>
         <div class="offline-text">
           <h4>Chưa phát hiện game DPS đang chạy!</h4>
-          <p>Bấm vào đây để tải tool 1-Click & xem bảng hướng dẫn cài đặt nhanh ⬇️</p>
+          <p>Bấm vào đây để mở bảng tải tool 1-Click &amp; xem hướng dẫn cài đặt ⬇️</p>
         </div>
       </div>
-      <span class="btn-pill-action">Tải Tool Ngay ⬇</span>
+      <span class="btn-pill-action">Tải Tool &amp; Hướng Dẫn ⬇</span>
     </div>
 
     <!-- Activity Notification Bar -->
@@ -761,11 +834,11 @@ html_content = f"""<!doctype html>
       <span id="actMsg">Sẵn sàng nhận lệnh điều khiển.</span>
     </div>
 
-    <!-- TOP HERO SECTION: DOWNLOAD TOOL & SCROLLABLE QUICK GUIDE -->
+    <!-- TOP HERO SECTION: DOWNLOAD TOOL & MODAL TRIGGER -->
     <div id="heroDownloadCard" class="card hero-card">
       <div class="hero-header">
         <div class="hero-title">
-          <h2><span>🚀</span> Gói Cài Đặt Tự Động Hóa 1-Click (Dành Cho Bạn Bè)</h2>
+          <h2><span>🚀</span> Gói Cài Đặt Tự Động Hóa 1-Click</h2>
           <p>Chuẩn Zero Coordinates: Điều khiển thông qua logic C# IL2CPP ngầm bên trong game. Tuyệt đối không chiếm chuột, không dùng macro giả lập, chạy ổn định bất kể độ phân giải màn hình.</p>
         </div>
       </div>
@@ -777,73 +850,23 @@ html_content = f"""<!doctype html>
         <span class="feature-tag">💾 Tự lưu vĩnh viễn</span>
       </div>
 
-      <div class="download-action-group">
-        <a id="btnDownloadMain" href="https://github.com/titlee2111/dps-auto-helper/releases/download/v1.0.0/DPS_Auto_Helper_1Click.zip" class="btn-download-hero" onclick="handleDownloadClick(event)">
+      <!-- Hàng ngang thông tin file & nút bấm mở modal tải -->
+      <div class="download-bar">
+        <div class="file-info-group">
+          <div class="file-icon">📦</div>
+          <div class="file-details">
+            <div class="file-name">DPS_Auto_Helper_1Click.zip</div>
+            <div class="file-meta">
+              <span class="meta-tag">57.19 MB</span>
+              <span class="meta-tag">v1.0.0</span>
+              <span class="meta-desc">Tự động nhận diện Steam &amp; Cài đặt trong 2 giây</span>
+            </div>
+          </div>
+        </div>
+        <button class="btn-download-bar" onclick="openDownloadModal()">
           <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
-          <span>📥 TẢI MOD HỖ TRỢ 1-CLICK TRỌN GÓI (.ZIP - 57MB)</span>
-        </a>
-
-        <div class="download-sub-row">
-          <div style="display:flex; gap:8px; flex-wrap:wrap;">
-            <a href="./DPS_Auto_Helper_1Click.zip" class="sub-link">
-              🔗 Link tải trực tiếp (Local Mirror)
-            </a>
-            <a href="./DPS_Auto_Helper_Installer_Lite.zip" class="sub-link">
-              ⚡ Bản Lite siêu nhẹ (41 KB)
-            </a>
-          </div>
-          <button id="btnToggleGuide" class="btn-toggle-guide" onclick="toggleGuide()">
-            <span id="guideToggleText">📖 Ẩn / Xem Hướng Dẫn</span> <span id="guideArrow">▼</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Scrollable Guide Drawer -->
-      <div id="guideDrawer" class="guide-drawer">
-        <div class="guide-drawer-header">
-          <h3>📋 Bảng Hướng Dẫn Cài Đặt & Sử Dụng (Cuộn chuột để xem)</h3>
-          <span style="font-size:11px; color:var(--dim);">Tự động phát hiện Steam</span>
-        </div>
-        <div class="guide-scroll-container">
-          <div class="step-timeline">
-
-            <div class="step-card">
-              <div class="step-badge">1</div>
-              <div class="step-content">
-                <h5>Tải Gói Cài Đặt 1-Click</h5>
-                <p>Bấm nút màu xanh to ở trên hoặc chọn một trong các link tải để lưu file <code>DPS_Auto_Helper_1Click.zip</code> về máy tính của bạn.</p>
-              </div>
-            </div>
-
-            <div class="step-card">
-              <div class="step-badge">2</div>
-              <div class="step-content">
-                <h5>Giải Nén & Chạy File Cài Đặt Tự Động</h5>
-                <p>Giải nén file zip ra một thư mục bất kỳ. Nhấp đúp chuột chạy file <code>Cai_Dat_Tu_Dong.bat</code>. Script sẽ tự động dò tìm đường dẫn cài game Steam của bạn và copy các file mod cần thiết vào trong đúng 2 giây!</p>
-                <div class="note-box">
-                  💡 <b>Không cần kéo thả thủ công:</b> Script thông minh tự kiểm tra registry Steam và thư mục thư viện game, bạn chỉ cần bấm chạy là xong.
-                </div>
-              </div>
-            </div>
-
-            <div class="step-card">
-              <div class="step-badge">3</div>
-              <div class="step-content">
-                <h5>Mở Game & Điều Khiển Qua Web</h5>
-                <p>Khởi động game <code>DPS Desktop Pension Squad</code> bình thường qua Steam. Sau đó mở trang web này lên, góc phải trên cùng sẽ chuyển sang <b>🟢 ĐÃ KẾT NỐI GAME</b> và bạn có thể bật/tắt F6, F7 tùy thích!</p>
-              </div>
-            </div>
-
-            <div class="step-card">
-              <div class="step-badge">4</div>
-              <div class="step-content">
-                <h5>Gỡ Cài Đặt Bất Cứ Lúc Nào</h5>
-                <p>Nếu không muốn sử dụng nữa, bạn chỉ việc chạy file <code>Go_Cai_Dat.bat</code> đi kèm trong file zip để xóa sạch toàn bộ các file mod, đưa game về nguyên bản 100%.</p>
-              </div>
-            </div>
-
-          </div>
-        </div>
+          <span>TẢI MOD &amp; HƯỚNG DẪN</span>
+        </button>
       </div>
     </div>
 
@@ -920,6 +943,89 @@ html_content = f"""<!doctype html>
 
   </main>
 
+  <!-- FULL SCREEN MODAL DIALOG: DOWNLOAD & STEP-BY-STEP GUIDE -->
+  <div id="modalDownload" class="modal-overlay" onclick="handleOverlayClick(event)">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3><span>📦</span> Cài Đặt &amp; Tải Mod Tự Động Hóa 1-Click</h3>
+        <button class="modal-close" onclick="closeDownloadModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        
+        <!-- Hàng ngang tải file nổi bật -->
+        <div class="download-bar" style="background:#141d2c; border-color:#38527a;">
+          <div class="file-info-group">
+            <div class="file-icon">📦</div>
+            <div class="file-details">
+              <div class="file-name">DPS_Auto_Helper_1Click.zip</div>
+              <div class="file-meta">
+                <span class="meta-tag">57.19 MB</span>
+                <span class="meta-tag">v1.0.0</span>
+                <span class="meta-desc">Trọn gói BepInEx 6 + Mod F6/F7</span>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:6px; align-items:flex-end;">
+            <a href="https://github.com/titlee2111/dps-auto-helper/releases/download/v1.0.0/DPS_Auto_Helper_1Click.zip" class="btn-download-bar">
+              <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+              <span>BẮT ĐẦU TẢI (.ZIP)</span>
+            </a>
+            <a href="./DPS_Auto_Helper_1Click.zip" style="color:var(--dimmer); font-size:11px; text-decoration:none;">
+              🔗 Link dự phòng (Local Mirror)
+            </a>
+          </div>
+        </div>
+
+        <!-- Bảng hướng dẫn chi tiết có thanh cuộn mượt mà -->
+        <div class="step-timeline">
+
+          <div class="step-card">
+            <div class="step-badge">1</div>
+            <div class="step-content">
+              <h5>Tải File Cài Đặt 1-Click</h5>
+              <p>Bấm nút <b>BẮT ĐẦU TẢI (.ZIP)</b> ở trên để tải về file <code>DPS_Auto_Helper_1Click.zip</code> (Dung lượng 57.19 MB đã bao gồm trọn gói runtime C# ngầm).</p>
+            </div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-badge">2</div>
+            <div class="step-content">
+              <h5>Giải Nén &amp; Chạy File Cài Đặt Tự Động</h5>
+              <p>Giải nén file zip ra một thư mục bất kỳ. Nhấp đúp chuột chạy file <code>Cai_Dat_Tu_Dong.bat</code>. Script thông minh sẽ tự động dò tìm thư mục Steam cài game và copy toàn bộ file mod vào trong đúng 2 giây!</p>
+              <div class="note-box">
+                💡 <b>Không cần kéo thả thủ công:</b> Script tự động kiểm tra Steam registry và thư viện game, bạn chỉ cần bấm chạy là xong.
+              </div>
+            </div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-badge">3</div>
+            <div class="step-content">
+              <h5>Mở Game &amp; Điều Khiển Qua Web</h5>
+              <p>Khởi động game <code>DPS Desktop Pension Squad</code> bình thường qua Steam. Sau đó quay lại trang web này, góc phải trên cùng sẽ chuyển sang <b>🟢 ĐÃ KẾT NỐI GAME</b> và bạn có thể bật/tắt F6, F7 tùy ý!</p>
+            </div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-badge">4</div>
+            <div class="step-content">
+              <h5>Gỡ Cài Đặt Bất Cứ Lúc Nào</h5>
+              <p>Nếu không muốn sử dụng nữa, chỉ việc chạy file <code>Go_Cai_Dat.bat</code> đi kèm trong file zip để xóa sạch toàn bộ file mod, đưa game về nguyên bản 100%.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <div style="text-align: center; margin-top: 10px;">
+          <button class="btn" style="background:#1e293b; color:#94a3b8; border:1px solid #334155;" onclick="closeDownloadModal()">
+            Đã Hiểu, Đóng Lại
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <footer>
     DPS Auto Helper • Zero Coordinates (Native C# IL2CPP) • Hoàn toàn không chiếm chuột • Tự động lưu cấu hình vĩnh viễn
   </footer>
@@ -930,6 +1036,29 @@ html_content = f"""<!doctype html>
 
     let isOnline = false;
 
+    // Modal Control Functions
+    function openDownloadModal() {{
+      $('modalDownload').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }}
+
+    function closeDownloadModal() {{
+      $('modalDownload').classList.remove('active');
+      document.body.style.overflow = '';
+    }}
+
+    function handleOverlayClick(e) {{
+      if (e.target === $('modalDownload')) {{
+        closeDownloadModal();
+      }}
+    }}
+
+    document.addEventListener('keydown', e => {{
+      if (e.key === 'Escape' && $('modalDownload').classList.contains('active')) {{
+        closeDownloadModal();
+      }}
+    }});
+
     function notify(text, isActive = false) {{
       $('actMsg').textContent = text;
       $('actBar').className = isActive ? 'activity-bar active' : 'activity-bar';
@@ -939,38 +1068,6 @@ html_content = f"""<!doctype html>
       const s = $('stashStart').value || 1;
       const e = $('stashEnd').value || 5;
       $('btnStashNow').textContent = `📦 CẤT ĐỒ VÀO KHO ${{s}} -> ${{e}} NGAY LẬP TỨC (F6)`;
-    }}
-
-    // Navigation & Guide Drawer
-    function scrollToDownloadAndOpen() {{
-      const hero = $('heroDownloadCard');
-      hero.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
-      hero.style.boxShadow = '0 0 30px rgba(59, 130, 246, 0.6)';
-      setTimeout(() => {{ hero.style.boxShadow = ''; }}, 1500);
-
-      // Open drawer if closed
-      const drawer = $('guideDrawer');
-      if (drawer.style.display === 'none') {{
-        toggleGuide();
-      }}
-    }}
-
-    function toggleGuide() {{
-      const drawer = $('guideDrawer');
-      const isHidden = drawer.style.display === 'none';
-      drawer.style.display = isHidden ? 'block' : 'none';
-      $('guideToggleText').textContent = isHidden ? '📖 Đóng Hướng Dẫn' : '📖 Xem Hướng Dẫn';
-      $('guideArrow').textContent = isHidden ? '▲' : '▼';
-    }}
-
-    function handleDownloadClick(e) {{
-      // Always ensure the guide is open and scrolled to view
-      const drawer = $('guideDrawer');
-      if (drawer.style.display === 'none') {{
-        toggleGuide();
-      }}
-      drawer.scrollIntoView({{ behavior: 'smooth', block: 'center' }});
-      notify('📥 Đang tải file cài đặt mod... Hãy làm theo các bước bên dưới để cài đặt!', true);
     }}
 
     // Realtime Game Sync

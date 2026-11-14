@@ -13,7 +13,7 @@
 - Gọi trực tiếp vào logic mã nguồn C# nội bộ của game thông qua BepInEx 6 IL2CPP.
 - Tuyệt đối **không chiếm chuột**, bạn có thể vừa chơi game vừa lướt web, làm việc hoặc treo máy thoải mái.
 - Không bị ảnh hưởng bởi độ phân giải màn hình, tỷ lệ thu phóng (DPI scale) hay khi di chuyển cửa sổ game.
-- Đã loại bỏ hoàn toàn các chức năng can thiệp game (God mode, Dame, Aspd, DLC,...) nhằm đảm bảo tính an toàn, minh bạch và giải trí lành mạnh cho bạn bè.
+- Đã loại bỏ hoàn toàn các chức năng can thiệp game (God mode, Dame, Aspd, DLC,...) nhằm đảm bảo tính an toàn, minh bạch và giải trí lành mạnh.
 
 ---
 
@@ -59,7 +59,7 @@
 - Interacts directly with internal C# IL2CPP game routines via BepInEx 6.
 - **Never hijacks your mouse cursor** — you can seamlessly browse the web, work, or multitask while the game is automated in the background.
 - Completely immune to screen resolution changes, multi-monitor setups, DPI scaling, and window repositioning.
-- All cheat features (God mode, Damage multipliers, Aspd, DLC unlockers) have been completely removed, ensuring a clean, safe, and quality-of-life utility to share with friends.
+- All cheat features (God mode, Damage multipliers, Aspd, DLC unlockers) have been completely removed, ensuring a clean, safe, and quality-of-life utility.
 
 ---
 
