@@ -148,9 +148,12 @@
       align-items: center;
       justify-content: center;
     }
-    .hud-soul .hud-icon { color: #c084fc; }
-    .hud-stone .hud-icon { color: #38bdf8; }
-    .hud-cap .hud-icon { color: #34d399; }
+    .hud-img-icon {
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
+      display: block;
+    }
 
     .hud-info {
       display: flex;
@@ -170,8 +173,8 @@
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       letter-spacing: 0.02em;
     }
-    .hud-soul .hud-val { color: #d8b4fe; }
-    .hud-stone .hud-val { color: #7dd3fc; }
+    .hud-soul .hud-val { color: #67e8f9; }
+    .hud-stone .hud-val { color: #60a5fa; }
     .hud-cap .hud-val { color: #6ee7b7; }
 
     .hud-mini-bar {
@@ -1107,14 +1110,18 @@
     <!-- TOP CENTER HUD -->
     <div class="header-hud">
       <div class="hud-item hud-soul" title="Linh hồn nhân vật">
-        <div class="hud-icon">🔮</div>
+        <div class="hud-icon">
+          <img src="data:image/png;base64,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" class="hud-img-icon" alt="Linh Hồn">
+        </div>
         <div class="hud-info">
           <span class="hud-label">Linh Hồn</span>
           <span class="hud-val" id="hudSoul">--</span>
         </div>
       </div>
       <div class="hud-item hud-stone" title="Đá linh hồn nhân vật">
-        <div class="hud-icon">💎</div>
+        <div class="hud-icon">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAEuklEQVR4nK2W3WtcRRjGn3dmztlzspvNJmljrW1JS1qV7kWRVgxFwYJIwV6K3vgH2DstFvuxSdjYFoQWVBQE8UKw/0ERFBG88cJe9KKgF6UEaqEfKRubze7J+XrlnbO77aabdnfxgWHmfMz85nnfmTkHaEs72EzO2HT39eS+Trv40itdz8b2H9p0HOWO4v/QAoDPhu5tihPDdKuawg4GEAH4YtDOakjnFrr9/Ss8e+VmNHn46HBwDA6tTL3zbefGvtNfY/Lw0eODwtUA7y5shPaA951zZUoz/bxXNYWZ+Yk3LjCRB2VGof0pUFTSrjulR4rb9Yuf/KgL5YNnACw+a7BS+TVQn9BK6c0qHCfPpF0ix4dyPDz/9jS7RQ/OiAvlKKyvNunaybdQv35VnFee6hh9QPPl9+wFpwmYE+YktO1oLcxKI0QcxPadA5//gkL54NlnOSc9utM2ktVbG58tSHgF6mzdb29oBpPxQMaFOJ+Y3cNO3oW41jkD5VIngi3n5wDIJDoaezk7YFS+/GEvqKze+eL+43D8vaBGYguHChyCOCTiWCOuxQhrCYIaI3ioEAc+0qQApiL2fvwzCjNP5vzfv/7EnlOXe+bYbpl8+QQctwCQAohAcqQSMSkjjm2e87unWOdzcMby0L4LnffJ+A5IayijUL9Tw9KlY6jfeDLntBlUZIyfQQWuNEgbhoC1DO6Q99wkm+IIBK79HJQ/Qtp3LJSMQhSs23F6wZXyp3pCO2K2CwmysJIYHIfgqAmOAk4a64gfNhAuryJcfohgud4pYa3ZGWLq2KcSdsn1ebn2XpgRxx6I4nmtvQXvQBWe5z1iwnTNIXOubE1KwymOg3I5kHGg3BxULseUc0BGoqIBdjoRjR7cx+0fjiCO64uAN2dHZuZU6tJ4qQucJhLmrK/AGCmUVlBK2Xql3gDFkQXzeoCk6ZLNr+uywDmR70im8MHdbhPiOBs4ns+N7Ti75dCcacM5lW0u4GwAZgapbDJSr9YjQGsLJiWL0AUkv+JWJh5lORbd//UjxPUb1m0XWKQdPefkt1bacEKuBZSDI7Vvc5pNQsD1tajVVnYCgJtdm1aKHLIhXrl2vgvaa1WLKl5pem7b7Bnt+5OUpoG9mSQBmEdYXLcXXaO53tWf0gTaHelcB6vLWLn+ZQuKDlSkZo59txG8GKwsVe/8cS6JohUo5dmitdS6k/OOWKKQFTvBsGFLUFvaFLr11Ysgb3xPNrvazZ7Od7wuYd9mHcta4TTlVLYVM5qNwM4ibUEVEltHa/ew8vc3iOv/PAE1hV2bhvpxnfJK09XdRy4ZcZwgQRrHSNOEZW83g2bmlpnsEuDkqdBBvk4XJOy3fj+JCMuAlwImhnKZgIRczyWHUnIVI2cYtP6gL6hI+ZNZqJ+ixfryjbnbv1WRBiGU59qivex3WPnZrkiCAPeuf9UX1B3d1dePQFuVwpaZ6s6jFy00CSJEQWKBaTPA3avVOFhZuvAs6DD/XOL89K2fTlho27FoUOiwqozvnuXyB5e5/O73bApbZGNXHz+I+pJx80PBjTEboP2DyZFTcXjJt9V5/BgEslNuICmdnbO95E1stvLbTh85dloHRE+GV+y0/wNryP5mLUTGPwAAAABJRU5ErkJggg==" class="hud-img-icon" alt="Đá Linh Hồn">
+        </div>
         <div class="hud-info">
           <span class="hud-label">Đá Linh Hồn</span>
           <span class="hud-val" id="hudSoulStone">--</span>
@@ -1197,7 +1204,7 @@
               <span class="card-icon">⚡</span>
               <span>Tự Động Hợp Thành (Lò Rèn / Xưởng)</span>
             </div>
-            <span class="status-badge" id="badgeCombine">Chưa kết nối</span>
+            <span class="status-badge" id="badgeCombine">Đang Tắt</span>
           </div>
 
           <div class="form-row">
@@ -1228,7 +1235,7 @@
               <span class="card-icon">📦</span>
               <span>Tự Động Cất Đồ Vào Kho</span>
             </div>
-            <span class="status-badge" id="badgeStash">Chưa kết nối</span>
+            <span class="status-badge" id="badgeStash">Đang Tắt</span>
           </div>
 
           <div class="form-row">
@@ -1284,7 +1291,7 @@
               <span class="card-icon">🎁</span>
               <span>Tự Động Mở Rương Báu (Chest Opener)</span>
             </div>
-            <span class="status-badge" id="badgeAutoBox">Chưa kết nối</span>
+            <span class="status-badge" id="badgeAutoBox">Đang Tắt</span>
           </div>
 
           <div class="form-row">
@@ -1317,7 +1324,7 @@
               <span class="card-icon">🔓</span>
               <span>Mở Khóa DLC Lò Rèn / Xưởng</span>
             </div>
-            <span class="status-badge" id="badgeDlc">Chưa kết nối</span>
+            <span class="status-badge" id="badgeDlc">Đang Tắt</span>
           </div>
 
           <div class="dlc-warning-box">
@@ -1479,7 +1486,75 @@
   <script>
     const API_BASE = "http://127.0.0.1:47900";
     let isConnected = false;
+    let initialSyncDone = false;
     let lastBoxCount = 0;
+
+    // Default settings (all OFF by default on fresh entry)
+    const defaultSettings = {
+      auto_comb: 0,
+      auto_stash: 0,
+      auto_box: 0,
+      dlc: 0,
+      comb_min: 5,
+      stash_sec: 60,
+      stash_start: 1,
+      stash_end: 5,
+      box_interval: 3
+    };
+
+    // Load persisted settings from localStorage
+    function loadSavedSettings() {
+      const saved = localStorage.getItem('dps_settings');
+      if (!saved) {
+        return { ...defaultSettings };
+      }
+      try {
+        return { ...defaultSettings, ...JSON.parse(saved) };
+      } catch (e) {
+        return { ...defaultSettings };
+      }
+    }
+
+    function saveSettings(settings) {
+      try {
+        localStorage.setItem('dps_settings', JSON.stringify(settings));
+      } catch (e) {}
+    }
+
+    let userSettings = loadSavedSettings();
+
+    // Apply loaded settings to UI immediately (all OFF by default unless user turned ON before)
+    function applySettingsToUI() {
+      document.getElementById('toggleCombine').checked = !!userSettings.auto_comb;
+      updateBadge('badgeCombine', userSettings.auto_comb, `Đang Bật (${userSettings.comb_min}p)`, 'Đang Tắt');
+
+      document.getElementById('toggleStash').checked = !!userSettings.auto_stash;
+      updateBadge('badgeStash', userSettings.auto_stash, `Đang Bật (${userSettings.stash_sec}s)`, 'Đang Tắt');
+
+      document.getElementById('toggleAutoBox').checked = !!userSettings.auto_box;
+      updateBadge('badgeAutoBox', userSettings.auto_box, `Đang Bật (${userSettings.box_interval}s)`, 'Đang Tắt');
+
+      document.getElementById('toggleDlc').checked = !!userSettings.dlc;
+      updateBadge('badgeDlc', userSettings.dlc, 'ĐÃ KÍCH HOẠT', 'Đang Tắt');
+
+      document.getElementById('combineInterval').value = userSettings.comb_min;
+      document.getElementById('stashInterval').value = userSettings.stash_sec;
+      document.getElementById('stashStart').value = userSettings.stash_start;
+      document.getElementById('stashEnd').value = userSettings.stash_end;
+      document.getElementById('boxInterval').value = userSettings.box_interval;
+    }
+
+    function updateBadge(id, isActive, onText, offText) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (!isConnected) {
+        el.className = 'status-badge';
+        el.innerText = 'Chưa kết nối';
+        return;
+      }
+      el.className = isActive ? 'status-badge active' : 'status-badge';
+      el.innerText = isActive ? onText : offText;
+    }
 
     // Toast & Modals
     function openDownloadModal() {
@@ -1540,12 +1615,39 @@
       addLog('HỆ THỐNG', 'Đã xóa toàn bộ nhật ký.', 'info');
     }
 
+    // Sync saved settings to game upon first connect
+    async function syncSavedSettingsToGame() {
+      addLog('ĐỒNG BỘ', 'Đang đồng bộ cấu hình đã lưu (mặc định tắt nếu chưa bật) vào game...', 'info');
+      try {
+        await fetch(`${API_BASE}/set?auto_comb=${userSettings.auto_comb}`);
+        await fetch(`${API_BASE}/set?comb_min=${userSettings.comb_min}`);
+        await fetch(`${API_BASE}/set?auto_stash=${userSettings.auto_stash}`);
+        await fetch(`${API_BASE}/set?stash_sec=${userSettings.stash_sec}`);
+        await fetch(`${API_BASE}/set?stash_start=${userSettings.stash_start}`);
+        await fetch(`${API_BASE}/set?stash_end=${userSettings.stash_end}`);
+        await fetch(`${API_BASE}/set?auto=${userSettings.auto_box}`);
+        await fetch(`${API_BASE}/set?dlc=${userSettings.dlc}`);
+        addLog('ĐỒNG BỘ', 'Đồng bộ cấu hình phiên trước thành công!', 'ok');
+      } catch (err) {
+        addLog('ĐỒNG BỘ', 'Lỗi đồng bộ cấu hình vào game.', 'err');
+      }
+    }
+
     // UI Updates from Game Status
     function updateStatus(data) {
       const wasConnected = isConnected;
       isConnected = true;
 
-      // Chips
+      // First time connecting in this browser session
+      if (!wasConnected) {
+        addLog('KẾT NỐI', `Đã kết nối thành công tới game DPS (PID: ${data.pid || '--'})`, 'ok');
+        if (!initialSyncDone) {
+          initialSyncDone = true;
+          syncSavedSettingsToGame();
+        }
+      }
+
+      // Header Chips
       const statusChip = document.getElementById('statusChip');
       const statusText = document.getElementById('statusText');
       statusChip.className = 'chip status-live';
@@ -1553,10 +1655,6 @@
 
       const pidVal = document.getElementById('pidVal');
       if (pidVal && data.pid) pidVal.innerText = data.pid;
-
-      if (!wasConnected) {
-        addLog('KẾT NỐI', `Đã kết nối thành công tới game DPS (PID: ${data.pid || '--'})`, 'ok');
-      }
 
       // Top Center HUD Updates
       if (data.soul !== undefined) {
@@ -1591,59 +1689,30 @@
       document.getElementById('storageStat').innerText = `${stoOcc} / ${stoCap}`;
       document.getElementById('capPercent').innerText = `${capPercent}%`;
 
-      // Color coding for high capacity
+      // Color coding for capacity bar
       const bar = document.getElementById('capBar');
       if (bar) {
-        if (capPercent >= 90) {
-          bar.style.background = '#ef4444';
-        } else if (capPercent >= 75) {
-          bar.style.background = '#f59e0b';
-        } else {
-          bar.style.background = '#10b981';
-        }
+        if (capPercent >= 90) bar.style.background = '#ef4444';
+        else if (capPercent >= 75) bar.style.background = '#f59e0b';
+        else bar.style.background = '#10b981';
       }
 
       // Module 1: Combine
-      const tComb = document.getElementById('toggleCombine');
-      const bComb = document.getElementById('badgeCombine');
-      if (tComb && data.combine !== undefined) {
-        tComb.checked = !!data.combine;
-        bComb.className = data.combine ? 'status-badge active' : 'status-badge';
-        bComb.innerText = data.combine ? `Đang Bật (${data.combine_interval || 5}p)` : 'Đang Tắt';
-      }
-      const cInt = document.getElementById('combineInterval');
-      if (cInt && data.combine_interval && document.activeElement !== cInt) {
-        cInt.value = data.combine_interval;
+      if (data.auto_comb !== undefined) {
+        document.getElementById('toggleCombine').checked = !!data.auto_comb;
+        updateBadge('badgeCombine', data.auto_comb, `Đang Bật (${data.comb_min || userSettings.comb_min}p)`, 'Đang Tắt');
       }
 
       // Module 2: Stash
-      const tStash = document.getElementById('toggleStash');
-      const bStash = document.getElementById('badgeStash');
-      if (tStash && data.stash !== undefined) {
-        tStash.checked = !!data.stash;
-        bStash.className = data.stash ? 'status-badge active' : 'status-badge';
-        bStash.innerText = data.stash ? `Đang Bật (${data.stash_interval || 60}s)` : 'Đang Tắt';
+      if (data.auto_stash !== undefined) {
+        document.getElementById('toggleStash').checked = !!data.auto_stash;
+        updateBadge('badgeStash', data.auto_stash, `Đang Bật (${data.stash_sec || userSettings.stash_sec}s)`, 'Đang Tắt');
       }
-      const sInt = document.getElementById('stashInterval');
-      if (sInt && data.stash_interval && document.activeElement !== sInt) {
-        sInt.value = data.stash_interval;
-      }
-      const sStart = document.getElementById('stashStart');
-      const sEnd = document.getElementById('stashEnd');
-      if (sStart && data.stash_start && document.activeElement !== sStart) sStart.value = data.stash_start;
-      if (sEnd && data.stash_end && document.activeElement !== sEnd) sEnd.value = data.stash_end;
 
       // Module 3: Auto Box
-      const tBox = document.getElementById('toggleAutoBox');
-      const bBox = document.getElementById('badgeAutoBox');
-      if (tBox && data.auto_box !== undefined) {
-        tBox.checked = !!data.auto_box;
-        bBox.className = data.auto_box ? 'status-badge active' : 'status-badge';
-        bBox.innerText = data.auto_box ? `Đang Bật (${data.box_interval || 3}s)` : 'Đang Tắt';
-      }
-      const bInt = document.getElementById('boxInterval');
-      if (bInt && data.box_interval && document.activeElement !== bInt) {
-        bInt.value = data.box_interval;
+      if (data.auto !== undefined) {
+        document.getElementById('toggleAutoBox').checked = !!data.auto;
+        updateBadge('badgeAutoBox', data.auto, `Đang Bật (${userSettings.box_interval}s)`, 'Đang Tắt');
       }
       if (data.box_count !== undefined) {
         document.getElementById('boxCountVal').innerText = `${data.box_count} Rương`;
@@ -1654,12 +1723,9 @@
       }
 
       // Module 4: DLC Toggle
-      const tDlc = document.getElementById('toggleDlc');
-      const bDlc = document.getElementById('badgeDlc');
-      if (tDlc && data.dlc !== undefined) {
-        tDlc.checked = !!data.dlc;
-        bDlc.className = data.dlc ? 'status-badge active' : 'status-badge';
-        bDlc.innerText = data.dlc ? 'ĐÃ KÍCH HOẠT' : 'NGUYÊN BẢN';
+      if (data.dlc !== undefined) {
+        document.getElementById('toggleDlc').checked = !!data.dlc;
+        updateBadge('badgeDlc', data.dlc, 'ĐÃ KÍCH HOẠT', 'Đang Tắt');
       }
     }
 
@@ -1713,7 +1779,7 @@
       }
     }
 
-    // Actions
+    // User Interactive Actions & Toggles
     async function triggerCombine() {
       addLog('THỦ CÔNG', 'Đang gửi lệnh Ghép đồ xưởng ngay...', 'info');
       try {
@@ -1746,9 +1812,12 @@
 
     async function onToggleCombine(el) {
       const val = el.checked ? 1 : 0;
-      addLog('HỢP THÀNH', el.checked ? 'Đã BẬT tự động ghép đồ định kỳ.' : 'Đã TẮT tự động ghép đồ.', el.checked ? 'ok' : 'warn');
+      userSettings.auto_comb = val;
+      saveSettings(userSettings);
+      updateBadge('badgeCombine', val, `Đang Bật (${userSettings.comb_min}p)`, 'Đang Tắt');
+      addLog('HỢP THÀNH', el.checked ? 'Đã BẬT tự động ghép đồ (đã lưu cho phiên sau).' : 'Đã TẮT tự động ghép đồ.', el.checked ? 'ok' : 'warn');
       try {
-        const res = await fetch(`${API_BASE}/set?combine=${val}`);
+        const res = await fetch(`${API_BASE}/set?auto_comb=${val}`);
         if (res.ok) updateStatus(await res.json());
       } catch (err) {}
     }
@@ -1757,18 +1826,23 @@
       const input = document.getElementById('combineInterval');
       if (!input) return;
       const val = Math.max(1, parseInt(input.value) || 5);
-      addLog('CẤU HÌNH', `Đã đổi chu kỳ ghép đồ thành ${val} phút.`, 'info');
+      userSettings.comb_min = val;
+      saveSettings(userSettings);
+      addLog('CẤU HÌNH', `Đã đổi chu kỳ ghép đồ thành ${val} phút (đã lưu).`, 'info');
       try {
-        const res = await fetch(`${API_BASE}/set?combine_interval=${val}`);
+        const res = await fetch(`${API_BASE}/set?comb_min=${val}`);
         if (res.ok) updateStatus(await res.json());
       } catch (err) {}
     }
 
     async function onToggleStash(el) {
       const val = el.checked ? 1 : 0;
-      addLog('CẤT ĐỒ', el.checked ? 'Đã BẬT tự động cất đồ định kỳ.' : 'Đã TẮT tự động cất đồ.', el.checked ? 'ok' : 'warn');
+      userSettings.auto_stash = val;
+      saveSettings(userSettings);
+      updateBadge('badgeStash', val, `Đang Bật (${userSettings.stash_sec}s)`, 'Đang Tắt');
+      addLog('CẤT ĐỒ', el.checked ? 'Đã BẬT tự động cất đồ (đã lưu cho phiên sau).' : 'Đã TẮT tự động cất đồ.', el.checked ? 'ok' : 'warn');
       try {
-        const res = await fetch(`${API_BASE}/set?stash=${val}`);
+        const res = await fetch(`${API_BASE}/set?auto_stash=${val}`);
         if (res.ok) updateStatus(await res.json());
       } catch (err) {}
     }
@@ -1777,38 +1851,11 @@
       const input = document.getElementById('stashInterval');
       if (!input) return;
       const val = Math.max(5, parseInt(input.value) || 60);
-      addLog('CẤU HÌNH', `Đã đổi chu kỳ cất đồ thành ${val} giây.`, 'info');
+      userSettings.stash_sec = val;
+      saveSettings(userSettings);
+      addLog('CẤU HÌNH', `Đã đổi chu kỳ cất đồ thành ${val} giây (đã lưu).`, 'info');
       try {
-        const res = await fetch(`${API_BASE}/set?stash_interval=${val}`);
-        if (res.ok) updateStatus(await res.json());
-      } catch (err) {}
-    }
-
-    async function onToggleAutoBox(el) {
-      const val = el.checked ? 1 : 0;
-      addLog('MỞ RƯƠNG', el.checked ? 'Đã BẬT tự động mở rương rơi định kỳ.' : 'Đã TẮT tự động mở rương.', el.checked ? 'box' : 'warn');
-      try {
-        const res = await fetch(`${API_BASE}/set?auto_box=${val}`);
-        if (res.ok) updateStatus(await res.json());
-      } catch (err) {}
-    }
-
-    async function updateBoxInterval() {
-      const input = document.getElementById('boxInterval');
-      if (!input) return;
-      const val = Math.max(1, parseInt(input.value) || 3);
-      addLog('CẤU HÌNH', `Đã đổi chu kỳ kiểm tra rương thành ${val} giây.`, 'info');
-      try {
-        const res = await fetch(`${API_BASE}/set?box_interval=${val}`);
-        if (res.ok) updateStatus(await res.json());
-      } catch (err) {}
-    }
-
-    async function onToggleDlc(el) {
-      const val = el.checked ? 1 : 0;
-      addLog('DLC UNLOCK', el.checked ? 'ĐÃ KÍCH HOẠT Mở Khóa DLC Lò Rèn ngầm.' : 'Đã TẮT Mở Khóa DLC (về nguyên bản).', el.checked ? 'warn' : 'info');
-      try {
-        const res = await fetch(`${API_BASE}/set?dlc=${val}`);
+        const res = await fetch(`${API_BASE}/set?stash_sec=${val}`);
         if (res.ok) updateStatus(await res.json());
       } catch (err) {}
     }
@@ -1819,7 +1866,10 @@
       if (!sInput || !eInput) return;
       const start = Math.max(1, parseInt(sInput.value) || 1);
       const end = Math.max(start, parseInt(eInput.value) || 5);
-      addLog('CẤU HÌNH', `Đã đổi phạm vi cất đồ: Kho ${start} đến Kho ${end}.`, 'info');
+      userSettings.stash_start = start;
+      userSettings.stash_end = end;
+      saveSettings(userSettings);
+      addLog('CẤU HÌNH', `Đã đổi phạm vi cất đồ: Kho ${start} đến Kho ${end} (đã lưu).`, 'info');
       try {
         await fetch(`${API_BASE}/set?stash_start=${start}`);
         const res = await fetch(`${API_BASE}/set?stash_end=${end}`);
@@ -1827,7 +1877,43 @@
       } catch (err) {}
     }
 
-    // Initialize
+    async function onToggleAutoBox(el) {
+      const val = el.checked ? 1 : 0;
+      userSettings.auto_box = val;
+      saveSettings(userSettings);
+      updateBadge('badgeAutoBox', val, `Đang Bật (${userSettings.box_interval}s)`, 'Đang Tắt');
+      addLog('MỞ RƯƠNG', el.checked ? 'Đã BẬT tự động mở rương rơi (đã lưu cho phiên sau).' : 'Đã TẮT tự động mở rương.', el.checked ? 'box' : 'warn');
+      try {
+        const res = await fetch(`${API_BASE}/set?auto=${val}`);
+        if (res.ok) updateStatus(await res.json());
+      } catch (err) {}
+    }
+
+    async function updateBoxInterval() {
+      const input = document.getElementById('boxInterval');
+      if (!input) return;
+      const val = Math.max(1, parseInt(input.value) || 3);
+      userSettings.box_interval = val;
+      saveSettings(userSettings);
+      addLog('CẤU HÌNH', `Đã đổi chu kỳ kiểm tra rương thành ${val} giây (đã lưu).`, 'info');
+    }
+
+    async function onToggleDlc(el) {
+      const val = el.checked ? 1 : 0;
+      userSettings.dlc = val;
+      saveSettings(userSettings);
+      updateBadge('badgeDlc', val, 'ĐÃ KÍCH HOẠT', 'Đang Tắt');
+      addLog('DLC UNLOCK', el.checked ? 'ĐÃ KÍCH HOẠT Mở Khóa DLC Lò Rèn ngầm (đã lưu).' : 'Đã TẮT Mở Khóa DLC (về nguyên bản).', el.checked ? 'warn' : 'info');
+      try {
+        const res = await fetch(`${API_BASE}/set?dlc=${val}`);
+        if (res.ok) updateStatus(await res.json());
+      } catch (err) {}
+    }
+
+    // Initialize UI from local storage
+    applySettingsToUI();
+
+    // Start polling
     fetchStatus();
     setInterval(fetchStatus, 2000);
   </script>

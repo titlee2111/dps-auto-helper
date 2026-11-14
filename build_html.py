@@ -2,12 +2,20 @@ import os
 
 BASE_DIR = r"C:\Users\Son\Desktop\dps-auto-helper"
 ICON_B64_FILE = os.path.join(BASE_DIR, "game_icon_b64.txt")
+SOUL_B64_FILE = os.path.join(BASE_DIR, "soul_icon_b64.txt")
+GEM_B64_FILE = os.path.join(BASE_DIR, "gem_icon_b64.txt")
 QR0_FILE = os.path.join(BASE_DIR, "qr_0.txt")
 QR1_FILE = os.path.join(BASE_DIR, "qr_1.txt")
 HTML_FILE = os.path.join(BASE_DIR, "index.html")
 
 with open(ICON_B64_FILE, "r", encoding="utf-8") as f:
     b64_icon = f.read().strip()
+
+with open(SOUL_B64_FILE, "r", encoding="utf-8") as f:
+    b64_soul = f.read().strip()
+
+with open(GEM_B64_FILE, "r", encoding="utf-8") as f:
+    b64_gem = f.read().strip()
 
 with open(QR0_FILE, "r", encoding="utf-8") as f:
     mb_qr_src = f.read().strip()
@@ -165,9 +173,12 @@ html_template = """<!doctype html>
       align-items: center;
       justify-content: center;
     }
-    .hud-soul .hud-icon { color: #c084fc; }
-    .hud-stone .hud-icon { color: #38bdf8; }
-    .hud-cap .hud-icon { color: #34d399; }
+    .hud-img-icon {
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
+      display: block;
+    }
 
     .hud-info {
       display: flex;
@@ -187,8 +198,8 @@ html_template = """<!doctype html>
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       letter-spacing: 0.02em;
     }
-    .hud-soul .hud-val { color: #d8b4fe; }
-    .hud-stone .hud-val { color: #7dd3fc; }
+    .hud-soul .hud-val { color: #67e8f9; }
+    .hud-stone .hud-val { color: #60a5fa; }
     .hud-cap .hud-val { color: #6ee7b7; }
 
     .hud-mini-bar {
@@ -1124,14 +1135,18 @@ html_template = """<!doctype html>
     <!-- TOP CENTER HUD -->
     <div class="header-hud">
       <div class="hud-item hud-soul" title="Linh hồn nhân vật">
-        <div class="hud-icon">🔮</div>
+        <div class="hud-icon">
+          <img src="data:image/png;base64,__SOUL_ICON_B64__" class="hud-img-icon" alt="Linh Hồn">
+        </div>
         <div class="hud-info">
           <span class="hud-label">Linh Hồn</span>
           <span class="hud-val" id="hudSoul">--</span>
         </div>
       </div>
       <div class="hud-item hud-stone" title="Đá linh hồn nhân vật">
-        <div class="hud-icon">💎</div>
+        <div class="hud-icon">
+          <img src="data:image/png;base64,__GEM_ICON_B64__" class="hud-img-icon" alt="Đá Linh Hồn">
+        </div>
         <div class="hud-info">
           <span class="hud-label">Đá Linh Hồn</span>
           <span class="hud-val" id="hudSoulStone">--</span>
@@ -1214,7 +1229,7 @@ html_template = """<!doctype html>
               <span class="card-icon">⚡</span>
               <span>Tự Động Hợp Thành (Lò Rèn / Xưởng)</span>
             </div>
-            <span class="status-badge" id="badgeCombine">Chưa kết nối</span>
+            <span class="status-badge" id="badgeCombine">Đang Tắt</span>
           </div>
 
           <div class="form-row">
@@ -1245,7 +1260,7 @@ html_template = """<!doctype html>
               <span class="card-icon">📦</span>
               <span>Tự Động Cất Đồ Vào Kho</span>
             </div>
-            <span class="status-badge" id="badgeStash">Chưa kết nối</span>
+            <span class="status-badge" id="badgeStash">Đang Tắt</span>
           </div>
 
           <div class="form-row">
@@ -1301,7 +1316,7 @@ html_template = """<!doctype html>
               <span class="card-icon">🎁</span>
               <span>Tự Động Mở Rương Báu (Chest Opener)</span>
             </div>
-            <span class="status-badge" id="badgeAutoBox">Chưa kết nối</span>
+            <span class="status-badge" id="badgeAutoBox">Đang Tắt</span>
           </div>
 
           <div class="form-row">
@@ -1334,7 +1349,7 @@ html_template = """<!doctype html>
               <span class="card-icon">🔓</span>
               <span>Mở Khóa DLC Lò Rèn / Xưởng</span>
             </div>
-            <span class="status-badge" id="badgeDlc">Chưa kết nối</span>
+            <span class="status-badge" id="badgeDlc">Đang Tắt</span>
           </div>
 
           <div class="dlc-warning-box">
@@ -1496,7 +1511,75 @@ html_template = """<!doctype html>
   <script>
     const API_BASE = "http://127.0.0.1:47900";
     let isConnected = false;
+    let initialSyncDone = false;
     let lastBoxCount = 0;
+
+    // Default settings (all OFF by default on fresh entry)
+    const defaultSettings = {
+      auto_comb: 0,
+      auto_stash: 0,
+      auto_box: 0,
+      dlc: 0,
+      comb_min: 5,
+      stash_sec: 60,
+      stash_start: 1,
+      stash_end: 5,
+      box_interval: 3
+    };
+
+    // Load persisted settings from localStorage
+    function loadSavedSettings() {
+      const saved = localStorage.getItem('dps_settings');
+      if (!saved) {
+        return { ...defaultSettings };
+      }
+      try {
+        return { ...defaultSettings, ...JSON.parse(saved) };
+      } catch (e) {
+        return { ...defaultSettings };
+      }
+    }
+
+    function saveSettings(settings) {
+      try {
+        localStorage.setItem('dps_settings', JSON.stringify(settings));
+      } catch (e) {}
+    }
+
+    let userSettings = loadSavedSettings();
+
+    // Apply loaded settings to UI immediately (all OFF by default unless user turned ON before)
+    function applySettingsToUI() {
+      document.getElementById('toggleCombine').checked = !!userSettings.auto_comb;
+      updateBadge('badgeCombine', userSettings.auto_comb, `Đang Bật (${userSettings.comb_min}p)`, 'Đang Tắt');
+
+      document.getElementById('toggleStash').checked = !!userSettings.auto_stash;
+      updateBadge('badgeStash', userSettings.auto_stash, `Đang Bật (${userSettings.stash_sec}s)`, 'Đang Tắt');
+
+      document.getElementById('toggleAutoBox').checked = !!userSettings.auto_box;
+      updateBadge('badgeAutoBox', userSettings.auto_box, `Đang Bật (${userSettings.box_interval}s)`, 'Đang Tắt');
+
+      document.getElementById('toggleDlc').checked = !!userSettings.dlc;
+      updateBadge('badgeDlc', userSettings.dlc, 'ĐÃ KÍCH HOẠT', 'Đang Tắt');
+
+      document.getElementById('combineInterval').value = userSettings.comb_min;
+      document.getElementById('stashInterval').value = userSettings.stash_sec;
+      document.getElementById('stashStart').value = userSettings.stash_start;
+      document.getElementById('stashEnd').value = userSettings.stash_end;
+      document.getElementById('boxInterval').value = userSettings.box_interval;
+    }
+
+    function updateBadge(id, isActive, onText, offText) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (!isConnected) {
+        el.className = 'status-badge';
+        el.innerText = 'Chưa kết nối';
+        return;
+      }
+      el.className = isActive ? 'status-badge active' : 'status-badge';
+      el.innerText = isActive ? onText : offText;
+    }
 
     // Toast & Modals
     function openDownloadModal() {
@@ -1557,12 +1640,39 @@ html_template = """<!doctype html>
       addLog('HỆ THỐNG', 'Đã xóa toàn bộ nhật ký.', 'info');
     }
 
+    // Sync saved settings to game upon first connect
+    async function syncSavedSettingsToGame() {
+      addLog('ĐỒNG BỘ', 'Đang đồng bộ cấu hình đã lưu (mặc định tắt nếu chưa bật) vào game...', 'info');
+      try {
+        await fetch(`${API_BASE}/set?auto_comb=${userSettings.auto_comb}`);
+        await fetch(`${API_BASE}/set?comb_min=${userSettings.comb_min}`);
+        await fetch(`${API_BASE}/set?auto_stash=${userSettings.auto_stash}`);
+        await fetch(`${API_BASE}/set?stash_sec=${userSettings.stash_sec}`);
+        await fetch(`${API_BASE}/set?stash_start=${userSettings.stash_start}`);
+        await fetch(`${API_BASE}/set?stash_end=${userSettings.stash_end}`);
+        await fetch(`${API_BASE}/set?auto=${userSettings.auto_box}`);
+        await fetch(`${API_BASE}/set?dlc=${userSettings.dlc}`);
+        addLog('ĐỒNG BỘ', 'Đồng bộ cấu hình phiên trước thành công!', 'ok');
+      } catch (err) {
+        addLog('ĐỒNG BỘ', 'Lỗi đồng bộ cấu hình vào game.', 'err');
+      }
+    }
+
     // UI Updates from Game Status
     function updateStatus(data) {
       const wasConnected = isConnected;
       isConnected = true;
 
-      // Chips
+      // First time connecting in this browser session
+      if (!wasConnected) {
+        addLog('KẾT NỐI', `Đã kết nối thành công tới game DPS (PID: ${data.pid || '--'})`, 'ok');
+        if (!initialSyncDone) {
+          initialSyncDone = true;
+          syncSavedSettingsToGame();
+        }
+      }
+
+      // Header Chips
       const statusChip = document.getElementById('statusChip');
       const statusText = document.getElementById('statusText');
       statusChip.className = 'chip status-live';
@@ -1570,10 +1680,6 @@ html_template = """<!doctype html>
 
       const pidVal = document.getElementById('pidVal');
       if (pidVal && data.pid) pidVal.innerText = data.pid;
-
-      if (!wasConnected) {
-        addLog('KẾT NỐI', `Đã kết nối thành công tới game DPS (PID: ${data.pid || '--'})`, 'ok');
-      }
 
       // Top Center HUD Updates
       if (data.soul !== undefined) {
@@ -1608,59 +1714,30 @@ html_template = """<!doctype html>
       document.getElementById('storageStat').innerText = `${stoOcc} / ${stoCap}`;
       document.getElementById('capPercent').innerText = `${capPercent}%`;
 
-      // Color coding for high capacity
+      // Color coding for capacity bar
       const bar = document.getElementById('capBar');
       if (bar) {
-        if (capPercent >= 90) {
-          bar.style.background = '#ef4444';
-        } else if (capPercent >= 75) {
-          bar.style.background = '#f59e0b';
-        } else {
-          bar.style.background = '#10b981';
-        }
+        if (capPercent >= 90) bar.style.background = '#ef4444';
+        else if (capPercent >= 75) bar.style.background = '#f59e0b';
+        else bar.style.background = '#10b981';
       }
 
       // Module 1: Combine
-      const tComb = document.getElementById('toggleCombine');
-      const bComb = document.getElementById('badgeCombine');
-      if (tComb && data.combine !== undefined) {
-        tComb.checked = !!data.combine;
-        bComb.className = data.combine ? 'status-badge active' : 'status-badge';
-        bComb.innerText = data.combine ? `Đang Bật (${data.combine_interval || 5}p)` : 'Đang Tắt';
-      }
-      const cInt = document.getElementById('combineInterval');
-      if (cInt && data.combine_interval && document.activeElement !== cInt) {
-        cInt.value = data.combine_interval;
+      if (data.auto_comb !== undefined) {
+        document.getElementById('toggleCombine').checked = !!data.auto_comb;
+        updateBadge('badgeCombine', data.auto_comb, `Đang Bật (${data.comb_min || userSettings.comb_min}p)`, 'Đang Tắt');
       }
 
       // Module 2: Stash
-      const tStash = document.getElementById('toggleStash');
-      const bStash = document.getElementById('badgeStash');
-      if (tStash && data.stash !== undefined) {
-        tStash.checked = !!data.stash;
-        bStash.className = data.stash ? 'status-badge active' : 'status-badge';
-        bStash.innerText = data.stash ? `Đang Bật (${data.stash_interval || 60}s)` : 'Đang Tắt';
+      if (data.auto_stash !== undefined) {
+        document.getElementById('toggleStash').checked = !!data.auto_stash;
+        updateBadge('badgeStash', data.auto_stash, `Đang Bật (${data.stash_sec || userSettings.stash_sec}s)`, 'Đang Tắt');
       }
-      const sInt = document.getElementById('stashInterval');
-      if (sInt && data.stash_interval && document.activeElement !== sInt) {
-        sInt.value = data.stash_interval;
-      }
-      const sStart = document.getElementById('stashStart');
-      const sEnd = document.getElementById('stashEnd');
-      if (sStart && data.stash_start && document.activeElement !== sStart) sStart.value = data.stash_start;
-      if (sEnd && data.stash_end && document.activeElement !== sEnd) sEnd.value = data.stash_end;
 
       // Module 3: Auto Box
-      const tBox = document.getElementById('toggleAutoBox');
-      const bBox = document.getElementById('badgeAutoBox');
-      if (tBox && data.auto_box !== undefined) {
-        tBox.checked = !!data.auto_box;
-        bBox.className = data.auto_box ? 'status-badge active' : 'status-badge';
-        bBox.innerText = data.auto_box ? `Đang Bật (${data.box_interval || 3}s)` : 'Đang Tắt';
-      }
-      const bInt = document.getElementById('boxInterval');
-      if (bInt && data.box_interval && document.activeElement !== bInt) {
-        bInt.value = data.box_interval;
+      if (data.auto !== undefined) {
+        document.getElementById('toggleAutoBox').checked = !!data.auto;
+        updateBadge('badgeAutoBox', data.auto, `Đang Bật (${userSettings.box_interval}s)`, 'Đang Tắt');
       }
       if (data.box_count !== undefined) {
         document.getElementById('boxCountVal').innerText = `${data.box_count} Rương`;
@@ -1671,12 +1748,9 @@ html_template = """<!doctype html>
       }
 
       // Module 4: DLC Toggle
-      const tDlc = document.getElementById('toggleDlc');
-      const bDlc = document.getElementById('badgeDlc');
-      if (tDlc && data.dlc !== undefined) {
-        tDlc.checked = !!data.dlc;
-        bDlc.className = data.dlc ? 'status-badge active' : 'status-badge';
-        bDlc.innerText = data.dlc ? 'ĐÃ KÍCH HOẠT' : 'NGUYÊN BẢN';
+      if (data.dlc !== undefined) {
+        document.getElementById('toggleDlc').checked = !!data.dlc;
+        updateBadge('badgeDlc', data.dlc, 'ĐÃ KÍCH HOẠT', 'Đang Tắt');
       }
     }
 
@@ -1730,7 +1804,7 @@ html_template = """<!doctype html>
       }
     }
 
-    // Actions
+    // User Interactive Actions & Toggles
     async function triggerCombine() {
       addLog('THỦ CÔNG', 'Đang gửi lệnh Ghép đồ xưởng ngay...', 'info');
       try {
@@ -1763,9 +1837,12 @@ html_template = """<!doctype html>
 
     async function onToggleCombine(el) {
       const val = el.checked ? 1 : 0;
-      addLog('HỢP THÀNH', el.checked ? 'Đã BẬT tự động ghép đồ định kỳ.' : 'Đã TẮT tự động ghép đồ.', el.checked ? 'ok' : 'warn');
+      userSettings.auto_comb = val;
+      saveSettings(userSettings);
+      updateBadge('badgeCombine', val, `Đang Bật (${userSettings.comb_min}p)`, 'Đang Tắt');
+      addLog('HỢP THÀNH', el.checked ? 'Đã BẬT tự động ghép đồ (đã lưu cho phiên sau).' : 'Đã TẮT tự động ghép đồ.', el.checked ? 'ok' : 'warn');
       try {
-        const res = await fetch(`${API_BASE}/set?combine=${val}`);
+        const res = await fetch(`${API_BASE}/set?auto_comb=${val}`);
         if (res.ok) updateStatus(await res.json());
       } catch (err) {}
     }
@@ -1774,18 +1851,23 @@ html_template = """<!doctype html>
       const input = document.getElementById('combineInterval');
       if (!input) return;
       const val = Math.max(1, parseInt(input.value) || 5);
-      addLog('CẤU HÌNH', `Đã đổi chu kỳ ghép đồ thành ${val} phút.`, 'info');
+      userSettings.comb_min = val;
+      saveSettings(userSettings);
+      addLog('CẤU HÌNH', `Đã đổi chu kỳ ghép đồ thành ${val} phút (đã lưu).`, 'info');
       try {
-        const res = await fetch(`${API_BASE}/set?combine_interval=${val}`);
+        const res = await fetch(`${API_BASE}/set?comb_min=${val}`);
         if (res.ok) updateStatus(await res.json());
       } catch (err) {}
     }
 
     async function onToggleStash(el) {
       const val = el.checked ? 1 : 0;
-      addLog('CẤT ĐỒ', el.checked ? 'Đã BẬT tự động cất đồ định kỳ.' : 'Đã TẮT tự động cất đồ.', el.checked ? 'ok' : 'warn');
+      userSettings.auto_stash = val;
+      saveSettings(userSettings);
+      updateBadge('badgeStash', val, `Đang Bật (${userSettings.stash_sec}s)`, 'Đang Tắt');
+      addLog('CẤT ĐỒ', el.checked ? 'Đã BẬT tự động cất đồ (đã lưu cho phiên sau).' : 'Đã TẮT tự động cất đồ.', el.checked ? 'ok' : 'warn');
       try {
-        const res = await fetch(`${API_BASE}/set?stash=${val}`);
+        const res = await fetch(`${API_BASE}/set?auto_stash=${val}`);
         if (res.ok) updateStatus(await res.json());
       } catch (err) {}
     }
@@ -1794,38 +1876,11 @@ html_template = """<!doctype html>
       const input = document.getElementById('stashInterval');
       if (!input) return;
       const val = Math.max(5, parseInt(input.value) || 60);
-      addLog('CẤU HÌNH', `Đã đổi chu kỳ cất đồ thành ${val} giây.`, 'info');
+      userSettings.stash_sec = val;
+      saveSettings(userSettings);
+      addLog('CẤU HÌNH', `Đã đổi chu kỳ cất đồ thành ${val} giây (đã lưu).`, 'info');
       try {
-        const res = await fetch(`${API_BASE}/set?stash_interval=${val}`);
-        if (res.ok) updateStatus(await res.json());
-      } catch (err) {}
-    }
-
-    async function onToggleAutoBox(el) {
-      const val = el.checked ? 1 : 0;
-      addLog('MỞ RƯƠNG', el.checked ? 'Đã BẬT tự động mở rương rơi định kỳ.' : 'Đã TẮT tự động mở rương.', el.checked ? 'box' : 'warn');
-      try {
-        const res = await fetch(`${API_BASE}/set?auto_box=${val}`);
-        if (res.ok) updateStatus(await res.json());
-      } catch (err) {}
-    }
-
-    async function updateBoxInterval() {
-      const input = document.getElementById('boxInterval');
-      if (!input) return;
-      const val = Math.max(1, parseInt(input.value) || 3);
-      addLog('CẤU HÌNH', `Đã đổi chu kỳ kiểm tra rương thành ${val} giây.`, 'info');
-      try {
-        const res = await fetch(`${API_BASE}/set?box_interval=${val}`);
-        if (res.ok) updateStatus(await res.json());
-      } catch (err) {}
-    }
-
-    async function onToggleDlc(el) {
-      const val = el.checked ? 1 : 0;
-      addLog('DLC UNLOCK', el.checked ? 'ĐÃ KÍCH HOẠT Mở Khóa DLC Lò Rèn ngầm.' : 'Đã TẮT Mở Khóa DLC (về nguyên bản).', el.checked ? 'warn' : 'info');
-      try {
-        const res = await fetch(`${API_BASE}/set?dlc=${val}`);
+        const res = await fetch(`${API_BASE}/set?stash_sec=${val}`);
         if (res.ok) updateStatus(await res.json());
       } catch (err) {}
     }
@@ -1836,7 +1891,10 @@ html_template = """<!doctype html>
       if (!sInput || !eInput) return;
       const start = Math.max(1, parseInt(sInput.value) || 1);
       const end = Math.max(start, parseInt(eInput.value) || 5);
-      addLog('CẤU HÌNH', `Đã đổi phạm vi cất đồ: Kho ${start} đến Kho ${end}.`, 'info');
+      userSettings.stash_start = start;
+      userSettings.stash_end = end;
+      saveSettings(userSettings);
+      addLog('CẤU HÌNH', `Đã đổi phạm vi cất đồ: Kho ${start} đến Kho ${end} (đã lưu).`, 'info');
       try {
         await fetch(`${API_BASE}/set?stash_start=${start}`);
         const res = await fetch(`${API_BASE}/set?stash_end=${end}`);
@@ -1844,7 +1902,43 @@ html_template = """<!doctype html>
       } catch (err) {}
     }
 
-    // Initialize
+    async function onToggleAutoBox(el) {
+      const val = el.checked ? 1 : 0;
+      userSettings.auto_box = val;
+      saveSettings(userSettings);
+      updateBadge('badgeAutoBox', val, `Đang Bật (${userSettings.box_interval}s)`, 'Đang Tắt');
+      addLog('MỞ RƯƠNG', el.checked ? 'Đã BẬT tự động mở rương rơi (đã lưu cho phiên sau).' : 'Đã TẮT tự động mở rương.', el.checked ? 'box' : 'warn');
+      try {
+        const res = await fetch(`${API_BASE}/set?auto=${val}`);
+        if (res.ok) updateStatus(await res.json());
+      } catch (err) {}
+    }
+
+    async function updateBoxInterval() {
+      const input = document.getElementById('boxInterval');
+      if (!input) return;
+      const val = Math.max(1, parseInt(input.value) || 3);
+      userSettings.box_interval = val;
+      saveSettings(userSettings);
+      addLog('CẤU HÌNH', `Đã đổi chu kỳ kiểm tra rương thành ${val} giây (đã lưu).`, 'info');
+    }
+
+    async function onToggleDlc(el) {
+      const val = el.checked ? 1 : 0;
+      userSettings.dlc = val;
+      saveSettings(userSettings);
+      updateBadge('badgeDlc', val, 'ĐÃ KÍCH HOẠT', 'Đang Tắt');
+      addLog('DLC UNLOCK', el.checked ? 'ĐÃ KÍCH HOẠT Mở Khóa DLC Lò Rèn ngầm (đã lưu).' : 'Đã TẮT Mở Khóa DLC (về nguyên bản).', el.checked ? 'warn' : 'info');
+      try {
+        const res = await fetch(`${API_BASE}/set?dlc=${val}`);
+        if (res.ok) updateStatus(await res.json());
+      } catch (err) {}
+    }
+
+    // Initialize UI from local storage
+    applySettingsToUI();
+
+    // Start polling
     fetchStatus();
     setInterval(fetchStatus, 2000);
   </script>
@@ -1852,7 +1946,12 @@ html_template = """<!doctype html>
 </html>
 """
 
-final_html = html_template.replace("__B64_ICON__", b64_icon).replace("__MB_QR__", mb_qr_src).replace("__BINANCE_QR__", binance_qr_src)
+final_html = (html_template
+  .replace("__B64_ICON__", b64_icon)
+  .replace("__SOUL_ICON_B64__", b64_soul)
+  .replace("__GEM_ICON_B64__", b64_gem)
+  .replace("__MB_QR__", mb_qr_src)
+  .replace("__BINANCE_QR__", binance_qr_src))
 
 with open(HTML_FILE, "w", encoding="utf-8") as f:
     f.write(final_html)
