@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DPS Auto Helper - Tự Động Hóa Kho & Xưởng (Zero Coordinates)</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <style>
+    :root {
+      --bg: #0e1217;
+      --panel: #171d26;
+      --panel-hover: #1e2532;
+      --line: #293444;
+      --ink: #f0f4f8;
+      --dim: #8b9bb4;
+      --acc: #4da3ff;
+      --ok: #2fd573;
+      --warn: #ffb830;
+      --err: #ff5252;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-icon {
+      font-size: 24px;
+      background: rgba(77, 163, 255, 0.15);
+      border: 1px solid var(--acc);
+      border-radius: 10px;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .brand-text h1 {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      color: #fff;
+    }
+    .brand-text p {
+      font-size: 11px;
+      color: var(--dim);
+    }
+    .status-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .chip {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: #232b38;
+      color: var(--dim);
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .chip.on {
+      color: #0d2616;
+      background: var(--ok);
+      border-color: var(--ok);
+    }
+    .chip.off {
+      color: #fff;
+      background: #472121;
+      border-color: var(--err);
+    }
+    .dot-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    main {
+      max-width: 680px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .banner-offline {
+      background: linear-gradient(135deg, #2b1818 0%, #1a151b 100%);
+      border: 1px solid #752929;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .banner-offline h3 {
+      color: #ff8585;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .banner-offline p {
+      font-size: 12px;
+      color: #e0b0b0;
+      line-height: 1.5;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Switch toggle */
+    .switch-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #12161d;
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      margin-bottom: 16px;
+    }
+    .switch-info h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .switch-info p {
+      font-size: 12px;
+      color: var(--dim);
+      margin-top: 2px;
+    }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #2a3444;
+      transition: .2s;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .2s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: var(--ok);
+      border-color: var(--ok);
+    }
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+
+    /* Form rows */
+    .row-config {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .row-config label {
+      color: var(--dim);
+      font-size: 13px;
+    }
+    input[type=number] {
+      background: #0f131a;
+      border: 1px solid var(--line);
+      color: #fff;
+      padding: 7px 10px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      text-align: center;
+      transition: border-color .2s;
+    }
+    input[type=number]:focus {
+      outline: none;
+      border-color: var(--acc);
+    }
+
+    .badge-status {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: #232b38;
+      color: var(--dim);
+      border: 1px solid var(--line);
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .badge-status.active {
+      background: rgba(47, 213, 115, 0.15);
+      color: var(--ok);
+      border-color: var(--ok);
+    }
+
+    .btn {
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 13px;
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all .15s ease;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: #1d3b5c;
+      color: #7bc0ff;
+      border-color: #2b5484;
+    }
+    .btn-primary:hover {
+      background: #254a73;
+    }
+    .btn-green {
+      background: #163825;
+      color: #55e693;
+      border-color: #245c3c;
+    }
+    .btn-green:hover {
+      background: #1e4a31;
+    }
+    .btn-download {
+      background: linear-gradient(135deg, #1f6feb 0%, #1158c7 100%);
+      color: #fff;
+      font-size: 14px;
+      padding: 14px 24px;
+      border-radius: 10px;
+      box-shadow: 0 4px 16px rgba(31, 111, 235, 0.3);
+      width: 100%;
+      text-align: center;
+    }
+    .btn-download:hover {
+      background: linear-gradient(135deg, #2b7af5 0%, #1664dc 100%);
+      transform: translateY(-1px);
+    }
+
+    .msg-bar {
+      background: #11151c;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: #8b9bb4;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 40px;
+    }
+    .msg-bar.success {
+      color: #55e693;
+      border-color: rgba(47, 213, 115, 0.3);
+      background: rgba(47, 213, 115, 0.05);
+    }
+
+    /* Guide steps */
+    .step-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .step-item {
+      display: flex;
+      gap: 12px;
+      background: #11151c;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+    }
+    .step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--acc);
+      color: #0b1219;
+      font-weight: 700;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-body h5 {
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+    .step-body p {
+      font-size: 12px;
+      color: var(--dim);
+      line-height: 1.4;
+    }
+
+    footer {
+      margin-top: auto;
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: var(--dim);
+      border-top: 1px solid var(--line);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="brand-icon">⚡</div>
+      <div class="brand-text">
+        <h1>DPS AUTO HELPER</h1>
+        <p>Hỗ Trợ Tự Động Hóa Kho & Xưởng (Zero Coordinates)</p>
+      </div>
+    </div>
+    <div class="status-group">
+      <span id="pidBadge" class="chip">PID: -</span>
+      <span id="connBadge" class="chip off"><span class="dot-indicator"></span><span id="connText">Chưa kết nối game</span></span>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Banner khi chưa kết nối -->
+    <div id="offlineNotice" class="banner-offline" style="display: none;">
+      <h3>⚠️ Chưa phát hiện game DPS đang chạy!</h3>
+      <p>Nếu bạn chưa cài đặt mod hỗ trợ, hãy tải gói cài 1-click bên dưới, giải nén vào thư mục game và khởi động game qua Steam. Sau khi game mở, trang web này sẽ tự động nhận diện và kết nối.</p>
+    </div>
+
+    <!-- Thanh thông báo trạng thái thao tác -->
+    <div id="msgBar" class="msg-bar">
+      <span>💬</span><span id="msgText">Sẵn sàng nhận lệnh điều khiển.</span>
+    </div>
+
+    <!-- MODULE 1: AUTO COMBINE F7 -->
+    <div class="card" style="border-top: 3px solid #4da3ff;">
+      <div class="card-header">
+        <div class="card-title" style="color: #4da3ff;">
+          <span>🔨</span> Tự Động Hợp Thành Xưởng (F7)
+        </div>
+        <span id="badgeCombine" class="badge-status">Đã tắt</span>
+      </div>
+
+      <div class="switch-wrap">
+        <div class="switch-info">
+          <h4>Bật Tự Động Ghép Đồ Định Kỳ</h4>
+          <p>Tự động lặp lại công thức ghép trong Xưởng theo chu kỳ thời gian đã chọn</p>
+        </div>
+        <label class="switch">
+          <input id="toggleCombine" type="checkbox">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="row-config">
+        <label for="combineMin">Chu kỳ chạy mỗi:</label>
+        <input id="combineMin" type="number" min="1" max="60" value="5" style="width: 70px;">
+        <span style="color: var(--dim); font-size: 13px;">phút</span>
+      </div>
+
+      <div style="margin-top: 14px; display: flex; gap: 10px;">
+        <button id="btnCombineNow" class="btn btn-primary" style="flex: 1;">
+          🔨 HỢP THÀNH XƯỞNG NGAY (F7)
+        </button>
+      </div>
+    </div>
+
+    <!-- MODULE 2: AUTO STASH F6 -->
+    <div class="card" style="border-top: 3px solid #2fd573;">
+      <div class="card-header">
+        <div class="card-title" style="color: #2fd573;">
+          <span>📦</span> Tự Động Cất Đồ Vào Kho (F6)
+        </div>
+        <span id="badgeStash" class="badge-status">Đã tắt</span>
+      </div>
+
+      <div class="switch-wrap">
+        <div class="switch-info">
+          <h4>Bật Tự Động Cất Đồ Định Kỳ</h4>
+          <p>Cất đồ từ túi đồ cá nhân tuần tự vào các ngăn kho đã thiết lập</p>
+        </div>
+        <label class="switch">
+          <input id="toggleStash" type="checkbox">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="row-config">
+        <label for="stashSec">Chu kỳ chạy mỗi:</label>
+        <input id="stashSec" type="number" min="2" max="600" value="60" style="width: 70px;">
+        <span style="color: var(--dim); font-size: 13px;">giây</span>
+
+        <span style="color: var(--line); margin: 0 4px;">|</span>
+
+        <label for="stashStart">Cất từ Kho:</label>
+        <input id="stashStart" type="number" min="1" max="10" value="1" style="width: 55px;">
+
+        <label for="stashEnd">đến Kho:</label>
+        <input id="stashEnd" type="number" min="1" max="10" value="5" style="width: 55px;">
+      </div>
+
+      <div style="margin-top: 14px; display: flex; gap: 10px;">
+        <button id="btnStashNow" class="btn btn-green" style="flex: 1;">
+          📦 CẤT ĐỒ VÀO KHO NGAY (F6)
+        </button>
+      </div>
+    </div>
+
+    <!-- MODULE 3: TẢI & CÀI ĐẶT 1-CLICK DÀNH CHO BẠN BÈ -->
+    <div class="card" style="border-color: #2b3d54;">
+      <div class="card-header">
+        <div class="card-title" style="color: #7bc0ff;">
+          <span>📥</span> Gói Cài Đặt 1-Click Cho Bạn Bè
+        </div>
+      </div>
+
+      <p style="font-size: 13px; color: var(--dim); margin-bottom: 16px; line-height: 1.5;">
+        Trang web này chạy trên trình duyệt cần một cổng kết nối ngầm bên trong game để nhận lệnh. Bạn bè của bạn chỉ cần tải gói 1-Click bên dưới và giải nén vào thư mục game là có thể sử dụng trang web này ngay lập tức!
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <a id="btnDownload" href="https://github.com/titlee2111/dps-auto-helper/releases/download/v1.0.0/DPS_Auto_Helper_1Click.zip" class="btn btn-download">
+          📥 TẢI MOD HỖ TRỢ 1-CLICK TRỌN GÓI (.ZIP)
+        </a>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+          <a href="./DPS_Auto_Helper_1Click.zip" class="btn" style="background:#172230;color:#7bc0ff;font-size:12px;padding:8px 14px;border:1px solid #283a52;">
+            🔗 Link dự phòng (Local)
+          </a>
+          <a href="./DPS_Auto_Helper_Installer_Lite.zip" class="btn" style="background:#172230;color:#55e693;font-size:12px;padding:8px 14px;border:1px solid #283a52;">
+            ⚡ Bản Lite siêu nhẹ (41 KB)
+          </a>
+        </div>
+      </div>
+
+      <div class="step-list">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h5>Tải file nén</h5>
+            <p>Bấm nút màu xanh ở trên để tải về file <code>DPS_Auto_Helper_1Click.zip</code>.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h5>Giải nén vào thư mục game</h5>
+            <p>Giải nén file zip vào thư mục cài đặt game <code>DPS Desktop Pension Squad</code> (thường ở <code>Steam\steamapps\common\DPS Desktop Pension Squad</code>) rồi chạy file <code>Cai_Dat_Tu_Dong.bat</code>.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h5>Vào game và tận hưởng</h5>
+            <p>Mở game qua Steam, sau đó mở trang web này để bật/tắt và tùy chỉnh thời gian cất đồ, ghép đồ hoàn toàn tự động!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    DPS Auto Helper • Chuẩn Zero Coordinates (Gọi logic C# nội bộ) • Không chiếm chuột • Lưu vĩnh viễn
+  </footer>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    const API_BASE = 'http://127.0.0.1:47900';
+
+    let isOnline = false;
+
+    function notify(text, isOk = false) {
+      $('msgText').textContent = text;
+      $('msgBar').className = isOk ? 'msg-bar success' : 'msg-bar';
+    }
+
+    function updateStashBtnLabel() {
+      const s = $('stashStart').value || 1;
+      const e = $('stashEnd').value || 5;
+      $('btnStashNow').textContent = `📦 CẤT ĐỒ VÀO KHO ${s} -> ${e} NGAY (F6)`;
+    }
+
+    function render(st) {
+      isOnline = true;
+      $('offlineNotice').style.display = 'none';
+      $('connBadge').className = 'chip on';
+      $('connText').textContent = 'Đã kết nối game';
+      $('pidBadge').textContent = 'PID: ' + (st.pid || '-');
+
+      // 1. Dong bo Combine Minutes & Toggle
+      if (st.comb_min !== undefined && document.activeElement !== $('combineMin')) {
+        $('combineMin').value = st.comb_min;
+      }
+      if (st.auto_comb !== undefined) {
+        const on = (st.auto_comb === 1 || st.auto_comb === true);
+        $('toggleCombine').checked = on;
+        $('badgeCombine').className = on ? 'badge-status active' : 'badge-status';
+        $('badgeCombine').textContent = on ? `ĐANG BẬT (mỗi ${st.comb_min || $('combineMin').value || 5}p)` : 'Đã tắt';
+      }
+
+      // 2. Dong bo Stash Seconds, Tabs & Toggle
+      if (st.stash_sec !== undefined && document.activeElement !== $('stashSec')) {
+        $('stashSec').value = st.stash_sec;
+      }
+      if (st.stash_start !== undefined && document.activeElement !== $('stashStart')) {
+        $('stashStart').value = st.stash_start;
+      }
+      if (st.stash_end !== undefined && document.activeElement !== $('stashEnd')) {
+        $('stashEnd').value = st.stash_end;
+      }
+      updateStashBtnLabel();
+
+      if (st.auto_stash !== undefined) {
+        const on = (st.auto_stash === 1 || st.auto_stash === true);
+        $('toggleStash').checked = on;
+        $('badgeStash').className = on ? 'badge-status active' : 'badge-status';
+        $('badgeStash').textContent = on ? `ĐANG BẬT (mỗi ${st.stash_sec || $('stashSec').value || 60}s)` : 'Đã tắt';
+      }
+
+      if (st.stash_step && st.stash_step > 0) {
+        notify(`⏳ Đang cất đồ vào Kho ${st.stash_curr || 1} (Kho ${st.stash_start || 1} -> ${st.stash_end || 5})...`, true);
+      }
+    }
+
+    async function poll() {
+      try {
+        const res = await fetch(`${API_BASE}/status`, { cache: 'no-store' });
+        if (!res.ok) throw new Error('Game status not ok');
+        const data = await res.json();
+        render(data);
+      } catch (err) {
+        isOnline = false;
+        $('offlineNotice').style.display = 'flex';
+        $('connBadge').className = 'chip off';
+        $('connText').textContent = 'Chưa kết nối game';
+        $('pidBadge').textContent = 'PID: -';
+        $('badgeCombine').className = 'badge-status';
+        $('badgeCombine').textContent = 'Chưa kết nối';
+        $('badgeStash').className = 'badge-status';
+        $('badgeStash').textContent = 'Chưa kết nối';
+      }
+    }
+
+    async function sendCommand(key, val) {
+      if (!isOnline) {
+        notify('⚠️ Game chưa mở hoặc chưa cài mod!', false);
+        return;
+      }
+      try {
+        const res = await fetch(`${API_BASE}/set?${encodeURIComponent(key)}=${encodeURIComponent(val)}`, { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          render(data);
+        }
+      } catch (err) {
+        notify('⚠️ Lỗi gửi lệnh đến game: ' + err.message, false);
+      }
+    }
+
+    // Handlers: Combine
+    $('toggleCombine').onchange = async (e) => {
+      const on = e.target.checked;
+      const m = $('combineMin').value || 5;
+      $('badgeCombine').className = on ? 'badge-status active' : 'badge-status';
+      $('badgeCombine').textContent = on ? `ĐANG BẬT (mỗi ${m}p)` : 'Đã tắt';
+      notify(on ? `ĐÃ BẬT Tự động Hợp Thành (mỗi ${m} phút khi mở xưởng)!` : 'ĐÃ TẮT Tự động Hợp Thành!', true);
+      await sendCommand('auto_comb', on ? '1' : '0');
+    };
+
+    $('combineMin').onchange = async (e) => {
+      const m = Math.max(1, parseInt(e.target.value) || 5);
+      e.target.value = m;
+      await sendCommand('comb_min', m.toString());
+      notify(`Đã cập nhật chu kỳ Hợp Thành: ${m} phút.`, true);
+    };
+
+    $('btnCombineNow').onclick = async () => {
+      notify('Đang kiểm tra bảng Xưởng & kích hoạt ghép đồ lặp lại...', true);
+      try {
+        await sendCommand('combine', '1');
+        notify('ĐÃ KÍCH HOẠT HỢP THÀNH XƯỞNG THÀNH CÔNG (F7)!', true);
+      } catch (err) {
+        notify('Lỗi gửi lệnh ghép đồ.', false);
+      }
+    };
+
+    // Handlers: Stash
+    $('toggleStash').onchange = async (e) => {
+      const on = e.target.checked;
+      const s = $('stashSec').value || 60;
+      $('badgeStash').className = on ? 'badge-status active' : 'badge-status';
+      $('badgeStash').textContent = on ? `ĐANG BẬT (mỗi ${s}s)` : 'Đã tắt';
+      notify(on ? `ĐÃ BẬT Tự động Cất Đồ (mỗi ${s} giây)!` : 'ĐÃ TẮT Tự động Cất Đồ!', true);
+      await sendCommand('auto_stash', on ? '1' : '0');
+    };
+
+    $('stashSec').onchange = async (e) => {
+      const s = Math.max(2, parseInt(e.target.value) || 60);
+      e.target.value = s;
+      await sendCommand('stash_sec', s.toString());
+      notify(`Đã cập nhật chu kỳ Cất Đồ: ${s} giây.`, true);
+    };
+
+    $('stashStart').onchange = async (e) => {
+      const start = Math.max(1, parseInt(e.target.value) || 1);
+      e.target.value = start;
+      updateStashBtnLabel();
+      await sendCommand('stash_start', start.toString());
+      notify(`Đã cập nhật cất từ Kho: ${start}`, true);
+    };
+
+    $('stashEnd').onchange = async (e) => {
+      const end = Math.max(1, parseInt(e.target.value) || 5);
+      e.target.value = end;
+      updateStashBtnLabel();
+      await sendCommand('stash_end', end.toString());
+      notify(`Đã cập nhật cất đến Kho: ${end}`, true);
+    };
+
+    $('btnStashNow').onclick = async () => {
+      const s = $('stashStart').value || 1;
+      const e = $('stashEnd').value || 5;
+      notify(`Đang kích hoạt cất đồ tuần tự Kho ${s} -> Kho ${e}...`, true);
+      try {
+        await sendCommand('stash', '1');
+        notify(`ĐÃ KÍCH HOẠT CẤT ĐỒ KHO ${s} -> ${e} THÀNH CÔNG (F6)!`, true);
+      } catch (err) {
+        notify('Lỗi gửi lệnh cất đồ.', false);
+      }
+    };
+
+    updateStashBtnLabel();
+    poll();
+    setInterval(poll, 1000);
+  </script>
+</body>
+</html>

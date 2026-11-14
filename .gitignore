@@ -1,0 +1,5 @@
+.git_tools/
+game_icon_b64.txt
+staging/
+__pycache__/
+*.pyc
