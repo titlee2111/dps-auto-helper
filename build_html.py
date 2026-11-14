@@ -258,27 +258,75 @@ html_template = """<!doctype html>
       animation: pulse 1.6s infinite;
     }
 
-    /* Donate Button */
-    .btn-donate-gold {
-      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-      color: #fff;
-      font-size: 12px;
-      font-weight: 700;
-      padding: 7px 16px;
-      border-radius: var(--radius-full);
-      border: 1px solid rgba(251, 191, 36, 0.6);
+    /* Support Button (Exact War of Genesis Style) */
+    .support-tab-btn {
+      background: linear-gradient(135deg, rgba(227, 179, 65, 0.12) 0%, rgba(255, 166, 87, 0.18) 100%);
+      border: 1px solid rgba(227, 179, 65, 0.45);
+      color: #f0c674;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      padding: 7px 15px;
+      border-radius: 6px;
+      font-weight: 600;
       cursor: pointer;
+      font-size: 13px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      white-space: nowrap;
       text-decoration: none;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-      transition: all 0.2s ease;
     }
-    .btn-donate-gold:hover {
-      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    .support-tab-btn:hover {
+      background: linear-gradient(135deg, #e3b341 0%, #ffa657 100%);
+      color: #0d1117;
+      border-color: #ffa657;
       transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(227, 179, 65, 0.35);
+    }
+    .support-tab-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Modal Tab Buttons */
+    .modal-tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: #8b949e;
+      padding: 9px 16px;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex: 1 1 auto;
+    }
+    .modal-tab-btn:hover {
+      color: #f0f6fc;
+      background: #21262d;
+    }
+    .modal-tab-btn.active {
+      color: #fff;
+      background: #1f6feb;
+      border-color: #388bfd;
+    }
+
+    /* Small Copy Buttons */
+    .small-copy-btn {
+      padding: 4px 10px;
+      font-size: 11.5px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
 
     @keyframes pulse {
@@ -1160,8 +1208,9 @@ html_template = """<!doctype html>
     </div>
 
     <div class="header-status">
-      <button class="btn-donate-gold" onclick="openDonateModal()" title="Ủng hộ tác giả phát triển tool">
-        ☕ Ủng Hộ Tác Giả
+      <button class="support-tab-btn notranslate" id="supportMeBtn" translate="no" onclick="openDonateModal()" title="Ủng hộ tác giả / Support the Developer">
+        <span style="font-size:15px;">☕</span>
+        <span id="supportMeBtnText">Ủng Hộ Tác Giả</span>
       </button>
       <div class="chip" id="pidChip">
         <span class="dot"></span>
@@ -1429,63 +1478,146 @@ html_template = """<!doctype html>
     </div>
   </div>
 
-  <!-- MODAL: DONATE / SUPPORT AUTHOR -->
-  <div class="modal-overlay" id="donateModal" onclick="if(event.target===this) closeDonateModal()">
-    <div class="modal-card" style="max-width: 520px;">
-      <div class="modal-header">
-        <div class="modal-title" style="color: #fbbf24;">
-          <span>☕</span>
-          <span>Ủng Hộ Tác Giả (Donate)</span>
+  <!-- MODAL: DONATE / SUPPORT AUTHOR (Exact War of Genesis Structure) -->
+  <div id="donateModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:9999999; justify-content:center; align-items:center; padding:16px; backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);" onclick="if(event.target === this) closeDonateModal();">
+    <div style="background:#161b22; border:1px solid #30363d; border-radius:14px; max-width:640px; width:100%; max-height:92vh; overflow-y:auto; box-shadow:0 20px 50px rgba(0,0,0,0.9); padding:24px; position:relative;">
+      
+      <!-- Modal Header -->
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #30363d; padding-bottom:14px; margin-bottom:16px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="font-size:26px;">☕</span>
+          <div>
+            <h3 style="margin:0; color:#e3b341; font-size:18px; display:flex; align-items:center; gap:8px;" id="donateModalTitle">
+              Ủng Hộ Tác Giả / Support the Developer
+            </h3>
+            <div style="font-size:12px; color:#8b949e; margin-top:2px;" id="donateModalSubtitle">DPS Desktop Pension Squad Auto Helper — 100% Miễn Phí & Phi Lợi Nhuận</div>
+          </div>
         </div>
-        <button class="modal-close-btn" onclick="closeDonateModal()">✕</button>
+        <button onclick="closeDonateModal()" style="background:transparent; border:none; color:#8b949e; font-size:22px; cursor:pointer; padding:4px 8px; border-radius:6px; line-height:1; transition:color 0.15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#8b949e'">✕</button>
       </div>
-      <div class="modal-body">
-        <p style="font-size: 13px; color: var(--dim); text-align: center; line-height: 1.5;">
-          DPS Auto Helper hoàn toàn miễn phí. Nếu công cụ giúp bạn cắm máy rảnh tay, hãy cân nhắc mời tác giả một ly cà phê nhé! ❤️
-        </p>
 
-        <div class="donate-tabs">
-          <button class="donate-tab-btn active" onclick="switchDonateTab(event, 'tabMb')">🇻🇳 MB Bank</button>
-          <button class="donate-tab-btn" onclick="switchDonateTab(event, 'tabBinance')">🌐 Binance Pay</button>
-          <button class="donate-tab-btn" onclick="switchDonateTab(event, 'tabBmc')">☕ Buy Me a Coffee</button>
+      <!-- Heartfelt Message Box -->
+      <div style="background:linear-gradient(135deg, rgba(227, 179, 65, 0.08) 0%, rgba(31, 111, 235, 0.08) 100%); border:1px solid rgba(227, 179, 65, 0.3); border-radius:10px; padding:14px 16px; margin-bottom:18px; font-size:13px; line-height:1.65; color:#c9d1d9;">
+        <div style="font-weight:600; color:#f0f6fc; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+          <span>💌</span> <span id="donateGreeting">Lời Nhắn Từ Tác Giả:</span>
         </div>
-
-        <!-- TAB 1: MB BANK -->
-        <div class="donate-tab-content active" id="tabMb">
-          <img src="__MB_QR__" alt="MB Bank QR" class="qr-img">
-          <div class="copy-pill" onclick="copyText('0562462346', 'Đã copy số tài khoản MB Bank!')">
-            <span>STK: <b>0562462346</b> (MB Bank)</span>
-            <span style="font-size: 12px;">📋 Copy</span>
-          </div>
-          <div style="font-size: 12px; color: var(--dim);">Chủ TK: <b>LY THAI SON</b></div>
-          <div class="copy-pill" onclick="copyText('Ung ho DPS Auto Helper', 'Đã copy nội dung chuyển khoản!')" style="font-size: 12px;">
-            <span>Lời nhắn: <b>Ung ho DPS Auto Helper</b></span>
-            <span>📋 Copy</span>
-          </div>
-        </div>
-
-        <!-- TAB 2: BINANCE PAY -->
-        <div class="donate-tab-content" id="tabBinance">
-          <img src="__BINANCE_QR__" alt="Binance Pay QR" class="qr-img">
-          <div class="copy-pill" onclick="copyText('486940307', 'Đã copy Binance Pay ID!')">
-            <span>Binance Pay ID: <b>486940307</b></span>
-            <span style="font-size: 12px;">📋 Copy</span>
-          </div>
-          <div style="font-size: 12px; color: var(--dim);">Chấp nhận USDT, BUSD, BNB...</div>
-        </div>
-
-        <!-- TAB 3: BUY ME A COFFEE -->
-        <div class="donate-tab-content" id="tabBmc">
-          <div style="font-size: 48px; margin: 12px 0;">☕</div>
-          <div style="font-size: 14px; font-weight: 700; color: #fff;">Buy Me a Coffee</div>
-          <p style="font-size: 12.5px; color: var(--dim); max-width: 320px;">
-            Ủng hộ qua thẻ quốc tế (Visa / Mastercard / PayPal) trực tiếp qua Buy Me a Coffee.
-          </p>
-          <a href="https://buymeacoffee.com/titlee2111" target="_blank" rel="noopener noreferrer" class="btn-download-rect" style="background: linear-gradient(135deg, #FFDD00 0%, #FBBF24 100%); color: #000; font-weight: 800; border-color: #F59E0B; margin-top: 8px;">
-            ☕ Ghé thăm trang Buy Me a Coffee
-          </a>
+        <div id="donateLetterContent">
+          Chào bạn! Cảm ơn bạn rất nhiều vì đã tin tưởng và đồng hành cùng <b>DPS Desktop Pension Squad Auto Helper</b>.<br>
+          Dự án này được mình phát triển hoàn toàn tâm huyết và miễn phí nhằm mang lại những công cụ tiện ích nhất cho anh em cày game (tự động hợp thành đồ xưởng, tự động cất đồ vào kho, tự động mở rương báu và tối ưu hóa tài nguyên).<br>
+          Nếu bạn cảm thấy Helper hữu ích và giúp bạn cắm máy rảnh tay hoặc săn được nhiều đồ giá trị, hãy ủng hộ mình một ly cà phê ☕ nhé! Mọi đóng góp dù lớn hay nhỏ đều là nguồn động lực to lớn giúp mình duy trì và hoàn thiện tool tốt hơn nữa. Cảm ơn bạn rất nhiều! ❤️
         </div>
       </div>
+
+      <!-- Tab Switcher (Vietnam MB Bank vs Binance / International) -->
+      <div style="display:flex; gap:8px; margin-bottom:16px; border-bottom:1px solid #30363d; padding-bottom:12px;">
+        <button id="donateTabBtnMb" class="modal-tab-btn active" onclick="switchDonateTab('mb')">
+          <span>🇻🇳</span> <span id="donateTabMbLabel">Ngân Hàng MB (Việt Nam)</span>
+        </button>
+        <button id="donateTabBtnBinance" class="modal-tab-btn" onclick="switchDonateTab('binance')">
+          <span>🌐</span> <span id="donateTabBinanceLabel">Binance Pay</span>
+        </button>
+        <button id="donateTabBtnBmc" class="modal-tab-btn" onclick="switchDonateTab('bmc')">
+          <span>☕</span> <span id="donateTabBmcLabel">Buy Me a Coffee</span>
+        </button>
+      </div>
+
+      <!-- TAB 1: MB BANK (VIETQR) -->
+      <div id="donateTabMb" style="display:block;">
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:18px; align-items:center; background:#0d1117; border:1px solid #30363d; border-radius:12px; padding:16px;">
+          <div style="text-align:center;">
+            <img src="__MB_QR__" alt="MB Bank QR" style="width:190px; height:190px; object-fit:contain; background:#fff; padding:6px; border-radius:8px; box-shadow:0 4px 14px rgba(0,0,0,0.5); border:1px solid #30363d; display:inline-block;">
+            <div id="donateMbQrSub" style="font-size:11px; color:#8b949e; margin-top:6px;">📲 Quét bằng ứng dụng Ngân hàng bất kỳ</div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:13px;">
+            <div>
+              <div style="color:#8b949e; font-size:11.5px; margin-bottom:2px;">NGÂN HÀNG (BANK)</div>
+              <div style="font-weight:bold; color:#f0f6fc; display:flex; align-items:center; justify-content:space-between; background:#161b22; padding:6px 10px; border-radius:6px; border:1px solid #30363d;">
+                <span>MB Bank (Ngân Hàng Quân Đội)</span>
+              </div>
+            </div>
+            <div>
+              <div style="color:#8b949e; font-size:11.5px; margin-bottom:2px;">SỐ TÀI KHOẢN (ACCOUNT NUMBER)</div>
+              <div style="font-weight:bold; color:#7ee787; font-size:15px; letter-spacing:0.5px; display:flex; align-items:center; justify-content:space-between; background:#161b22; padding:6px 10px; border-radius:6px; border:1px solid #30363d;">
+                <span id="mbAccNum">0562462346</span>
+                <button class="small-copy-btn" onclick="copyDonateText('0562462346', this)" style="background:#238636; color:#fff;">📋 Sao chép</button>
+              </div>
+            </div>
+            <div>
+              <div style="color:#8b949e; font-size:11.5px; margin-bottom:2px;">CHỦ TÀI KHOẢN (ACCOUNT HOLDER)</div>
+              <div style="font-weight:bold; color:#58a6ff; display:flex; align-items:center; justify-content:space-between; background:#161b22; padding:6px 10px; border-radius:6px; border:1px solid #30363d;">
+                <span>LY THAI SON</span>
+                <button class="small-copy-btn" onclick="copyDonateText('LY THAI SON', this)" style="background:#30363d; color:#c9d1d9;">📋 Sao chép</button>
+              </div>
+            </div>
+            <div>
+              <div style="color:#8b949e; font-size:11.5px; margin-bottom:2px;">LỜI NHẮN (NOTE)</div>
+              <div id="donateMbNoteText" style="color:#e3b341; font-style:italic; font-size:12px; background:#161b22; padding:6px 10px; border-radius:6px; border:1px solid #30363d; display:flex; align-items:center; justify-content:space-between;">
+                <span>Ủng hộ DPS Helper</span>
+                <button class="small-copy-btn" onclick="copyDonateText('Ung ho DPS Helper', this)" style="background:#30363d; color:#c9d1d9;">📋 Sao chép</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: BINANCE PAY (INTERNATIONAL) -->
+      <div id="donateTabBinance" style="display:none;">
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:18px; align-items:center; background:#0d1117; border:1px solid #30363d; border-radius:12px; padding:16px;">
+          <div style="text-align:center;">
+            <img src="__BINANCE_QR__" alt="Binance Pay QR" style="width:190px; height:190px; object-fit:contain; background:#fff; padding:6px; border-radius:8px; box-shadow:0 4px 14px rgba(0,0,0,0.5); border:1px solid #30363d; display:inline-block;">
+            <div id="donateBinanceQrSub" style="font-size:11px; color:#8b949e; margin-top:6px;">📲 Quét bằng App Binance (Binance Pay)</div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:13px;">
+            <div>
+              <div style="color:#8b949e; font-size:11.5px; margin-bottom:2px;">NỀN TẢNG (PLATFORM)</div>
+              <div style="font-weight:bold; color:#f0f6fc; display:flex; align-items:center; justify-content:space-between; background:#161b22; padding:6px 10px; border-radius:6px; border:1px solid #30363d;">
+                <span style="color:#f0b90b; font-weight:bold;">🔶 Binance Pay (Crypto)</span>
+              </div>
+            </div>
+            <div>
+              <div style="color:#8b949e; font-size:11.5px; margin-bottom:2px;">BINANCE PAY ID / USERNAME</div>
+              <div style="font-weight:bold; color:#f0b90b; font-size:15px; letter-spacing:0.5px; display:flex; align-items:center; justify-content:space-between; background:#161b22; padding:6px 10px; border-radius:6px; border:1px solid #30363d;">
+                <span id="binanceUser">User-9e11c</span>
+                <button class="small-copy-btn" onclick="copyDonateText('User-9e11c', this)" style="background:#f0b90b; color:#0d1117; font-weight:bold;">📋 Sao chép</button>
+              </div>
+            </div>
+            <div>
+              <div style="color:#8b949e; font-size:11.5px; margin-bottom:2px;">TIỀN TỆ HỖ TRỢ (SUPPORTED COINS)</div>
+              <div style="color:#c9d1d9; font-size:12px; background:#161b22; padding:6px 10px; border-radius:6px; border:1px solid #30363d;">
+                USDT, BUSD, BNB, BTC, ETH... (0% phí nội bộ Binance)
+              </div>
+            </div>
+            <div>
+              <div style="color:#8b949e; font-size:11.5px; margin-bottom:2px;">HƯỚNG DẪN NHANH (HOW TO PAY)</div>
+              <div id="donateBinanceGuide" style="color:#8b949e; font-size:11.5px; background:#161b22; padding:6px 10px; border-radius:6px; border:1px solid #30363d; line-height:1.5;">
+                Mở App Binance ➔ Bấm biểu tượng <b>Pay</b> hoặc <b>Quét mã QR</b> góc trên màn hình ➔ Quét mã hoặc nhập Pay ID: <b>User-9e11c</b>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: BUY ME A COFFEE (GLOBAL) -->
+      <div id="donateTabBmc" style="display:none;">
+        <div style="background:#0d1117; border:1px solid #30363d; border-radius:12px; padding:28px 20px; text-align:center;">
+          <div style="font-size:46px; margin-bottom:10px;">☕</div>
+          <div id="donateBmcTitle" style="font-weight:bold; color:#f0f6fc; font-size:16px; margin-bottom:6px;">Buy Me a Coffee</div>
+          <div id="donateBmcDesc" style="font-size:12.5px; color:#8b949e; margin-bottom:18px; line-height:1.5;">Ủng hộ tác giả qua Buy Me a Coffee — hỗ trợ thẻ quốc tế & PayPal, không cần tài khoản game.</div>
+          <a id="donateBmcLink" href="https://buymeacoffee.com/titlee" target="_blank" rel="noopener noreferrer" style="display:inline-block; background:#FFDD00; color:#0d1117; font-weight:bold; padding:12px 30px; border-radius:26px; text-decoration:none; font-size:14.5px; letter-spacing:0.3px; box-shadow:0 4px 14px rgba(255,221,0,0.25); transition:transform 0.15s ease;" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform=''">☕ buymeacoffee.com/titlee</a>
+          <div id="donateBmcGuide" style="font-size:11.5px; color:#8b949e; margin-top:14px; line-height:1.5;">Bấm nút phía trên để mở trang Buy Me a Coffee trong tab mới →</div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; padding-top:14px; border-top:1px solid #30363d;">
+        <div id="donateFooterWish" style="font-size:12px; color:#8b949e;">
+          🌟 Chúc bạn chơi game vui vẻ & săn được nhiều đồ giá trị!
+        </div>
+        <button id="donateCloseBtn" onclick="closeDonateModal()" style="padding:8px 22px; background:#30363d; color:#f0f6fc; border-radius:6px; font-size:13px; cursor:pointer; font-weight:bold; border:none; transition:background 0.2s;" onmouseover="this.style.background='#444c56'" onmouseout="this.style.background='#30363d'">
+          Đóng
+        </button>
+      </div>
+
     </div>
   </div>
 
@@ -1499,7 +1631,7 @@ html_template = """<!doctype html>
 
   <!-- FOOTER -->
   <footer>
-    DPS Desktop Pension Squad Auto Helper • Điều khiển trực tiếp qua Mod Runtime Engine • Made with ❤️ by Son
+    DPS Desktop Pension Squad Auto Helper
   </footer>
 
   <!-- JAVASCRIPT LOGIC -->
@@ -1594,21 +1726,73 @@ html_template = """<!doctype html>
       if (el) el.style.display = 'none';
     }
 
-    function switchDonateTab(e, tabId) {
-      document.querySelectorAll('.donate-tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.donate-tab-content').forEach(c => c.classList.remove('active'));
-      e.currentTarget.classList.add('active');
-      const target = document.getElementById(tabId);
-      if (target) target.classList.add('active');
+    function switchDonateTab(tab) {
+      const tabMb = document.getElementById('donateTabMb');
+      const tabBinance = document.getElementById('donateTabBinance');
+      const tabBmc = document.getElementById('donateTabBmc');
+      const btnMb = document.getElementById('donateTabBtnMb');
+      const btnBinance = document.getElementById('donateTabBtnBinance');
+      const btnBmc = document.getElementById('donateTabBtnBmc');
+
+      if (tab === 'mb') {
+        if (tabMb) tabMb.style.display = 'block';
+        if (tabBinance) tabBinance.style.display = 'none';
+        if (tabBmc) tabBmc.style.display = 'none';
+        if (btnMb) btnMb.classList.add('active');
+        if (btnBinance) btnBinance.classList.remove('active');
+        if (btnBmc) btnBmc.classList.remove('active');
+      } else if (tab === 'binance') {
+        if (tabMb) tabMb.style.display = 'none';
+        if (tabBinance) tabBinance.style.display = 'block';
+        if (tabBmc) tabBmc.style.display = 'none';
+        if (btnMb) btnMb.classList.remove('active');
+        if (btnBinance) btnBinance.classList.add('active');
+        if (btnBmc) btnBmc.classList.remove('active');
+      } else if (tab === 'bmc') {
+        if (tabMb) tabMb.style.display = 'none';
+        if (tabBinance) tabBinance.style.display = 'none';
+        if (tabBmc) tabBmc.style.display = 'block';
+        if (btnMb) btnMb.classList.remove('active');
+        if (btnBinance) btnBinance.classList.remove('active');
+        if (btnBmc) btnBmc.classList.add('active');
+      }
     }
 
-    function copyText(text, successMsg) {
-      navigator.clipboard.writeText(text).then(() => {
-        addLog('DONATE', successMsg, 'ok');
-        alert(successMsg);
-      }).catch(() => {
+    function copyDonateText(text, btn) {
+      function showSuccess() {
+        if (!btn) return;
+        const oldHtml = btn.innerHTML;
+        btn.innerHTML = '✅ Đã chép!';
+        btn.style.filter = 'brightness(1.2)';
+        setTimeout(function() {
+          btn.innerHTML = oldHtml;
+          btn.style.filter = '';
+        }, 2000);
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(showSuccess).catch(function() {
+          fallbackCopyText(text, showSuccess);
+        });
+      } else {
+        fallbackCopyText(text, showSuccess);
+      }
+    }
+
+    function fallbackCopyText(text, cb) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        if (cb) cb();
+      } catch (e) {
         prompt('Copy thủ công tại đây:', text);
-      });
+      }
+      document.body.removeChild(ta);
     }
 
     // Logger
