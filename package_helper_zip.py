@@ -5,7 +5,9 @@ import zipfile
 BASE_DIR = r"C:\Users\Son\Desktop\dps-auto-helper"
 STAGE_DIR = os.path.join(BASE_DIR, "staging")
 SRC_ZIP = r"g:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad\DPS-Trainer.zip"
-SRC_DLL = r"g:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad\BepInEx\plugins\DPS.Trainer.dll"
+SRC_DLL_NEW = r"g:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad\BepInEx\plugins\DPS.Trainer.dll.new"
+SRC_DLL_ORIG = r"g:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad\BepInEx\plugins\DPS.Trainer.dll"
+SRC_DLL = SRC_DLL_NEW if os.path.exists(SRC_DLL_NEW) else SRC_DLL_ORIG
 SRC_CFG = r"g:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad\BepInEx\config\dps_workshop.cfg"
 OUT_ZIP = os.path.join(BASE_DIR, "DPS_Auto_Helper_1Click.zip")
 
@@ -53,7 +55,7 @@ echo   DPS AUTO HELPER - CÀI ĐẶT 1-CLICK TỰ ĐỘNG
 echo ============================================================
 echo.
 
-powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0install.ps1"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0install.ps1"
 
 echo.
 pause
@@ -67,6 +69,7 @@ pause
 #>
 $ErrorActionPreference = "Stop"
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
 
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $payload = Join-Path $root "payload"
@@ -154,7 +157,7 @@ function Copy-Tree([string]$src, [string]$dst) {
 Copy-Tree $payload $GamePath
 
 Write-Host "============================================================" -ForegroundColor Green
-Write-Host "  CÀI ĐẶT THÀNH CÔNG DPS AUTO HELPER! ($copied files)" -ForegroundColor Green
+Write-Host ("  CÀI ĐẶT THÀNH CÔNG DPS AUTO HELPER! [" + $copied + " files]") -ForegroundColor Green
 Write-Host "============================================================" -ForegroundColor Green
 Write-Host ""
 Write-Host "CÁC BƯỚC TIẾP THEO:" -ForegroundColor Yellow
@@ -162,7 +165,7 @@ Write-Host "  1. Mở game DPS Desktop Pension Squad bình thường trên Steam
 Write-Host "  2. Mở trang web điều khiển để Bật/Tắt Tự động Cất Đồ (F6) & Tự động Hợp Thành (F7)."
 Write-Host ""
 """
-    with open(os.path.join(STAGE_DIR, "install.ps1"), "w", encoding="utf-8") as f:
+    with open(os.path.join(STAGE_DIR, "install.ps1"), "w", encoding="utf-8-sig") as f:
         f.write(ps1_content)
 
     # Clean up any huongdan, open ui, remove/uninstall bat files per user request

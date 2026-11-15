@@ -1339,9 +1339,9 @@ html_template = """<!doctype html>
             </div>
             <div class="config-group" style="margin-left: 12px;">
               <span class="config-label">Cất từ Kho:</span>
-              <input type="number" id="stashStart" class="num-input" value="1" min="1" max="10" onchange="updateStashTabs()">
+              <input type="number" id="stashStart" class="num-input" value="1" min="1" max="10" oninput="updateStashTabs()" onchange="updateStashTabs()">
               <span class="config-label">đến Kho:</span>
-              <input type="number" id="stashEnd" class="num-input" value="5" min="1" max="10" onchange="updateStashTabs()">
+              <input type="number" id="stashEnd" class="num-input" value="6" min="1" max="10" oninput="updateStashTabs()" onchange="updateStashTabs()">
             </div>
           </div>
 
@@ -1653,6 +1653,8 @@ html_template = """<!doctype html>
     let isConnected = false;
     let initialSyncDone = false;
     let lastBoxCount = 0;
+    let lastStashStep = 0;
+    let lastStashCurr = 0;
 
     // Default settings (all OFF by default on fresh entry)
     const defaultSettings = {
@@ -1663,7 +1665,7 @@ html_template = """<!doctype html>
       comb_min: 5,
       stash_sec: 60,
       stash_start: 1,
-      stash_end: 5,
+      stash_end: 6,
       box_interval: 3
     };
 
@@ -1674,7 +1676,11 @@ html_template = """<!doctype html>
         return { ...defaultSettings };
       }
       try {
-        return { ...defaultSettings, ...JSON.parse(saved) };
+        const parsed = JSON.parse(saved);
+        if (parsed.stash_end === undefined || parsed.stash_end < 6) {
+          parsed.stash_end = 6;
+        }
+        return { ...defaultSettings, ...parsed };
       } catch (e) {
         return { ...defaultSettings };
       }
@@ -1926,6 +1932,37 @@ html_template = """<!doctype html>
         updateBadge('badgeStash', data.auto_stash, `Đang Bật (${data.stash_sec || userSettings.stash_sec}s)`, 'Đang Tắt');
       }
 
+      // Sync Stash range from game if inputs are not actively being edited
+      const sInput = document.getElementById('stashStart');
+      const eInput = document.getElementById('stashEnd');
+      if (data.stash_start !== undefined && sInput && document.activeElement !== sInput) {
+        if (parseInt(sInput.value) !== data.stash_start) {
+          sInput.value = data.stash_start;
+          userSettings.stash_start = data.stash_start;
+        }
+      }
+      if (data.stash_end !== undefined && eInput && document.activeElement !== eInput) {
+        if (parseInt(eInput.value) !== data.stash_end) {
+          eInput.value = data.stash_end;
+          userSettings.stash_end = data.stash_end;
+          saveSettings(userSettings);
+        }
+      }
+
+      // Realtime Stash progress logging in the web console
+      if (data.stash_step !== undefined) {
+        if (data.stash_step === 1) {
+          if (data.stash_curr !== undefined && data.stash_curr !== lastStashCurr && data.stash_curr > 0) {
+            addLog('CẤT ĐỒ', `Đang cất đồ vào Kho ${data.stash_curr} / ${data.stash_end || userSettings.stash_end}...`, 'info');
+            lastStashCurr = data.stash_curr;
+          }
+        } else if (data.stash_step === 0 && lastStashStep === 1) {
+          addLog('CẤT ĐỒ', `Đã cất đồ xong toàn bộ (Kho ${data.stash_start || userSettings.stash_start} đến Kho ${data.stash_end || userSettings.stash_end})!`, 'ok');
+          lastStashCurr = 0;
+        }
+        lastStashStep = data.stash_step;
+      }
+
       // Module 3: Auto Box
       if (data.auto !== undefined) {
         document.getElementById('toggleAutoBox').checked = !!data.auto;
@@ -2082,7 +2119,7 @@ html_template = """<!doctype html>
       const eInput = document.getElementById('stashEnd');
       if (!sInput || !eInput) return;
       const start = Math.max(1, parseInt(sInput.value) || 1);
-      const end = Math.max(start, parseInt(eInput.value) || 5);
+      const end = Math.max(start, parseInt(eInput.value) || 6);
       userSettings.stash_start = start;
       userSettings.stash_end = end;
       saveSettings(userSettings);
