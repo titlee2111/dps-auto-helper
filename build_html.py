@@ -6,6 +6,7 @@ SOUL_B64_FILE = os.path.join(BASE_DIR, "soul_icon_b64.txt")
 GEM_B64_FILE = os.path.join(BASE_DIR, "gem_icon_b64.txt")
 QR0_FILE = os.path.join(BASE_DIR, "qr_0.txt")
 QR1_FILE = os.path.join(BASE_DIR, "qr_1.txt")
+GUIDE_B64_FILE = os.path.join(BASE_DIR, "guide_icon_b64.txt")
 HTML_FILE = os.path.join(BASE_DIR, "index.html")
 
 with open(ICON_B64_FILE, "r", encoding="utf-8") as f:
@@ -16,6 +17,9 @@ with open(SOUL_B64_FILE, "r", encoding="utf-8") as f:
 
 with open(GEM_B64_FILE, "r", encoding="utf-8") as f:
     b64_gem = f.read().strip()
+
+with open(GUIDE_B64_FILE, "r", encoding="utf-8") as f:
+    b64_guide = f.read().strip()
 
 with open(QR0_FILE, "r", encoding="utf-8") as f:
     mb_qr_src = f.read().strip()
@@ -1320,6 +1324,49 @@ html_template = """<!doctype html>
       <button class="alert-close-btn" onclick="dismissAlert()" title="Đóng thông báo">✕</button>
     </div>
 
+    <!-- Browser Permission Guide Banner (Show when not connected) -->
+    <div id="permissionGuideBanner" style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 12px; padding: 16px 20px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <span style="font-size: 24px; line-height: 1;">⚡</span>
+          <div>
+            <h4 style="margin: 0; color: #38bdf8; font-size: 15px; font-weight: 700; letter-spacing: 0.02em;">
+              HƯỚNG DẪN KẾT NỐI: BẬT QUYỀN TRÊN TRÌNH DUYỆT (CHROME / EDGE / CỐC CỐC)
+            </h4>
+            <p style="margin: 3px 0 0; color: #94a3b8; font-size: 13px; line-height: 1.5;">
+              Nếu game đang chạy nhưng web vẫn báo <b style="color:#f87171;">"Chưa kết nối"</b>, bạn cần bật công tắc sau để trình duyệt cho phép kết nối tới game:
+            </p>
+          </div>
+        </div>
+        <button onclick="togglePermissionGuide()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1; border-radius: 6px; padding: 4px 10px; font-size: 11px; cursor: pointer; white-space: nowrap;">
+          <span id="guideToggleText">Thu gọn ▲</span>
+        </button>
+      </div>
+
+      <div id="permissionGuideBody" style="display: flex; flex-wrap: wrap; gap: 20px; align-items: center; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.08);">
+        <div style="flex: 1; min-width: 280px;">
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 14px 16px; font-size: 13px; line-height: 1.7; color: #e2e8f0;">
+            <div style="margin-bottom: 10px;">
+              <span style="display: inline-block; background: #2563eb; color: #fff; font-weight: bold; border-radius: 4px; padding: 1px 7px; font-size: 11px; margin-right: 6px;">BƯỚC 1</span>
+              Nhấp vào biểu tượng <b>Cài đặt trang web</b> (icon nút gạt nhỏ nằm ở đầu thanh địa chỉ web URL).
+            </div>
+            <div style="margin-bottom: 10px;">
+              <span style="display: inline-block; background: #dc2626; color: #fff; font-weight: bold; border-radius: 4px; padding: 1px 7px; font-size: 11px; margin-right: 6px;">BƯỚC 2</span>
+              Bật công tắc <b>"Ứng dụng trên thiết bị"</b> (hoặc <i>Insecure content / Local network</i>) sang màu <b>XANH (ON)</b>.
+            </div>
+            <div>
+              <span style="display: inline-block; background: #10b981; color: #fff; font-weight: bold; border-radius: 4px; padding: 1px 7px; font-size: 11px; margin-right: 6px;">BƯỚC 3</span>
+              Nhấn <b>F5 (Tải lại trang)</b>. Web sẽ tự động nhận diện game và kết nối thành công ngay lập tức!
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align: center; flex: 1; min-width: 280px; max-width: 440px;">
+          <img src="data:image/png;base64,__GUIDE_IMG_B64__" alt="Hướng dẫn bật quyền trình duyệt" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+        </div>
+      </div>
+    </div>
+
 
     <!-- Download Strip -->
     <div class="download-strip">
@@ -2206,6 +2253,19 @@ html_template = """<!doctype html>
       if (el) el.style.display = 'none';
     }
 
+    function togglePermissionGuide() {
+      const body = document.getElementById('permissionGuideBody');
+      const text = document.getElementById('guideToggleText');
+      if (!body) return;
+      if (body.style.display === 'none') {
+        body.style.display = 'flex';
+        if (text) text.innerText = 'Thu gọn ▲';
+      } else {
+        body.style.display = 'none';
+        if (text) text.innerText = 'Xem hướng dẫn ▼';
+      }
+    }
+
     function switchDonateTab(tab) {
       const tabMb = document.getElementById('donateTabMb');
       const tabBinance = document.getElementById('donateTabBinance');
@@ -2340,6 +2400,9 @@ html_template = """<!doctype html>
       const statusText = document.getElementById('statusText');
       statusChip.className = 'chip status-live';
       statusText.innerText = 'Đã kết nối game';
+
+      const pGuide = document.getElementById('permissionGuideBanner');
+      if (pGuide) pGuide.style.display = 'none';
 
 
       const pidVal = document.getElementById('pidVal');
@@ -2541,6 +2604,9 @@ html_template = """<!doctype html>
         }
       });
 
+      const pGuide = document.getElementById('permissionGuideBanner');
+      if (pGuide) pGuide.style.display = 'block';
+
     }
 
     // Polling API with multi-port probe
@@ -2725,6 +2791,7 @@ final_html = (html_template
   .replace("__B64_ICON__", b64_icon)
   .replace("__SOUL_ICON_B64__", b64_soul)
   .replace("__GEM_ICON_B64__", b64_gem)
+  .replace("__GUIDE_IMG_B64__", b64_guide)
   .replace("__MB_QR__", mb_qr_src)
   .replace("__BINANCE_QR__", binance_qr_src))
 
