@@ -1296,6 +1296,10 @@ html_template = """<!doctype html>
     </div>
 
     <div class="header-status">
+      <button class="support-tab-btn" onclick="openPermissionModal()" style="border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;" title="Hướng dẫn bật quyền trình duyệt để kết nối game">
+        <span style="font-size:14px;">❓</span>
+        <span>Hướng Dẫn Kết Nối</span>
+      </button>
       <button class="support-tab-btn notranslate" id="supportMeBtn" translate="no" onclick="openDonateModal()" title="Ủng hộ tác giả / Support the Developer">
         <span style="font-size:15px;">☕</span>
         <span id="supportMeBtnText">Ủng Hộ Tác Giả</span>
@@ -1324,48 +1328,7 @@ html_template = """<!doctype html>
       <button class="alert-close-btn" onclick="dismissAlert()" title="Đóng thông báo">✕</button>
     </div>
 
-    <!-- Browser Permission Guide Banner (Show when not connected) -->
-    <div id="permissionGuideBanner" style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 12px; padding: 16px 20px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);">
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
-        <div style="display: flex; gap: 10px; align-items: center;">
-          <span style="font-size: 24px; line-height: 1;">⚡</span>
-          <div>
-            <h4 style="margin: 0; color: #38bdf8; font-size: 15px; font-weight: 700; letter-spacing: 0.02em;">
-              HƯỚNG DẪN KẾT NỐI: BẬT QUYỀN TRÊN TRÌNH DUYỆT (CHROME / EDGE / CỐC CỐC)
-            </h4>
-            <p style="margin: 3px 0 0; color: #94a3b8; font-size: 13px; line-height: 1.5;">
-              Nếu game đang chạy nhưng web vẫn báo <b style="color:#f87171;">"Chưa kết nối"</b>, bạn cần bật công tắc sau để trình duyệt cho phép kết nối tới game:
-            </p>
-          </div>
-        </div>
-        <button onclick="togglePermissionGuide()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1; border-radius: 6px; padding: 4px 10px; font-size: 11px; cursor: pointer; white-space: nowrap;">
-          <span id="guideToggleText">Thu gọn ▲</span>
-        </button>
-      </div>
 
-      <div id="permissionGuideBody" style="display: flex; flex-wrap: wrap; gap: 20px; align-items: center; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.08);">
-        <div style="flex: 1; min-width: 280px;">
-          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 14px 16px; font-size: 13px; line-height: 1.7; color: #e2e8f0;">
-            <div style="margin-bottom: 10px;">
-              <span style="display: inline-block; background: #2563eb; color: #fff; font-weight: bold; border-radius: 4px; padding: 1px 7px; font-size: 11px; margin-right: 6px;">BƯỚC 1</span>
-              Nhấp vào biểu tượng <b>Cài đặt trang web</b> (icon nút gạt nhỏ nằm ở đầu thanh địa chỉ web URL).
-            </div>
-            <div style="margin-bottom: 10px;">
-              <span style="display: inline-block; background: #dc2626; color: #fff; font-weight: bold; border-radius: 4px; padding: 1px 7px; font-size: 11px; margin-right: 6px;">BƯỚC 2</span>
-              Bật công tắc <b>"Ứng dụng trên thiết bị"</b> (hoặc <i>Insecure content / Local network</i>) sang màu <b>XANH (ON)</b>.
-            </div>
-            <div>
-              <span style="display: inline-block; background: #10b981; color: #fff; font-weight: bold; border-radius: 4px; padding: 1px 7px; font-size: 11px; margin-right: 6px;">BƯỚC 3</span>
-              Nhấn <b>F5 (Tải lại trang)</b>. Web sẽ tự động nhận diện game và kết nối thành công ngay lập tức!
-            </div>
-          </div>
-        </div>
-
-        <div style="text-align: center; flex: 1; min-width: 280px; max-width: 440px;">
-          <img src="data:image/png;base64,__GUIDE_IMG_B64__" alt="Hướng dẫn bật quyền trình duyệt" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
-        </div>
-      </div>
-    </div>
 
 
     <!-- Download Strip -->
@@ -1770,8 +1733,55 @@ html_template = """<!doctype html>
             <li>Tải file ZIP về và giải nén ra bất kỳ đâu trên máy tính.</li>
             <li>Chạy file <b>Cai_Dat_1Click.bat</b> để công cụ tự nhận diện thư mục game Steam và cài đặt trong 2 giây.</li>
             <li>Khởi động game <b>DPS Desktop Pension Squad</b> trên Steam.</li>
-            <li>Nhấp đúp vào file <b>Mo_Giao_Dien_Web.bat</b> (hoặc truy cập <a href="http://127.0.0.1:47900/" target="_blank" style="color:#38bdf8; text-decoration:underline;">http://127.0.0.1:47900/</a>) để mở bảng điều khiển!</li>
+            <li>Mở website bảng điều khiển: <a href="https://titlee2111.github.io/dps-auto-helper/" target="_blank" style="color:#38bdf8; text-decoration:underline; font-weight:bold;">https://titlee2111.github.io/dps-auto-helper/</a> (hoặc <a href="http://127.0.0.1:47900/" target="_blank" style="color:#38bdf8; text-decoration:underline;">http://127.0.0.1:47900/</a>) để tự động kết nối và điều khiển game!</li>
           </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: BROWSER PERMISSION GUIDE -->
+  <div id="permissionGuideModal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closePermissionModal()">
+    <div class="modal-card" style="max-width: 660px; width: 95%; max-height: 92vh; overflow-y: auto;">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon">⚡</span>
+          <div class="modal-title">HƯỚNG DẪN KẾT NỐI: BẬT QUYỀN TRÌNH DUYỆT</div>
+        </div>
+        <button class="modal-close-btn" onclick="closePermissionModal()">✕</button>
+      </div>
+      <div class="modal-body" style="padding-top: 6px;">
+        <p style="color: #94a3b8; font-size: 13px; line-height: 1.5; margin-bottom: 12px;">
+          Nếu game đang chạy nhưng web báo <b style="color: #f87171;">"Chưa kết nối"</b> (do trình duyệt bảo mật khi web chạy trên HTTPS), bạn chỉ cần bật công tắc sau 1 lần duy nhất:
+        </p>
+
+        <div style="background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 12px 16px; font-size: 13px; line-height: 1.7; color: #e2e8f0; margin-bottom: 14px;">
+          <div style="margin-bottom: 6px;">
+            <span style="display: inline-block; background: #2563eb; color: #fff; font-weight: bold; border-radius: 4px; padding: 1px 7px; font-size: 11px; margin-right: 6px;">BƯỚC 1</span>
+            Nhấp vào biểu tượng <b>Cài đặt trang web</b> (icon nút gạt nhỏ ở đầu thanh địa chỉ web URL).
+          </div>
+          <div style="margin-bottom: 6px;">
+            <span style="display: inline-block; background: #dc2626; color: #fff; font-weight: bold; border-radius: 4px; padding: 1px 7px; font-size: 11px; margin-right: 6px;">BƯỚC 2</span>
+            Bật công tắc <b>"Ứng dụng trên thiết bị"</b> (hoặc <i>Insecure content / Local network</i>) sang màu <b>XANH (ON)</b>.
+          </div>
+          <div>
+            <span style="display: inline-block; background: #10b981; color: #fff; font-weight: bold; border-radius: 4px; padding: 1px 7px; font-size: 11px; margin-right: 6px;">BƯỚC 3</span>
+            Nhấn <b>F5 (Tải lại trang)</b>. Web sẽ tự động kết nối thành công tới game!
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 14px;">
+          <img src="data:image/png;base64,__GUIDE_IMG_B64__" alt="Hướng dẫn bật quyền trình duyệt" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 14px; margin-top: 8px;">
+          <label style="display: flex; align-items: center; gap: 8px; color: #cbd5e1; font-size: 13px; cursor: pointer; user-select: none;">
+            <input type="checkbox" id="dontShowGuideAgain" style="width: 16px; height: 16px; accent-color: #38bdf8; cursor: pointer;">
+            <span>Không hiển thị lại lần sau</span>
+          </label>
+          <button onclick="closePermissionModal()" style="background: #2563eb; color: #fff; border: none; border-radius: 8px; padding: 8px 18px; font-weight: 600; font-size: 13px; cursor: pointer;">
+            Đã hiểu & Đóng
+          </button>
         </div>
       </div>
     </div>
@@ -2253,17 +2263,24 @@ html_template = """<!doctype html>
       if (el) el.style.display = 'none';
     }
 
-    function togglePermissionGuide() {
-      const body = document.getElementById('permissionGuideBody');
-      const text = document.getElementById('guideToggleText');
-      if (!body) return;
-      if (body.style.display === 'none') {
-        body.style.display = 'flex';
-        if (text) text.innerText = 'Thu gọn ▲';
-      } else {
-        body.style.display = 'none';
-        if (text) text.innerText = 'Xem hướng dẫn ▼';
+    function openPermissionModal() {
+      const modal = document.getElementById('permissionGuideModal');
+      const chk = document.getElementById('dontShowGuideAgain');
+      if (chk) {
+        chk.checked = (localStorage.getItem('dps_hide_permission_modal') === '1');
       }
+      if (modal) modal.style.display = 'flex';
+    }
+
+    function closePermissionModal() {
+      const modal = document.getElementById('permissionGuideModal');
+      const chk = document.getElementById('dontShowGuideAgain');
+      if (chk && chk.checked) {
+        localStorage.setItem('dps_hide_permission_modal', '1');
+      } else {
+        localStorage.removeItem('dps_hide_permission_modal');
+      }
+      if (modal) modal.style.display = 'none';
     }
 
     function switchDonateTab(tab) {
@@ -2401,8 +2418,7 @@ html_template = """<!doctype html>
       statusChip.className = 'chip status-live';
       statusText.innerText = 'Đã kết nối game';
 
-      const pGuide = document.getElementById('permissionGuideBanner');
-      if (pGuide) pGuide.style.display = 'none';
+
 
 
       const pidVal = document.getElementById('pidVal');
@@ -2604,8 +2620,10 @@ html_template = """<!doctype html>
         }
       });
 
-      const pGuide = document.getElementById('permissionGuideBanner');
-      if (pGuide) pGuide.style.display = 'block';
+      if (window.location.protocol === 'https:' && localStorage.getItem('dps_hide_permission_modal') !== '1' && !window._hasAutoPromptedGuide) {
+        window._hasAutoPromptedGuide = true;
+        setTimeout(openPermissionModal, 1500);
+      }
 
     }
 
