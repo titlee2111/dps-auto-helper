@@ -1296,10 +1296,6 @@ html_template = """<!doctype html>
     </div>
 
     <div class="header-status">
-      <button class="support-tab-btn" onclick="openPermissionModal()" style="border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;" title="Hướng dẫn bật quyền trình duyệt để kết nối game">
-        <span style="font-size:14px;">❓</span>
-        <span>Hướng Dẫn Kết Nối</span>
-      </button>
       <button class="support-tab-btn notranslate" id="supportMeBtn" translate="no" onclick="openDonateModal()" title="Ủng hộ tác giả / Support the Developer">
         <span style="font-size:15px;">☕</span>
         <span id="supportMeBtnText">Ủng Hộ Tác Giả</span>
@@ -2410,6 +2406,12 @@ html_template = """<!doctype html>
           initialSyncDone = true;
           syncSavedSettingsToGame();
         }
+      }
+
+      // Tự động đóng pop up hướng dẫn khi đã kết nối thành công
+      const guideModal = document.getElementById('permissionGuideModal');
+      if (guideModal && guideModal.style.display !== 'none') {
+        guideModal.style.display = 'none';
       }
 
       // Header Chips
