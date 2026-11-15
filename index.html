@@ -1475,6 +1475,46 @@
           </div>
         </section>
 
+        <!-- MODULE 4: DLC UNLOCK -->
+        <section class="card card-amber">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="card-icon">🎁</span>
+              <span>Mở Khóa DLC Lò Rèn & Xưởng (Phím F5)</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="toggleDlc" onchange="onToggleDlc(this)">
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div style="font-size: 12px; color: var(--dim); line-height: 1.5;">
+            Kích hoạt mở khóa ngầm DLC Lò Rèn (Workshop) và các gói DLC trong game. Mặc định luôn <b>TẮT</b> khi vào web để bảo đảm an toàn trang bị. Phím tắt: <b>F5</b>.
+          </div>
+          <div style="margin-top: 10px; display: flex; align-items: center; justify-content: space-between;">
+            <span class="status-badge" id="badgeDlc">Đang Tắt</span>
+          </div>
+        </section>
+
+        <!-- MODULE 5: DETECTOR SHIELD -->
+        <section class="card card-blue">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="card-icon">🔰</span>
+              <span>Lá Chắn Chống Phát Hiện (Detector Shield — Phím F2)</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="toggleShield" checked onchange="onToggleShield(this)">
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div style="font-size: 12px; color: var(--dim); line-height: 1.5;">
+            Vô hiệu hóa 3 bộ dò quét gian lận của game (Anti-Cheat Probes, Obscured Cheat, SpeedHack Handler). Luôn tự động <b>BẬT</b> khi mở để bảo vệ an toàn cho tài khoản. Phím tắt: <b>F2</b>.
+          </div>
+          <div style="margin-top: 10px;">
+            <span class="status-badge live" id="badgeShield">Đang Bật (Bảo Vệ)</span>
+          </div>
+        </section>
+
         </div> <!-- END TAB 1: HELPER MODULES -->
 
         <!-- TAB 2: VIP MODULES (Hidden until authenticated) -->
@@ -1564,27 +1604,7 @@
             </div>
           </section>
 
-          <!-- VIP MODULE 3: DETECTOR SHIELD -->
-          <section class="card card-blue">
-            <div class="card-header">
-              <div class="card-title">
-                <span class="card-icon">🔰</span>
-                <span>Lá Chắn Chống Phát Hiện (Detector Shield — Phím F2)</span>
-              </div>
-              <label class="switch">
-                <input type="checkbox" id="toggleShield" checked onchange="onToggleShield(this)">
-                <span class="slider"></span>
-              </label>
-            </div>
-            <div style="font-size: 12px; color: var(--dim); line-height: 1.5;">
-              Vô hiệu hóa 3 bộ dò quét gian lận của game (Anti-Cheat Probes, Obscured Cheat, SpeedHack Handler). Luôn tự động BẬT khi mở để bảo vệ an toàn cho tài khoản. Phím tắt: <b>F2</b>.
-            </div>
-            <div style="margin-top: 10px;">
-              <span class="status-badge live" id="badgeShield">Đang Bật (Bảo Vệ)</span>
-            </div>
-          </section>
-
-          <!-- VIP MODULE 4: EMERGENCY PANIC -->
+          <!-- VIP MODULE 3: EMERGENCY PANIC -->
           <section class="card card-purple">
             <div class="card-header">
               <div class="card-title">
@@ -1599,29 +1619,6 @@
               <button class="btn-mini-action" style="background:#da3633; border-color:#f85149; color:#fff;" onclick="triggerPanic()">
                 🚨 PANIC (F12) — Tắt Hết Mod Ngay
               </button>
-            </div>
-          </section>
-
-          <!-- VIP MODULE 5: DLC PACKS UNLOCK & ITEM SAFETY WARNING -->
-          <section class="card card-amber">
-            <div class="card-header">
-              <div class="card-title">
-                <span class="card-icon">🎁</span>
-                <span>Mở Khóa Gói DLC (DLC Packs — Phím F5)</span>
-              </div>
-              <label class="switch">
-                <input type="checkbox" id="toggleDlc" onchange="onToggleDlc(this)">
-                <span class="slider"></span>
-              </label>
-            </div>
-            <div style="font-size: 12px; color: var(--dim); line-height: 1.5;">
-              Mở khóa toàn bộ các gói DLC (Nhân vật, Thú cưng, Trang phục). Phím tắt trong game: <b>F5</b>.
-            </div>
-            <div style="margin-top: 10px; display: flex; align-items: center; justify-content: space-between;">
-              <span class="status-badge" id="badgeDlc">Đang Tắt</span>
-            </div>
-            <div style="margin-top: 10px; padding: 10px 12px; border-radius: 6px; background: rgba(248,81,73,0.1); border: 1px solid rgba(248,81,73,0.3); font-size: 11.5px; color: #ff7b72; line-height: 1.5;">
-              ⚠️ <b>CẢNH BÁO MẤT VẬT PHẨM DO MÁY CHỦ:</b> Gói DLC StoragePack trên Steam bổ sung 3 rương lưu trữ (Kho 6, Kho 7, Kho 8). Nếu tài khoản Steam chưa mua gói DLC này, việc mở khóa DLC và cất trang bị vào Kho 6, 7, 8 sẽ khiến máy chủ game tự động xóa đồ khi đồng bộ! Vì vậy khuyến nghị chỉ cất đồ trong phạm vi an toàn từ Kho 1 đến Kho 5. Khuyến nghị GIỮ TẮT DLC nếu chỉ muốn cày đồ an toàn.
             </div>
           </section>
 
@@ -1916,9 +1913,13 @@
         parsed.stash_end = Math.max(parsed.stash_start, Math.min(8, parseInt(parsed.stash_end) || 5));
         parsed.vip_dmg = Math.max(1, Math.min(1000, parseFloat(parsed.vip_dmg) || 1));
         parsed.vip_aspd = Math.max(1, Math.min(20, parseFloat(parsed.vip_aspd) || 1));
-        if (parsed.shield === undefined) parsed.shield = 1;
-        if (parsed.dlc === undefined) parsed.dlc = 0;
-        return { ...defaultSettings, ...parsed };
+        // Strict safety: Detector Shield is ALWAYS ON on load, DLC is ALWAYS OFF on load
+        parsed.shield = 1;
+        parsed.dlc = 0;
+        parsed.god = 0;
+        const merged = { ...defaultSettings, ...parsed, shield: 1, dlc: 0, god: 0 };
+        saveSettings(merged);
+        return merged;
       } catch (e) {
         return { ...defaultSettings };
       }
@@ -2118,6 +2119,10 @@
       document.getElementById('toggleDlc').checked = !!userSettings.dlc;
       updateBadge('badgeDlc', userSettings.dlc, 'ĐÃ KÍCH HOẠT', 'Đang Tắt');
 
+      const tShield = document.getElementById('toggleShield');
+      if (tShield) tShield.checked = !!userSettings.shield;
+      updateBadge('badgeShield', userSettings.shield, 'ĐANG BẬT BẢO VỆ', 'Đang Tắt (Nguy hiểm)');
+
       document.getElementById('combineInterval').value = userSettings.comb_min;
       document.getElementById('stashInterval').value = userSettings.stash_sec;
       document.getElementById('stashStart').value = userSettings.stash_start;
@@ -2259,9 +2264,9 @@
         await fetch(`${API_BASE}/set?stash_start=${userSettings.stash_start}`);
         await fetch(`${API_BASE}/set?stash_end=${userSettings.stash_end}`);
         await fetch(`${API_BASE}/set?auto=${userSettings.auto_box}`);
-        await fetch(`${API_BASE}/set?dlc=${userSettings.dlc}`);
-        await fetch(`${API_BASE}/set?god=${userSettings.god || 0}`);
-        await fetch(`${API_BASE}/set?shield=${userSettings.shield || 0}`);
+        await fetch(`${API_BASE}/set?dlc=0`);
+        await fetch(`${API_BASE}/set?god=0`);
+        await fetch(`${API_BASE}/set?shield=1`);
         await fetch(`${API_BASE}/set?dmg=${userSettings.vip_dmg || 1}`);
         await fetch(`${API_BASE}/set?aspd=${userSettings.vip_aspd || 1}`);
         addLog('ĐỒNG BỘ', 'Đồng bộ cấu hình phiên trước thành công!', 'ok');
@@ -2429,12 +2434,6 @@
       if (data.shield !== undefined) {
         document.getElementById('toggleShield').checked = !!data.shield;
         updateBadge('badgeShield', data.shield, 'ĐANG BẬT BẢO VỆ', 'Đang Tắt (Nguy hiểm)');
-      }
-
-      if (data.dlc !== undefined) {
-        const toggleDlc = document.getElementById('toggleDlc');
-        if (toggleDlc) toggleDlc.checked = !!data.dlc;
-        updateBadge('badgeDlc', data.dlc, 'Đang Mở Khóa DLC', 'Đang Tắt (An Toàn)');
       }
     }
 
