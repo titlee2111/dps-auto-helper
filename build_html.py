@@ -1445,9 +1445,6 @@ html_template = """<!doctype html>
               <input type="number" id="stashEnd" class="num-input" value="5" min="1" max="8" oninput="updateStashTabs()" onchange="updateStashTabs()">
             </div>
           </div>
-          <div style="font-size: 11.5px; color: #7ee787; margin-top: 6px; padding: 6px 10px; background: rgba(35, 134, 54, 0.15); border-radius: 6px; border-left: 3px solid #2ea043; line-height: 1.5;">
-            💡 <strong>Lưu ý về DLC Rương:</strong> Game gốc có 5 rương lưu trữ (Kho 1 đến Kho 5). Gói DLC StoragePack bổ sung 3 rương phụ (Kho 6, 7, 8). Nếu tài khoản chưa sở hữu DLC này trên Steam, hãy giữ thiết lập cất đồ từ Kho 1 đến Kho 5 để tránh bị máy chủ đồng bộ xóa trang bị! Người đã mua DLC có thể đặt đến Kho 8.
-          </div>
 
           <!-- Capacity Box (Only visible when connected) -->
           <div class="capacity-box" id="capacityBox" style="display: none;">
@@ -1600,15 +1597,15 @@ html_template = """<!doctype html>
                 <span>Lá Chắn Chống Phát Hiện (Detector Shield — Phím F2)</span>
               </div>
               <label class="switch">
-                <input type="checkbox" id="toggleShield" onchange="onToggleShield(this)">
+                <input type="checkbox" id="toggleShield" checked onchange="onToggleShield(this)">
                 <span class="slider"></span>
               </label>
             </div>
             <div style="font-size: 12px; color: var(--dim); line-height: 1.5;">
-              Vô hiệu hóa 3 bộ dò quét gian lận của game (Anti-Cheat Probes, Obscured Cheat, SpeedHack Handler). Luôn khuyến nghị BẬT để bảo vệ tài khoản. Phím tắt: <b>F2</b>.
+              Vô hiệu hóa 3 bộ dò quét gian lận của game (Anti-Cheat Probes, Obscured Cheat, SpeedHack Handler). Luôn tự động BẬT khi mở để bảo vệ an toàn cho tài khoản. Phím tắt: <b>F2</b>.
             </div>
             <div style="margin-top: 10px;">
-              <span class="status-badge" id="badgeShield">Đang Tắt</span>
+              <span class="status-badge live" id="badgeShield">Đang Bật (Bảo Vệ)</span>
             </div>
           </section>
 
@@ -1915,14 +1912,14 @@ html_template = """<!doctype html>
     let lastStashStep = 0;
     let lastStashCurr = 0;
 
-    // Default settings (all VIP features OFF by default on fresh entry, multipliers 1x)
+    // Default settings (Detector Shield always ON by default for safety, DLC OFF, Multipliers 1x)
     const defaultSettings = {
       auto_comb: 0,
       auto_stash: 0,
       auto_box: 1,
       dlc: 0,
       god: 0,
-      shield: 0,
+      shield: 1,
       vip_dmg: 1,
       vip_aspd: 1,
       comb_min: 5,
@@ -1944,6 +1941,8 @@ html_template = """<!doctype html>
         parsed.stash_end = Math.max(parsed.stash_start, Math.min(8, parseInt(parsed.stash_end) || 5));
         parsed.vip_dmg = Math.max(1, Math.min(1000, parseFloat(parsed.vip_dmg) || 1));
         parsed.vip_aspd = Math.max(1, Math.min(20, parseFloat(parsed.vip_aspd) || 1));
+        if (parsed.shield === undefined) parsed.shield = 1;
+        if (parsed.dlc === undefined) parsed.dlc = 0;
         return { ...defaultSettings, ...parsed };
       } catch (e) {
         return { ...defaultSettings };

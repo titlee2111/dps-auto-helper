@@ -66,8 +66,8 @@ GodMode = false
 
 ## Neutralise the three integrity probes. Keep this on: tripping one blocks trading.
 # Setting type: Boolean
-# Default value: false
-DetectorShield = false
+# Default value: true
+DetectorShield = true
 
 ## Force treasure boxes to open automatically.
 # Setting type: Boolean
