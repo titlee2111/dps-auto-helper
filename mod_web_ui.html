@@ -1295,19 +1295,6 @@
       <button class="alert-close-btn" onclick="dismissAlert()" title="Đóng thông báo">✕</button>
     </div>
 
-    <!-- HTTPS Mixed Content Warning Banner (Auto displayed if on HTTPS and not connected) -->
-    <div id="httpsWarnBanner" style="display:none; background: linear-gradient(135deg, rgba(248,81,73,0.15) 0%, rgba(210,153,34,0.15) 100%); border: 1px solid #f85149; border-radius: 12px; padding: 14px 18px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(248,81,73,0.2);">
-      <div style="display: flex; gap: 12px; align-items: flex-start;">
-        <span style="font-size: 24px; line-height: 1;">⚠️</span>
-        <div style="flex: 1; font-size: 13px; line-height: 1.6; color: #f0f6fc;">
-          <b style="color: #ff7b72; font-size: 14px;">Trình duyệt đang chặn kết nối do trang web chạy trên HTTPS (GitHub Pages)!</b><br>
-          Các trình duyệt (Chrome, Edge, Brave...) chặn trang web HTTPS gửi yêu cầu đến localhost (127.0.0.1).<br>
-          <b>Cách kết nối cực kỳ dễ dàng (chọn 1 trong 2):</b><br>
-          1. Nhấp đúp vào file <code style="background:#21262d; color:#58a6ff; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-weight:bold;">Mo_Giao_Dien_Web.bat</code> trong thư mục game hoặc trong thư mục giải nén gói 1-Click.<br>
-          2. Hoặc nhấp vào link này để mở giao diện điều khiển nội bộ: <a href="http://127.0.0.1:47900/" target="_blank" style="color: #58a6ff; font-weight: bold; text-decoration: underline; background: rgba(56,139,253,0.15); padding: 2px 8px; border-radius: 4px;">http://127.0.0.1:47900/</a> (Mở khi game đang chạy).
-        </div>
-      </div>
-    </div>
 
     <!-- Download Strip -->
     <div class="download-strip">
@@ -2295,8 +2282,6 @@
       statusChip.className = 'chip status-live';
       statusText.innerText = 'Đã kết nối game';
 
-      const httpsWarn = document.getElementById('httpsWarnBanner');
-      if (httpsWarn) httpsWarn.style.display = 'none';
 
       const pidVal = document.getElementById('pidVal');
       if (pidVal && data.pid) pidVal.innerText = data.pid;
@@ -2471,15 +2456,6 @@
         }
       });
 
-      // Show HTTPS warning if loaded over HTTPS and cannot connect to local HTTP
-      const httpsWarn = document.getElementById('httpsWarnBanner');
-      if (httpsWarn) {
-        if (window.location.protocol === 'https:') {
-          httpsWarn.style.display = 'block';
-        } else {
-          httpsWarn.style.display = 'none';
-        }
-      }
     }
 
     // Polling API with multi-port probe
