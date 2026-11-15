@@ -9,6 +9,7 @@ SRC_DLL_NEW = r"g:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad\BepIn
 SRC_DLL_ORIG = r"g:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad\BepInEx\plugins\DPS.Trainer.dll"
 SRC_DLL = SRC_DLL_NEW if os.path.exists(SRC_DLL_NEW) else SRC_DLL_ORIG
 SRC_CFG = r"g:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad\BepInEx\config\dps_workshop.cfg"
+SRC_TRAINER_CFG = r"g:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad\BepInEx\config\ofx.dps.trainer.cfg"
 SRC_HTML = os.path.join(BASE_DIR, "index.html")
 OUT_ZIP = os.path.join(BASE_DIR, "DPS_Auto_Helper_1Click.zip")
 
@@ -43,6 +44,8 @@ def build_package():
     os.makedirs(target_cfg_dir, exist_ok=True)
     if os.path.exists(SRC_CFG):
         shutil.copy2(SRC_CFG, os.path.join(target_cfg_dir, "dps_workshop.cfg"))
+    if os.path.exists(SRC_TRAINER_CFG):
+        shutil.copy2(SRC_TRAINER_CFG, os.path.join(target_cfg_dir, "ofx.dps.trainer.cfg"))
 
     # Copy mod_web_ui.html
     if os.path.exists(SRC_HTML):

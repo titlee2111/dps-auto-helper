@@ -489,6 +489,77 @@
       gap: 14px;
     }
 
+    /* ==================== NAV TABS ==================== */
+    .nav-tabs-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 4px;
+      width: 100%;
+    }
+    .nav-tab-btn {
+      flex: 1;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      color: #8b949e;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .nav-tab-btn:hover {
+      background: #21262d;
+      color: #f0f6fc;
+      border-color: #484f58;
+    }
+    .nav-tab-btn.active {
+      background: linear-gradient(135deg, rgba(31, 111, 235, 0.25) 0%, rgba(56, 139, 253, 0.08) 100%);
+      border-color: #388bfd;
+      color: #58a6ff;
+      box-shadow: 0 0 14px rgba(56, 139, 253, 0.2);
+    }
+    .nav-tab-btn.nav-tab-vip.active {
+      background: linear-gradient(135deg, rgba(210, 153, 34, 0.28) 0%, rgba(245, 158, 11, 0.1) 100%);
+      border-color: #f59e0b;
+      color: #fbbf24;
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.25);
+    }
+    .vip-lock-badge {
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 12px;
+      font-weight: 600;
+      background: rgba(248, 81, 73, 0.18);
+      border: 1px solid rgba(248, 81, 73, 0.4);
+      color: #ff7b72;
+    }
+    .vip-lock-badge.unlocked {
+      background: rgba(35, 134, 54, 0.2);
+      border-color: rgba(46, 160, 67, 0.5);
+      color: #7ee787;
+    }
+    .btn-preset {
+      background: #21262d;
+      border: 1px solid #30363d;
+      color: #c9d1d9;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-preset:hover {
+      background: #30363d;
+      color: #fff;
+      border-color: #58a6ff;
+    }
+
     .log-column {
       display: flex;
       flex-direction: column;
@@ -1268,6 +1339,22 @@
       <!-- LEFT: CONTROLS COLUMN -->
       <div class="controls-column">
         
+        <!-- MAIN NAVIGATION TABS -->
+        <div class="nav-tabs-bar">
+          <button class="nav-tab-btn active" id="btnTabHelper" onclick="switchMainTab('helper')">
+            <span>⚡</span>
+            <span>Trợ Thủ Tự Động</span>
+          </button>
+          <button class="nav-tab-btn nav-tab-vip" id="btnTabVip" onclick="switchMainTab('vip')">
+            <span id="vipTabIcon">👑</span>
+            <span id="vipTabText">Chức Năng VIP</span>
+            <span class="vip-lock-badge" id="vipLockBadge">🔒 Khóa</span>
+          </button>
+        </div>
+
+        <!-- TAB 1: HELPER MODULES -->
+        <div id="tabContentHelper" style="display: flex; flex-direction: column; gap: 14px;">
+
         <!-- MODULE 1: COMBINE -->
         <section class="card card-cyan">
           <div class="card-header">
@@ -1328,13 +1415,13 @@
             </div>
             <div class="config-group" style="margin-left: 12px;">
               <span class="config-label">Cất từ Kho:</span>
-              <input type="number" id="stashStart" class="num-input" value="1" min="1" max="10" oninput="updateStashTabs()" onchange="updateStashTabs()">
+              <input type="number" id="stashStart" class="num-input" value="1" min="1" max="5" oninput="updateStashTabs()" onchange="updateStashTabs()">
               <span class="config-label">đến Kho:</span>
-              <input type="number" id="stashEnd" class="num-input" value="5" min="1" max="10" oninput="updateStashTabs()" onchange="updateStashTabs()">
+              <input type="number" id="stashEnd" class="num-input" value="5" min="1" max="5" oninput="updateStashTabs()" onchange="updateStashTabs()">
             </div>
           </div>
-          <div style="font-size: 11px; color: #f59e0b; margin-top: 6px; padding: 5px 8px; background: rgba(245, 158, 11, 0.1); border-radius: 4px; border-left: 2px solid #f59e0b; line-height: 1.4;">
-            ⚠️ <strong>Khuyên dùng Kho 1 - 5:</strong> Kho 1 đến 5 là kho game gốc an toàn tuyệt đối. Kho 6 là kho DLC (StoragePack), nếu tài khoản chưa mua DLC trên Steam thì máy chủ sẽ tự động xóa vật phẩm cất vào Kho 6 do không khớp bản quyền.
+          <div style="font-size: 11.5px; color: #7ee787; margin-top: 6px; padding: 6px 10px; background: rgba(35, 134, 54, 0.15); border-radius: 6px; border-left: 3px solid #2ea043; line-height: 1.5;">
+            🔒 <strong>Bảo vệ vật phẩm an toàn (Kho 1 - Kho 5):</strong> Kho 1 đến 5 là kho game gốc vĩnh viễn không bao giờ bị xóa. Hệ thống đã khóa an toàn tối đa 5 kho, loại trừ Kho 6 (DLC StoragePack) để triệt tiêu 100% tình trạng máy chủ tự xóa đồ do không khớp bản quyền Steam.
           </div>
 
           <!-- Capacity Box (Only visible when connected) -->
@@ -1421,6 +1508,158 @@
           </div>
         </section>
 
+        </div> <!-- END TAB 1: HELPER MODULES -->
+
+        <!-- TAB 2: VIP MODULES (Hidden until authenticated) -->
+        <div id="tabContentVip" style="display: none; flex-direction: column; gap: 14px;">
+          
+          <!-- VIP HEADER BANNER -->
+          <div style="background: linear-gradient(135deg, rgba(210,153,34,0.18) 0%, rgba(245,158,11,0.08) 100%); border: 1px solid #d29922; border-radius: var(--radius-sm); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 22px;">👑</span>
+              <div>
+                <b style="color: #fbbf24; font-size: 14px;">Khu Vực Can Thiệp VIP (Đã Xác Thực)</b>
+                <div style="font-size: 12px; color: #d29922;">God Mode, Detector Shield, Tăng Sát Thương & Tốc Đánh</div>
+              </div>
+            </div>
+            <button onclick="lockVip()" style="background: #21262d; border: 1px solid #f85149; color: #ff7b72; font-size: 11.5px; font-weight: 700; padding: 5px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#da3633'; this.style.color='#fff';" onmouseout="this.style.background='#21262d'; this.style.color='#ff7b72';" title="Khóa lại ngay lập tức">
+              🔒 Khóa Lại Tab
+            </button>
+          </div>
+
+          <!-- VIP MODULE 1: COMBAT MULTIPLIERS -->
+          <section class="card card-amber">
+            <div class="card-header">
+              <div class="card-title">
+                <span class="card-icon">⚔️</span>
+                <span>Chỉ Số Chiến Đấu (Combat Multipliers)</span>
+              </div>
+            </div>
+
+            <!-- Damage Multiplier -->
+            <div style="margin-bottom: 18px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span style="font-size: 13px; font-weight: 700; color: #f0f6fc;">Sát Thương Đầu Ra (Damage):</span>
+                <span style="font-size: 14px; font-weight: 800; color: #fbbf24;" id="vipDmgVal">1.00x</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <input type="range" id="vipDmgSlider" min="1" max="50" step="0.25" value="1" style="flex: 1; accent-color: #f59e0b;" oninput="onVipDmgSlider(this.value)" onchange="sendVipDmg(this.value)">
+                <input type="number" id="vipDmgInput" class="num-input" value="1" min="1" max="1000" step="0.5" style="width: 70px;" onchange="sendVipDmg(this.value)">
+              </div>
+              <div style="display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap;">
+                <button class="btn-preset" onclick="sendVipDmg(1)">1x (Chuẩn)</button>
+                <button class="btn-preset" onclick="sendVipDmg(2)">2x</button>
+                <button class="btn-preset" onclick="sendVipDmg(5)">5x</button>
+                <button class="btn-preset" onclick="sendVipDmg(10)">10x</button>
+                <button class="btn-preset" onclick="sendVipDmg(25)">25x</button>
+                <button class="btn-preset" onclick="sendVipDmg(50)">50x</button>
+              </div>
+            </div>
+
+            <!-- Attack Speed Multiplier -->
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span style="font-size: 13px; font-weight: 700; color: #f0f6fc;">Tốc Độ Đánh (Attack Speed):</span>
+                <span style="font-size: 14px; font-weight: 800; color: #38bdf8;" id="vipAspdVal">1.00x</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <input type="range" id="vipAspdSlider" min="1" max="20" step="0.5" value="1" style="flex: 1; accent-color: #38bdf8;" oninput="onVipAspdSlider(this.value)" onchange="sendVipAspd(this.value)">
+                <input type="number" id="vipAspdInput" class="num-input" value="1" min="1" max="20" step="0.5" style="width: 70px;" onchange="sendVipAspd(this.value)">
+              </div>
+              <div style="display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap;">
+                <button class="btn-preset" onclick="sendVipAspd(1)">1x (Chuẩn)</button>
+                <button class="btn-preset" onclick="sendVipAspd(1.5)">1.5x</button>
+                <button class="btn-preset" onclick="sendVipAspd(2)">2x</button>
+                <button class="btn-preset" onclick="sendVipAspd(3)">3x</button>
+                <button class="btn-preset" onclick="sendVipAspd(5)">5x</button>
+                <button class="btn-preset" onclick="sendVipAspd(10)">10x (Max)</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- VIP MODULE 2: GOD MODE -->
+          <section class="card card-emerald">
+            <div class="card-header">
+              <div class="card-title">
+                <span class="card-icon">🛡️</span>
+                <span>Bất Tử (God Mode — Phím F1)</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="toggleGod" onchange="onToggleGod(this)">
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div style="font-size: 12px; color: var(--dim); line-height: 1.5;">
+              Miễn nhiễm hoàn toàn 100% mọi sát thương nhận vào từ quái vật và Boss. Có thể bật/tắt tức thì bằng phím <b>F1</b> trong game.
+            </div>
+            <div style="margin-top: 10px;">
+              <span class="status-badge" id="badgeGod">Đang Tắt</span>
+            </div>
+          </section>
+
+          <!-- VIP MODULE 3: DETECTOR SHIELD -->
+          <section class="card card-blue">
+            <div class="card-header">
+              <div class="card-title">
+                <span class="card-icon">🔰</span>
+                <span>Lá Chắn Chống Phát Hiện (Detector Shield — Phím F2)</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="toggleShield" onchange="onToggleShield(this)">
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div style="font-size: 12px; color: var(--dim); line-height: 1.5;">
+              Vô hiệu hóa 3 bộ dò quét gian lận của game (Anti-Cheat Probes, Obscured Cheat, SpeedHack Handler). Luôn khuyến nghị BẬT để bảo vệ tài khoản. Phím tắt: <b>F2</b>.
+            </div>
+            <div style="margin-top: 10px;">
+              <span class="status-badge" id="badgeShield">Đang Tắt</span>
+            </div>
+          </section>
+
+          <!-- VIP MODULE 4: EMERGENCY PANIC -->
+          <section class="card card-purple">
+            <div class="card-header">
+              <div class="card-title">
+                <span class="card-icon">🚨</span>
+                <span>Khẩn Cấp & Đưa Về Chuẩn (Panic Reset)</span>
+              </div>
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button class="btn-mini-action" style="background:#238636; border-color:#2ea043; color:#fff;" onclick="resetVipToNormal()">
+                ⚡ Đưa Chỉ Số Về Chuẩn (1x Dmg / 1x Aspd)
+              </button>
+              <button class="btn-mini-action" style="background:#da3633; border-color:#f85149; color:#fff;" onclick="triggerPanic()">
+                🚨 PANIC (F12) — Tắt Hết Mod Ngay
+              </button>
+            </div>
+          </section>
+
+          <!-- VIP MODULE 5: DLC PACKS UNLOCK & ITEM SAFETY WARNING -->
+          <section class="card card-amber">
+            <div class="card-header">
+              <div class="card-title">
+                <span class="card-icon">🎁</span>
+                <span>Mở Khóa Gói DLC (DLC Packs — Phím F5)</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="toggleDlc" onchange="onToggleDlc(this)">
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div style="font-size: 12px; color: var(--dim); line-height: 1.5;">
+              Mở khóa toàn bộ các gói DLC (Nhân vật, Thú cưng, Trang phục). Phím tắt trong game: <b>F5</b>.
+            </div>
+            <div style="margin-top: 10px; display: flex; align-items: center; justify-content: space-between;">
+              <span class="status-badge" id="badgeDlc">Đang Tắt</span>
+            </div>
+            <div style="margin-top: 10px; padding: 10px 12px; border-radius: 6px; background: rgba(248,81,73,0.1); border: 1px solid rgba(248,81,73,0.3); font-size: 11.5px; color: #ff7b72; line-height: 1.5;">
+              ⚠️ <b>CẢNH BÁO MẤT VẬT PHẨM DO MÁY CHỦ:</b> Nếu tài khoản Steam chưa mua gói DLC StoragePack, việc mở khóa DLC và cất đồ vào Kho 6 sẽ khiến máy chủ game tự động xóa đồ khi đồng bộ! Vì vậy hệ thống đã <b>khóa cố định phạm vi cất đồ chỉ từ Kho 1 đến Kho 5</b> để bảo vệ toàn bộ trang bị của bạn. Khuyến nghị GIỮ TẮT DLC nếu chỉ muốn cày đồ an toàn.
+            </div>
+          </section>
+
+        </div> <!-- END TAB 2: VIP MODULES -->
+
       </div>
 
       <!-- RIGHT: LOG COLUMN -->
@@ -1445,6 +1684,38 @@
 
     </div>
   </main>
+
+  <!-- MODAL: VIP AUTHENTICATION -->
+  <div class="modal-overlay" id="vipAuthModal" style="display:none;" onclick="if(event.target===this) closeVipModal()">
+    <div class="modal-card" style="max-width: 440px;">
+      <div class="modal-header" style="border-bottom: 1px solid rgba(245, 158, 11, 0.3);">
+        <div class="modal-title" style="color: #fbbf24;">
+          <span>👑</span>
+          <span>Xác Thực Quyền Truy Cập VIP</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeVipModal()">✕</button>
+      </div>
+      <div class="modal-body" style="text-align: center; padding: 24px 20px;">
+        <div style="font-size: 40px; margin-bottom: 12px;">🔒</div>
+        <div style="font-size: 15px; font-weight: 700; color: #f0f6fc; margin-bottom: 6px;">Khu Vực Tính Năng VIP</div>
+        <div style="font-size: 13px; color: #8b949e; line-height: 1.5; margin-bottom: 20px;">
+          Các tính năng can thiệp chuyên sâu (God Mode, Detector Shield, Tăng Sát Thương & Tốc Đánh) chỉ dành riêng cho VIP. Vui lòng nhập mã bảo vệ:
+        </div>
+        <div style="margin-bottom: 16px;">
+          <input type="password" id="vipPinInput" placeholder="Nhập mã bí mật VIP..." style="width: 100%; padding: 12px 16px; background: #0d1117; border: 1px solid #30363d; border-radius: 8px; color: #fff; font-size: 16px; text-align: center; letter-spacing: 2px; outline: none; transition: border-color 0.2s;" onkeydown="if(event.key==='Enter') submitVipPin()" onfocus="this.style.borderColor='#f59e0b'" onblur="this.style.borderColor='#30363d'">
+        </div>
+        <div id="vipAuthErr" style="display: none; color: #ff7b72; font-size: 13px; margin-bottom: 14px; font-weight: 600;">⚠️ Mã bảo mật không chính xác!</div>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+          <button onclick="submitVipPin()" style="background: linear-gradient(180deg, #d29922 0%, #bb8009 100%); border: 1px solid #e3b341; color: #000; font-weight: 800; font-size: 13px; padding: 10px 24px; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 14px rgba(210,153,34,0.3); transition: all 0.2s;" onmouseover="this.style.filter='brightness(1.15)'" onmouseout="this.style.filter=''">
+            🔓 MỞ KHÓA VIP
+          </button>
+          <button onclick="closeVipModal()" style="background: #21262d; border: 1px solid #30363d; color: #c9d1d9; font-weight: 600; font-size: 13px; padding: 10px 18px; border-radius: 8px; cursor: pointer;">
+            Đóng
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- MODAL: DOWNLOAD 1-CLICK -->
   <div class="modal-overlay" id="downloadModal" onclick="if(event.target===this) closeDownloadModal()">
@@ -1670,9 +1941,8 @@
       }
       try {
         const parsed = JSON.parse(saved);
-        if (parsed.stash_end === undefined) {
-          parsed.stash_end = 5;
-        }
+        parsed.stash_start = Math.max(1, Math.min(5, parseInt(parsed.stash_start) || 1));
+        parsed.stash_end = Math.max(parsed.stash_start, Math.min(5, parseInt(parsed.stash_end) || 5));
         return { ...defaultSettings, ...parsed };
       } catch (e) {
         return { ...defaultSettings };
@@ -1686,6 +1956,178 @@
     }
 
     let userSettings = loadSavedSettings();
+
+    // VIP State & Auth
+    let isVipUnlocked = (localStorage.getItem('dps_vip_unlocked') === '1');
+    let currentMainTab = 'helper';
+
+    function initVipState() {
+      const lockBadge = document.getElementById('vipLockBadge');
+      if (isVipUnlocked) {
+        if (lockBadge) {
+          lockBadge.innerText = '🔓 Đã mở';
+          lockBadge.className = 'vip-lock-badge unlocked';
+        }
+      } else {
+        if (lockBadge) {
+          lockBadge.innerText = '🔒 Khóa';
+          lockBadge.className = 'vip-lock-badge';
+        }
+      }
+    }
+
+    function switchMainTab(tab) {
+      if (tab === 'vip' && !isVipUnlocked) {
+        openVipModal();
+        return;
+      }
+      currentMainTab = tab;
+      const btnHelper = document.getElementById('btnTabHelper');
+      const btnVip = document.getElementById('btnTabVip');
+      const contentHelper = document.getElementById('tabContentHelper');
+      const contentVip = document.getElementById('tabContentVip');
+
+      if (tab === 'helper') {
+        if (btnHelper) btnHelper.classList.add('active');
+        if (btnVip) btnVip.classList.remove('active');
+        if (contentHelper) contentHelper.style.display = 'flex';
+        if (contentVip) contentVip.style.display = 'none';
+      } else if (tab === 'vip') {
+        if (btnHelper) btnHelper.classList.remove('active');
+        if (btnVip) btnVip.classList.add('active');
+        if (contentHelper) contentHelper.style.display = 'none';
+        if (contentVip) contentVip.style.display = 'flex';
+      }
+    }
+
+    function openVipModal() {
+      const modal = document.getElementById('vipAuthModal');
+      const input = document.getElementById('vipPinInput');
+      const err = document.getElementById('vipAuthErr');
+      if (err) err.style.display = 'none';
+      if (input) input.value = '';
+      if (modal) modal.style.display = 'flex';
+      setTimeout(() => { if (input) input.focus(); }, 100);
+    }
+
+    function closeVipModal() {
+      const modal = document.getElementById('vipAuthModal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function submitVipPin() {
+      const input = document.getElementById('vipPinInput');
+      const err = document.getElementById('vipAuthErr');
+      if (!input) return;
+      const val = input.value.trim().toLowerCase();
+      if (val === 'son' || val === '2111' || val === 'vip2111' || val === 'admin') {
+        isVipUnlocked = true;
+        localStorage.setItem('dps_vip_unlocked', '1');
+        initVipState();
+        closeVipModal();
+        switchMainTab('vip');
+        addLog('VIP ACCESS', 'Xác thực quyền VIP thành công! Đã mở khóa toàn bộ bảng can thiệp.', 'ok');
+      } else {
+        if (err) {
+          err.innerText = '⚠️ Mật mã VIP không chính xác! Vui lòng thử lại.';
+          err.style.display = 'block';
+        }
+      }
+    }
+
+    function lockVip() {
+      isVipUnlocked = false;
+      localStorage.removeItem('dps_vip_unlocked');
+      initVipState();
+      switchMainTab('helper');
+      addLog('VIP ACCESS', 'Đã khóa lại Tab VIP an toàn.', 'warn');
+    }
+
+    // VIP Combat Multipliers
+    function onVipDmgSlider(val) {
+      document.getElementById('vipDmgVal').innerText = Number(val).toFixed(2) + 'x';
+      document.getElementById('vipDmgInput').value = val;
+    }
+
+    async function sendVipDmg(val) {
+      const num = Math.max(1, parseFloat(val) || 1);
+      document.getElementById('vipDmgVal').innerText = num.toFixed(2) + 'x';
+      document.getElementById('vipDmgSlider').value = Math.min(50, num);
+      document.getElementById('vipDmgInput').value = num;
+      addLog('CHỈ SỐ VIP', `Đang thiết lập Sát thương x${num}...`, 'info');
+      try {
+        const res = await fetch(`${API_BASE}/set?dmg=${num}`);
+        if (res.ok) {
+          addLog('CHỈ SỐ VIP', `Đã áp dụng Sát thương x${num} thành công!`, 'ok');
+          updateStatus(await res.json());
+        }
+      } catch (e) {
+        addLog('LỖI KẾT NỐI', 'Không thể áp dụng chỉ số sát thương.', 'err');
+      }
+    }
+
+    function onVipAspdSlider(val) {
+      document.getElementById('vipAspdVal').innerText = Number(val).toFixed(2) + 'x';
+      document.getElementById('vipAspdInput').value = val;
+    }
+
+    async function sendVipAspd(val) {
+      const num = Math.max(1, parseFloat(val) || 1);
+      document.getElementById('vipAspdVal').innerText = num.toFixed(2) + 'x';
+      document.getElementById('vipAspdSlider').value = Math.min(20, num);
+      document.getElementById('vipAspdInput').value = num;
+      addLog('CHỈ SỐ VIP', `Đang thiết lập Tốc độ đánh x${num}...`, 'info');
+      try {
+        const res = await fetch(`${API_BASE}/set?aspd=${num}`);
+        if (res.ok) {
+          addLog('CHỈ SỐ VIP', `Đã áp dụng Tốc đánh x${num} thành công!`, 'ok');
+          updateStatus(await res.json());
+        }
+      } catch (e) {
+        addLog('LỖI KẾT NỐI', 'Không thể áp dụng chỉ số tốc đánh.', 'err');
+      }
+    }
+
+    async function onToggleGod(el) {
+      const val = el.checked ? 1 : 0;
+      updateBadge('badgeGod', val, 'ĐANG BẬT BẤT TỬ', 'Đang Tắt');
+      addLog('GOD MODE (F1)', el.checked ? 'ĐÃ BẬT Bất tử (Miễn nhiễm sát thương 100%)!' : 'Đã TẮT Bất tử.', el.checked ? 'ok' : 'warn');
+      try {
+        const res = await fetch(`${API_BASE}/set?god=${val}`);
+        if (res.ok) updateStatus(await res.json());
+      } catch (e) {
+        addLog('LỖI KẾT NỐI', 'Không thể đổi trạng thái God Mode.', 'err');
+      }
+    }
+
+    async function onToggleShield(el) {
+      const val = el.checked ? 1 : 0;
+      updateBadge('badgeShield', val, 'ĐANG BẬT BẢO VỆ', 'Đang Tắt (Nguy hiểm)');
+      addLog('LÁ CHẮN (F2)', el.checked ? 'ĐÃ BẬT Lá chắn chống phát hiện (Detector Shield)!' : 'ĐÃ TẮT Lá chắn (Cảnh báo: Anti-cheat game có thể quét)!', el.checked ? 'ok' : 'err');
+      try {
+        const res = await fetch(`${API_BASE}/set?shield=${val}`);
+        if (res.ok) updateStatus(await res.json());
+      } catch (e) {
+        addLog('LỖI KẾT NỐI', 'Không thể đổi trạng thái Lá chắn.', 'err');
+      }
+    }
+
+    async function resetVipToNormal() {
+      addLog('CHỈ SỐ VIP', 'Đang đưa các chỉ số về chuẩn (1x Sát thương, 1x Tốc đánh)...', 'info');
+      await sendVipDmg(1);
+      await sendVipAspd(1);
+    }
+
+    async function triggerPanic() {
+      addLog('PANIC (F12)', 'Đang gửi lệnh khẩn cấp Panic (Tắt God Mode, reset chỉ số)...', 'warn');
+      try {
+        await fetch(`${API_BASE}/set?god=0`);
+        await fetch(`${API_BASE}/set?dmg=1`);
+        await fetch(`${API_BASE}/set?aspd=1`);
+        addLog('PANIC', 'Đã vô hiệu hóa toàn bộ can thiệp chiến đấu khẩn cấp!', 'ok');
+        fetchStatus();
+      } catch (e) {}
+    }
 
     // Apply loaded settings to UI immediately (all OFF by default unless user turned ON before)
     function applySettingsToUI() {
@@ -1977,6 +2419,36 @@
         document.getElementById('toggleDlc').checked = !!data.dlc;
         updateBadge('badgeDlc', data.dlc, 'ĐÃ KÍCH HOẠT', 'Đang Tắt');
       }
+
+      // VIP Combat Stats
+      if (data.dmg !== undefined) {
+        document.getElementById('vipDmgVal').innerText = Number(data.dmg).toFixed(2) + 'x';
+        const slider = document.getElementById('vipDmgSlider');
+        const input = document.getElementById('vipDmgInput');
+        if (slider && document.activeElement !== slider) slider.value = Math.min(50, Number(data.dmg));
+        if (input && document.activeElement !== input) input.value = Number(data.dmg);
+      }
+      if (data.aspd !== undefined) {
+        document.getElementById('vipAspdVal').innerText = Number(data.aspd).toFixed(2) + 'x';
+        const slider = document.getElementById('vipAspdSlider');
+        const input = document.getElementById('vipAspdInput');
+        if (slider && document.activeElement !== slider) slider.value = Math.min(20, Number(data.aspd));
+        if (input && document.activeElement !== input) input.value = Number(data.aspd);
+      }
+      if (data.god !== undefined) {
+        document.getElementById('toggleGod').checked = !!data.god;
+        updateBadge('badgeGod', data.god, 'ĐANG BẬT BẤT TỬ', 'Đang Tắt');
+      }
+      if (data.shield !== undefined) {
+        document.getElementById('toggleShield').checked = !!data.shield;
+        updateBadge('badgeShield', data.shield, 'ĐANG BẬT BẢO VỆ', 'Đang Tắt (Nguy hiểm)');
+      }
+
+      if (data.dlc !== undefined) {
+        const toggleDlc = document.getElementById('toggleDlc');
+        if (toggleDlc) toggleDlc.checked = !!data.dlc;
+        updateBadge('badgeDlc', data.dlc, 'Đang Mở Khóa DLC', 'Đang Tắt (An Toàn)');
+      }
     }
 
     function setDisconnected() {
@@ -2005,7 +2477,7 @@
       if (capPlaceholder) capPlaceholder.style.display = 'block';
 
       // Badges
-      ['badgeCombine', 'badgeStash', 'badgeAutoBox', 'badgeDlc'].forEach(id => {
+      ['badgeCombine', 'badgeStash', 'badgeAutoBox', 'badgeDlc', 'badgeGod', 'badgeShield'].forEach(id => {
         const el = document.getElementById(id);
         if (el) {
           el.className = 'status-badge';
@@ -2141,7 +2613,8 @@
       const eInput = document.getElementById('stashEnd');
       if (!sInput || !eInput) return;
       const start = Math.max(1, parseInt(sInput.value) || 1);
-      const end = Math.max(start, parseInt(eInput.value) || 5);
+      const end = Math.min(5, Math.max(start, parseInt(eInput.value) || 5));
+      eInput.value = end;
       userSettings.stash_start = start;
       userSettings.stash_end = end;
       saveSettings(userSettings);
@@ -2191,6 +2664,7 @@
 
     // Initialize UI from local storage
     applySettingsToUI();
+    initVipState();
 
     // Start polling
     fetchStatus();
