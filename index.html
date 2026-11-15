@@ -1415,13 +1415,13 @@
             </div>
             <div class="config-group" style="margin-left: 12px;">
               <span class="config-label">Cất từ Kho:</span>
-              <input type="number" id="stashStart" class="num-input" value="1" min="1" max="5" oninput="updateStashTabs()" onchange="updateStashTabs()">
+              <input type="number" id="stashStart" class="num-input" value="1" min="1" max="8" oninput="updateStashTabs()" onchange="updateStashTabs()">
               <span class="config-label">đến Kho:</span>
-              <input type="number" id="stashEnd" class="num-input" value="5" min="1" max="5" oninput="updateStashTabs()" onchange="updateStashTabs()">
+              <input type="number" id="stashEnd" class="num-input" value="5" min="1" max="8" oninput="updateStashTabs()" onchange="updateStashTabs()">
             </div>
           </div>
           <div style="font-size: 11.5px; color: #7ee787; margin-top: 6px; padding: 6px 10px; background: rgba(35, 134, 54, 0.15); border-radius: 6px; border-left: 3px solid #2ea043; line-height: 1.5;">
-            🔒 <strong>Bảo vệ vật phẩm an toàn (Kho 1 - Kho 5):</strong> Kho 1 đến 5 là kho game gốc vĩnh viễn không bao giờ bị xóa. Hệ thống đã khóa an toàn tối đa 5 kho, loại trừ Kho 6 (DLC StoragePack) để triệt tiêu 100% tình trạng máy chủ tự xóa đồ do không khớp bản quyền Steam.
+            💡 <strong>Lưu ý về DLC Rương:</strong> Game gốc có 5 rương lưu trữ (Kho 1 đến Kho 5). Gói DLC StoragePack bổ sung 3 rương phụ (Kho 6, 7, 8). Nếu tài khoản chưa sở hữu DLC này trên Steam, hãy giữ thiết lập cất đồ từ Kho 1 đến Kho 5 để tránh bị máy chủ đồng bộ xóa trang bị! Người đã mua DLC có thể đặt đến Kho 8.
           </div>
 
           <!-- Capacity Box (Only visible when connected) -->
@@ -1475,36 +1475,6 @@
             <div style="margin-left: auto;">
               <span class="box-count-badge" id="boxCountBadge">Rương đang có: <b id="boxCountVal">0 Rương</b></span>
             </div>
-          </div>
-        </section>
-
-        <!-- MODULE 4: DLC UNLOCK -->
-        <section class="card card-amber">
-          <div class="card-header">
-            <div class="card-title">
-              <span class="card-icon">🔓</span>
-              <span>Mở Khóa DLC Lò Rèn / Xưởng</span>
-            </div>
-            <span class="status-badge" id="badgeDlc">Đang Tắt</span>
-          </div>
-
-          <div class="dlc-warning-box">
-            <div class="dlc-warning-title">⚠️ Lưu ý quan trọng:</div>
-            <div>Chức năng Tự Động Hợp Thành yêu cầu game phải có DLC Lò Rèn (Workshop). Công tắc bên dưới giúp kích hoạt mở khóa DLC miễn phí ngầm trong game để có thể sử dụng được auto.</div>
-            <div class="dlc-warning-highlight">
-              ⛔ Dành cho người CHƯA CÓ DLC Lò Rèn để dùng auto. Nếu tài khoản của bạn đã mua hoặc đã có DLC rồi thì ĐỪNG DÙNG nút này!
-            </div>
-          </div>
-
-          <div class="dlc-toggle-row">
-            <div>
-              <div class="dlc-toggle-name">Công Tắc Mở Khóa DLC (ON / OFF)</div>
-              <div class="dlc-toggle-desc">Gạt BẬT để kích hoạt DLC Lò Rèn ngầm. Gạt TẮT để trả game về trạng thái nguyên bản.</div>
-            </div>
-            <label class="switch">
-              <input type="checkbox" id="toggleDlc" onchange="onToggleDlc(this)">
-              <span class="slider"></span>
-            </label>
           </div>
         </section>
 
@@ -1654,7 +1624,7 @@
               <span class="status-badge" id="badgeDlc">Đang Tắt</span>
             </div>
             <div style="margin-top: 10px; padding: 10px 12px; border-radius: 6px; background: rgba(248,81,73,0.1); border: 1px solid rgba(248,81,73,0.3); font-size: 11.5px; color: #ff7b72; line-height: 1.5;">
-              ⚠️ <b>CẢNH BÁO MẤT VẬT PHẨM DO MÁY CHỦ:</b> Nếu tài khoản Steam chưa mua gói DLC StoragePack, việc mở khóa DLC và cất đồ vào Kho 6 sẽ khiến máy chủ game tự động xóa đồ khi đồng bộ! Vì vậy hệ thống đã <b>khóa cố định phạm vi cất đồ chỉ từ Kho 1 đến Kho 5</b> để bảo vệ toàn bộ trang bị của bạn. Khuyến nghị GIỮ TẮT DLC nếu chỉ muốn cày đồ an toàn.
+              ⚠️ <b>CẢNH BÁO MẤT VẬT PHẨM DO MÁY CHỦ:</b> Gói DLC StoragePack trên Steam bổ sung 3 rương lưu trữ (Kho 6, Kho 7, Kho 8). Nếu tài khoản Steam chưa mua gói DLC này, việc mở khóa DLC và cất trang bị vào Kho 6, 7, 8 sẽ khiến máy chủ game tự động xóa đồ khi đồng bộ! Vì vậy khuyến nghị chỉ cất đồ trong phạm vi an toàn từ Kho 1 đến Kho 5. Khuyến nghị GIỮ TẮT DLC nếu chỉ muốn cày đồ an toàn.
             </div>
           </section>
 
@@ -1920,17 +1890,21 @@
     let lastStashStep = 0;
     let lastStashCurr = 0;
 
-    // Default settings (all OFF by default on fresh entry)
+    // Default settings (all VIP features OFF by default on fresh entry, multipliers 1x)
     const defaultSettings = {
       auto_comb: 0,
       auto_stash: 0,
-      auto_box: 0,
+      auto_box: 1,
       dlc: 0,
+      god: 0,
+      shield: 0,
+      vip_dmg: 1,
+      vip_aspd: 1,
       comb_min: 5,
       stash_sec: 60,
       stash_start: 1,
       stash_end: 5,
-      box_interval: 3
+      box_interval: 1.5
     };
 
     // Load persisted settings from localStorage
@@ -1941,8 +1915,10 @@
       }
       try {
         const parsed = JSON.parse(saved);
-        parsed.stash_start = Math.max(1, Math.min(5, parseInt(parsed.stash_start) || 1));
-        parsed.stash_end = Math.max(parsed.stash_start, Math.min(5, parseInt(parsed.stash_end) || 5));
+        parsed.stash_start = Math.max(1, Math.min(8, parseInt(parsed.stash_start) || 1));
+        parsed.stash_end = Math.max(parsed.stash_start, Math.min(8, parseInt(parsed.stash_end) || 5));
+        parsed.vip_dmg = Math.max(1, Math.min(1000, parseFloat(parsed.vip_dmg) || 1));
+        parsed.vip_aspd = Math.max(1, Math.min(20, parseFloat(parsed.vip_aspd) || 1));
         return { ...defaultSettings, ...parsed };
       } catch (e) {
         return { ...defaultSettings };
@@ -2285,6 +2261,10 @@
         await fetch(`${API_BASE}/set?stash_end=${userSettings.stash_end}`);
         await fetch(`${API_BASE}/set?auto=${userSettings.auto_box}`);
         await fetch(`${API_BASE}/set?dlc=${userSettings.dlc}`);
+        await fetch(`${API_BASE}/set?god=${userSettings.god || 0}`);
+        await fetch(`${API_BASE}/set?shield=${userSettings.shield || 0}`);
+        await fetch(`${API_BASE}/set?dmg=${userSettings.vip_dmg || 1}`);
+        await fetch(`${API_BASE}/set?aspd=${userSettings.vip_aspd || 1}`);
         addLog('ĐỒNG BỘ', 'Đồng bộ cấu hình phiên trước thành công!', 'ok');
       } catch (err) {
         addLog('ĐỒNG BỘ', 'Lỗi đồng bộ cấu hình vào game.', 'err');
@@ -2339,16 +2319,24 @@
       const totalCap = data.total_capacity !== undefined ? data.total_capacity : (invCap + stoCap);
       const capPercent = totalCap > 0 ? Math.round((totalOcc / totalCap) * 100) : 0;
 
-      // Update Top HUD Capacity
-      document.getElementById('hudCap').innerText = `${totalOcc} / ${totalCap}`;
-      document.getElementById('hudCapBar').style.width = `${Math.min(100, capPercent)}%`;
-
-      // Update Module 2 Capacity Details
-      document.getElementById('capStat').innerText = `${totalOcc} / ${totalCap} slot (${capPercent}%)`;
-      document.getElementById('capBar').style.width = `${Math.min(100, capPercent)}%`;
-      document.getElementById('invStat').innerText = `${invOcc} / ${invCap}`;
-      document.getElementById('storageStat').innerText = `${stoOcc} / ${stoCap}`;
-      document.getElementById('capPercent').innerText = `${capPercent}%`;
+      // Update Top HUD Capacity & Module 2 Details
+      if (totalCap > 0) {
+        document.getElementById('hudCap').innerText = `${totalOcc} / ${totalCap}`;
+        document.getElementById('hudCapBar').style.width = `${Math.min(100, capPercent)}%`;
+        document.getElementById('capStat').innerText = `${totalOcc} / ${totalCap} slot (${capPercent}%)`;
+        document.getElementById('capBar').style.width = `${Math.min(100, capPercent)}%`;
+        document.getElementById('invStat').innerText = `${invOcc} / ${invCap}`;
+        document.getElementById('storageStat').innerText = `${stoOcc} / ${stoCap}`;
+        document.getElementById('capPercent').innerText = `${capPercent}%`;
+      } else {
+        document.getElementById('hudCap').innerText = `-- / --`;
+        document.getElementById('hudCapBar').style.width = `0%`;
+        document.getElementById('capStat').innerText = `Đang kết nối dữ liệu kho game...`;
+        document.getElementById('capBar').style.width = `0%`;
+        document.getElementById('invStat').innerText = `-- / --`;
+        document.getElementById('storageStat').innerText = `-- / --`;
+        document.getElementById('capPercent').innerText = `0%`;
+      }
 
       // Color coding for capacity bar
       const bar = document.getElementById('capBar');
@@ -2613,14 +2601,14 @@
       const eInput = document.getElementById('stashEnd');
       if (!sInput || !eInput) return;
       const start = Math.max(1, parseInt(sInput.value) || 1);
-      const end = Math.min(5, Math.max(start, parseInt(eInput.value) || 5));
+      const end = Math.min(8, Math.max(start, parseInt(eInput.value) || 5));
       eInput.value = end;
       userSettings.stash_start = start;
       userSettings.stash_end = end;
       saveSettings(userSettings);
       addLog('CẤU HÌNH', `Đã đổi phạm vi cất đồ: Kho ${start} đến Kho ${end} (đã lưu).`, 'info');
       if (end > 5) {
-        addLog('CẢNH BÁO', 'Kho 6 là kho DLC (StoragePack). Nếu tài khoản chưa mua DLC trên Steam, máy chủ sẽ tự động xóa vật phẩm cất trong kho này!', 'warn');
+        addLog('CẢNH BÁO', 'Kho 6, 7, 8 là các kho từ gói DLC StoragePack. Nếu tài khoản chưa sở hữu DLC này trên Steam, máy chủ sẽ tự động xóa vật phẩm khi đồng bộ!', 'warn');
       }
       try {
         await fetch(`${API_BASE}/set?stash_start=${start}`);

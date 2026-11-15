@@ -5,22 +5,19 @@ import zipfile
 BASE_DIR = r"C:\Users\Son\Desktop\dps-auto-helper"
 STAGE_DIR = os.path.join(BASE_DIR, "staging")
 SRC_ZIP = r"g:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad\DPS-Trainer.zip"
-SRC_DLL_NEW = r"g:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad\BepInEx\plugins\DPS.Trainer.dll.new"
-SRC_DLL_ORIG = r"g:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad\BepInEx\plugins\DPS.Trainer.dll"
-SRC_DLL = SRC_DLL_NEW if os.path.exists(SRC_DLL_NEW) else SRC_DLL_ORIG
+SRC_DLL = r"g:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad\BepInEx\plugins\DPS.Trainer.dll"
 SRC_CFG = r"g:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad\BepInEx\config\dps_workshop.cfg"
 SRC_TRAINER_CFG = r"g:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad\BepInEx\config\ofx.dps.trainer.cfg"
-SRC_HTML = os.path.join(BASE_DIR, "index.html")
 OUT_ZIP = os.path.join(BASE_DIR, "DPS_Auto_Helper_1Click.zip")
 
 def build_package():
-    print("=== Dang dong goi DPS_Auto_Helper_1Click.zip ===")
+    print("=== Dang dong goi DPS_Auto_Helper_1Click.zip (Clean 1-Click - No HTML / No Extra Bats) ===")
     if os.path.exists(STAGE_DIR):
         shutil.rmtree(STAGE_DIR)
     os.makedirs(STAGE_DIR, exist_ok=True)
 
-    # 1. Unpack source zip
-    print("[1/6] Giai nen template BepInEx tu DPS-Trainer.zip...")
+    # 1. Unpack source zip template
+    print("[1/5] Giai nen template BepInEx tu DPS-Trainer.zip...")
     with zipfile.ZipFile(SRC_ZIP, 'r') as z:
         for item in z.infolist():
             parts = item.filename.split('/', 1)
@@ -35,27 +32,80 @@ def build_package():
                         dst_f.write(src_f.read())
 
     # 2. Update DPS.Trainer.dll
-    print("[2/6] Cap nhat ban build DPS.Trainer.dll moi nhat (CORS + OPTIONS + F6/F7 fix)...")
+    print("[2/5] Cap nhat ban build DPS.Trainer.dll moi nhat (AutoOpen + VIP defaults OFF + Realtime HUD)...")
     target_dll = os.path.join(STAGE_DIR, "payload", "BepInEx", "plugins", "DPS.Trainer.dll")
     shutil.copy2(SRC_DLL, target_dll)
 
-    # Update config if exists
+    # 3. Write default configs with safe VIP defaults
     target_cfg_dir = os.path.join(STAGE_DIR, "payload", "BepInEx", "config")
     os.makedirs(target_cfg_dir, exist_ok=True)
-    if os.path.exists(SRC_CFG):
-        shutil.copy2(SRC_CFG, os.path.join(target_cfg_dir, "dps_workshop.cfg"))
-    if os.path.exists(SRC_TRAINER_CFG):
-        shutil.copy2(SRC_TRAINER_CFG, os.path.join(target_cfg_dir, "ofx.dps.trainer.cfg"))
 
-    # Copy mod_web_ui.html
-    if os.path.exists(SRC_HTML):
-        shutil.copy2(SRC_HTML, os.path.join(STAGE_DIR, "mod_web_ui.html"))
-        shutil.copy2(SRC_HTML, os.path.join(STAGE_DIR, "payload", "mod_web_ui.html"))
+    default_trainer_cfg = """## Settings file was created by plugin DPS Trainer v0.6.0
+## Plugin GUID: ofx.dps.trainer
 
-    # 3. Create Cai_Dat_1Click.bat
-    print("[3/6] Tao Cai_Dat_1Click.bat va Mo_Giao_Dien_Web.bat...")
+[Power]
+
+## Damage multiplier, applied at DamageSpec.FactorAt.
+# Setting type: Single
+# Default value: 1
+# Acceptable value range: From 1 to 1000
+DamageMultiplier = 1
+
+## Attack speed multiplier, applied through the stat node.
+# Setting type: Single
+# Default value: 1
+# Acceptable value range: From 1 to 20
+AttackSpeedMultiplier = 1
+
+[Startup]
+
+## Block incoming damage for player characters.
+# Setting type: Boolean
+# Default value: false
+GodMode = false
+
+## Neutralise the three integrity probes. Keep this on: tripping one blocks trading.
+# Setting type: Boolean
+# Default value: false
+DetectorShield = false
+
+## Force treasure boxes to open automatically.
+# Setting type: Boolean
+# Default value: true
+AutoOpenBoxes = true
+
+## Experimental IMGUI overlay. Off by default: this build is display-stripped.
+# Setting type: Boolean
+# Default value: false
+Overlay = false
+
+## Report every DLC pack as owned client-side. Server entitlement sync is suppressed while active.
+# Setting type: Boolean
+# Default value: false
+UnlockDlc = false
+
+## F1 god, F2 shield, F3 auto-open, F5 dlc, F12 panic.
+# Setting type: Boolean
+# Default value: true
+Hotkeys = true
+"""
+    with open(os.path.join(target_cfg_dir, "ofx.dps.trainer.cfg"), "w", encoding="utf-8") as f:
+        f.write(default_trainer_cfg)
+
+    default_workshop_cfg = """[Workshop]
+AutoCombineEnabled = 0
+CombineIntervalMinutes = 5
+AutoStashEnabled = 0
+StashIntervalSeconds = 60
+StashStartTab = 1
+StashEndTab = 5
+"""
+    with open(os.path.join(target_cfg_dir, "dps_workshop.cfg"), "w", encoding="utf-8") as f:
+        f.write(default_workshop_cfg)
+
+    # 4. Create pure ASCII Cai_Dat_1Click.bat
+    print("[3/5] Tao Cai_Dat_1Click.bat...")
     bat_install = """@echo off
-chcp 65001 >nul
 title Cai Dat DPS Auto Helper (1-Click)
 cls
 echo ============================================================
@@ -68,29 +118,14 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0install.ps1"
 echo.
 pause
 """
-    with open(os.path.join(STAGE_DIR, "Cai_Dat_1Click.bat"), "w", encoding="utf-8") as f:
+    with open(os.path.join(STAGE_DIR, "Cai_Dat_1Click.bat"), "w", encoding="ascii") as f:
         f.write(bat_install)
 
-    bat_open_ui = """@echo off
-title DPS Auto Helper - Giao Dien Web
-echo ============================================================
-echo   DANG MO BANG DIEU KHIEN DPS AUTO HELPER TREN WEB...
-echo ============================================================
-echo.
-echo Dia chi: http://127.0.0.1:47900/
-start http://127.0.0.1:47900/
-timeout /t 2 >nul
-exit
-"""
-    with open(os.path.join(STAGE_DIR, "Mo_Giao_Dien_Web.bat"), "w", encoding="utf-8") as f:
-        f.write(bat_open_ui)
-    with open(os.path.join(STAGE_DIR, "payload", "Mo_Giao_Dien_Web.bat"), "w", encoding="utf-8") as f:
-        f.write(bat_open_ui)
-
-    # 4. Create bulletproof install.ps1 (Safe ASCII strings, 0% syntax error on any PowerShell)
-    print("[4/6] Tao install.ps1 an toan tuyet doi...")
+    # 5. Create 100% pure ASCII bulletproof install.ps1
+    print("[4/5] Tao install.ps1 (100% Pure ASCII - 0% parse error on any locale)...")
     ps1_content = """<#
   DPS Auto Helper - 1-Click Installer
+  100% Pure ASCII script to guarantee 0% syntax errors across all Windows language locales
 #>
 $ErrorActionPreference = "Stop"
 
@@ -178,39 +213,35 @@ function Copy-Tree([string]$src, [string]$dst) {
 
 Copy-Tree $payload $GamePath
 
-# Copy Mo_Giao_Dien_Web.bat
-$openBatSrc = Join-Path $root "Mo_Giao_Dien_Web.bat"
-if (Test-Path $openBatSrc) {
-    Copy-Item $openBatSrc (Join-Path $GamePath "Mo_Giao_Dien_Web.bat") -Force
-}
-
-# Copy mod_web_ui.html
-$uiHtmlSrc = Join-Path $root "mod_web_ui.html"
-if (Test-Path $uiHtmlSrc) {
-    Copy-Item $uiHtmlSrc (Join-Path $GamePath "mod_web_ui.html") -Force
-}
-
 Write-Host "============================================================" -ForegroundColor Green
 Write-Host ("  CAI DAT THANH CONG DPS AUTO HELPER! [" + $copied + " files]") -ForegroundColor Green
 Write-Host "============================================================" -ForegroundColor Green
 Write-Host ""
 Write-Host "CAC BUOC TIEP THEO:" -ForegroundColor Yellow
 Write-Host "  1. Mo game DPS Desktop Pension Squad tren Steam."
-Write-Host "  2. Nhan dup vao file 'Mo_Giao_Dien_Web.bat' de mo bang dieu khien."
-Write-Host "  3. Phim tat trong game: F6 (Tu dong Cat Do), F7 (Tu dong Hop Thanh)."
+Write-Host "  2. Mo trinh duyet va truy cap link giao dien sau de dieu khien:"
+Write-Host "     https://titlee2111.github.io/dps-auto-helper/" -ForegroundColor Cyan
+Write-Host "  3. Phim tat trong game: F6 (Tu Dong Cat Do), F7 (Tu Dong Hop Thanh)."
 Write-Host ""
 """
-    with open(os.path.join(STAGE_DIR, "install.ps1"), "w", encoding="utf-8-sig") as f:
+    with open(os.path.join(STAGE_DIR, "install.ps1"), "w", encoding="ascii") as f:
         f.write(ps1_content)
 
-    # Clean up unnecessary files
+    # Clean up any HTML or batch files that shouldn't be in the zip
+    for root, dirs, files in os.walk(STAGE_DIR):
+        for f in files:
+            if f.endswith(".html") or f == "Mo_Giao_Dien_Web.bat":
+                f_path = os.path.join(root, f)
+                print(f"[XOA FILE THUA] {f_path}")
+                os.remove(f_path)
+
     for unnecessary in ["Go_Cai_Dat.bat", "Huong_Dan.txt", "README.txt", "install.bat", "Cai_Dat_Tu_Dong.bat", "open-ui.bat", "remove.bat"]:
         target_f = os.path.join(STAGE_DIR, unnecessary)
         if os.path.exists(target_f):
             os.remove(target_f)
 
-    # 5. Zip package
-    print("[5/6] Dang nen thanh DPS_Auto_Helper_1Click.zip...")
+    # 6. Zip package
+    print("[5/5] Dang nen thanh DPS_Auto_Helper_1Click.zip...")
     if os.path.exists(OUT_ZIP):
         os.remove(OUT_ZIP)
 
@@ -222,7 +253,7 @@ Write-Host ""
                 zf.write(abs_path, arcname=rel_path)
 
     zip_size_mb = os.path.getsize(OUT_ZIP) / (1024 * 1024)
-    print(f"[6/6] Hoan tat! File: {OUT_ZIP} ({zip_size_mb:.2f} MB)")
+    print(f"Hoan tat! File: {OUT_ZIP} ({zip_size_mb:.2f} MB)")
 
     # Clean up stage dir
     shutil.rmtree(STAGE_DIR)
