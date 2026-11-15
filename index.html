@@ -1224,6 +1224,20 @@
       <button class="alert-close-btn" onclick="dismissAlert()" title="Đóng thông báo">✕</button>
     </div>
 
+    <!-- HTTPS Mixed Content Warning Banner (Auto displayed if on HTTPS and not connected) -->
+    <div id="httpsWarnBanner" style="display:none; background: linear-gradient(135deg, rgba(248,81,73,0.15) 0%, rgba(210,153,34,0.15) 100%); border: 1px solid #f85149; border-radius: 12px; padding: 14px 18px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(248,81,73,0.2);">
+      <div style="display: flex; gap: 12px; align-items: flex-start;">
+        <span style="font-size: 24px; line-height: 1;">⚠️</span>
+        <div style="flex: 1; font-size: 13px; line-height: 1.6; color: #f0f6fc;">
+          <b style="color: #ff7b72; font-size: 14px;">Trình duyệt đang chặn kết nối do trang web chạy trên HTTPS (GitHub Pages)!</b><br>
+          Các trình duyệt (Chrome, Edge, Brave...) chặn trang web HTTPS gửi yêu cầu đến localhost (127.0.0.1).<br>
+          <b>Cách kết nối cực kỳ dễ dàng (chọn 1 trong 2):</b><br>
+          1. Nhấp đúp vào file <code style="background:#21262d; color:#58a6ff; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-weight:bold;">Mo_Giao_Dien_Web.bat</code> trong thư mục game hoặc trong thư mục giải nén gói 1-Click.<br>
+          2. Hoặc nhấp vào link này để mở giao diện điều khiển nội bộ: <a href="http://127.0.0.1:47900/" target="_blank" style="color: #58a6ff; font-weight: bold; text-decoration: underline; background: rgba(56,139,253,0.15); padding: 2px 8px; border-radius: 4px;">http://127.0.0.1:47900/</a> (Mở khi game đang chạy).
+        </div>
+      </div>
+    </div>
+
     <!-- Download Strip -->
     <div class="download-strip">
       <div class="download-strip-info">
@@ -1460,9 +1474,9 @@
           <div style="font-weight: 700; color: #38bdf8; margin-bottom: 6px;">📖 Hướng dẫn cài đặt siêu tốc:</div>
           <ol style="margin-left: 20px;">
             <li>Tải file ZIP về và giải nén ra bất kỳ đâu trên máy tính.</li>
-            <li>Chạy file <b>Cai_Dat_1Click.bat</b> để công cụ tự nhận diện thư mục game Steam và cài đặt.</li>
+            <li>Chạy file <b>Cai_Dat_1Click.bat</b> để công cụ tự nhận diện thư mục game Steam và cài đặt trong 2 giây.</li>
             <li>Khởi động game <b>DPS Desktop Pension Squad</b> trên Steam.</li>
-            <li>Quay lại trang này — trạng thái sẽ tự động chuyển sang <b>ĐÃ KẾT NỐI</b>!</li>
+            <li>Nhấp đúp vào file <b>Mo_Giao_Dien_Web.bat</b> (hoặc truy cập <a href="http://127.0.0.1:47900/" target="_blank" style="color:#38bdf8; text-decoration:underline;">http://127.0.0.1:47900/</a>) để mở bảng điều khiển!</li>
           </ol>
         </div>
       </div>
@@ -1627,7 +1641,8 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
-    const API_BASE = "http://127.0.0.1:47900";
+    let API_BASE = (window.location.protocol.startsWith('http') && window.location.port) ? '' : 'http://127.0.0.1:47900';
+    const PROBE_PORTS = [47900, 47901, 47902, 47903, 47904, 47905];
     let isConnected = false;
     let initialSyncDone = false;
     let lastBoxCount = 0;
@@ -1854,6 +1869,9 @@
       statusChip.className = 'chip status-live';
       statusText.innerText = 'Đã kết nối game';
 
+      const httpsWarn = document.getElementById('httpsWarnBanner');
+      if (httpsWarn) httpsWarn.style.display = 'none';
+
       const pidVal = document.getElementById('pidVal');
       if (pidVal && data.pid) pidVal.innerText = data.pid;
 
@@ -1994,31 +2012,56 @@
           el.innerText = 'Chưa kết nối';
         }
       });
+
+      // Show HTTPS warning if loaded over HTTPS and cannot connect to local HTTP
+      const httpsWarn = document.getElementById('httpsWarnBanner');
+      if (httpsWarn) {
+        if (window.location.protocol === 'https:') {
+          httpsWarn.style.display = 'block';
+        } else {
+          httpsWarn.style.display = 'none';
+        }
+      }
     }
 
-    // Polling API
+    // Polling API with multi-port probe
     async function fetchStatus() {
       try {
         const res = await fetch(`${API_BASE}/status`, { signal: AbortSignal.timeout(2000) });
         if (res.ok) {
           const data = await res.json();
           updateStatus(data);
-        } else {
-          setDisconnected();
+          return;
         }
       } catch (e) {
-        setDisconnected();
+        // Fallback auto-probe for port range
+        if (API_BASE.startsWith('http://127.0.0.1')) {
+          for (const p of PROBE_PORTS) {
+            try {
+              const probeUrl = `http://127.0.0.1:${p}`;
+              const probeRes = await fetch(`${probeUrl}/status`, { signal: AbortSignal.timeout(600) });
+              if (probeRes.ok) {
+                API_BASE = probeUrl;
+                const data = await probeRes.json();
+                updateStatus(data);
+                return;
+              }
+            } catch (err) {}
+          }
+        }
       }
+      setDisconnected();
     }
 
     // User Interactive Actions & Toggles
     async function triggerCombine() {
       addLog('THỦ CÔNG', 'Đang gửi lệnh Ghép đồ xưởng ngay...', 'info');
       try {
-        const res = await fetch(`${API_BASE}/combine_now`);
+        const res = await fetch(`${API_BASE}/set?combine=1`);
         if (res.ok) {
           addLog('THÀNH CÔNG', 'Đã kích hoạt ghép đồ xưởng thành công!', 'ok');
-          fetchStatus();
+          const data = await res.json();
+          updateStatus(data);
         } else {
           addLog('LỖI', 'Lệnh ghép đồ thất bại.', 'err');
         }
@@ -2030,10 +2073,11 @@
     async function triggerStash() {
       addLog('THỦ CÔNG', 'Đang gửi lệnh Cất đồ vào kho ngay...', 'info');
       try {
-        const res = await fetch(`${API_BASE}/stash_now`);
+        const res = await fetch(`${API_BASE}/set?stash=1`);
         if (res.ok) {
           addLog('THÀNH CÔNG', 'Đã cất đồ vào kho thành công!', 'ok');
-          fetchStatus();
+          const data = await res.json();
+          updateStatus(data);
         } else {
           addLog('LỖI', 'Lệnh cất đồ thất bại.', 'err');
         }

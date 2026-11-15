@@ -9,19 +9,19 @@ SRC_DLL_NEW = r"g:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad\BepIn
 SRC_DLL_ORIG = r"g:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad\BepInEx\plugins\DPS.Trainer.dll"
 SRC_DLL = SRC_DLL_NEW if os.path.exists(SRC_DLL_NEW) else SRC_DLL_ORIG
 SRC_CFG = r"g:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad\BepInEx\config\dps_workshop.cfg"
+SRC_HTML = os.path.join(BASE_DIR, "index.html")
 OUT_ZIP = os.path.join(BASE_DIR, "DPS_Auto_Helper_1Click.zip")
 
 def build_package():
-    print("=== Đang đóng gói DPS_Auto_Helper_1Click.zip ===")
+    print("=== Dang dong goi DPS_Auto_Helper_1Click.zip ===")
     if os.path.exists(STAGE_DIR):
         shutil.rmtree(STAGE_DIR)
     os.makedirs(STAGE_DIR, exist_ok=True)
 
     # 1. Unpack source zip
-    print("[1/5] Giải nén template BepInEx từ DPS-Trainer.zip...")
+    print("[1/6] Giai nen template BepInEx tu DPS-Trainer.zip...")
     with zipfile.ZipFile(SRC_ZIP, 'r') as z:
         for item in z.infolist():
-            # item.filename has 'DPS-Trainer/...' prefix
             parts = item.filename.split('/', 1)
             if len(parts) > 1 and parts[1]:
                 rel_path = parts[1]
@@ -34,7 +34,7 @@ def build_package():
                         dst_f.write(src_f.read())
 
     # 2. Update DPS.Trainer.dll
-    print("[2/5] Cập nhật bản build DPS.Trainer.dll mới nhất (F6/F7 fix)...")
+    print("[2/6] Cap nhat ban build DPS.Trainer.dll moi nhat (CORS + OPTIONS + F6/F7 fix)...")
     target_dll = os.path.join(STAGE_DIR, "payload", "BepInEx", "plugins", "DPS.Trainer.dll")
     shutil.copy2(SRC_DLL, target_dll)
 
@@ -44,14 +44,19 @@ def build_package():
     if os.path.exists(SRC_CFG):
         shutil.copy2(SRC_CFG, os.path.join(target_cfg_dir, "dps_workshop.cfg"))
 
+    # Copy mod_web_ui.html
+    if os.path.exists(SRC_HTML):
+        shutil.copy2(SRC_HTML, os.path.join(STAGE_DIR, "mod_web_ui.html"))
+        shutil.copy2(SRC_HTML, os.path.join(STAGE_DIR, "payload", "mod_web_ui.html"))
+
     # 3. Create Cai_Dat_1Click.bat
-    print("[3/5] Tạo script cài đặt 1-Click tiếng Việt...")
-    bat_content = """@echo off
+    print("[3/6] Tao Cai_Dat_1Click.bat va Mo_Giao_Dien_Web.bat...")
+    bat_install = """@echo off
 chcp 65001 >nul
-title Cài Đặt DPS Auto Helper (1-Click)
+title Cai Dat DPS Auto Helper (1-Click)
 cls
 echo ============================================================
-echo   DPS AUTO HELPER - CÀI ĐẶT 1-CLICK TỰ ĐỘNG
+echo   DPS AUTO HELPER - CAI DAT 1-CLICK TU DONG
 echo ============================================================
 echo.
 
@@ -61,21 +66,36 @@ echo.
 pause
 """
     with open(os.path.join(STAGE_DIR, "Cai_Dat_1Click.bat"), "w", encoding="utf-8") as f:
-        f.write(bat_content)
+        f.write(bat_install)
 
-    # 4. Create optimized install.ps1
+    bat_open_ui = """@echo off
+title DPS Auto Helper - Giao Dien Web
+echo ============================================================
+echo   DANG MO BANG DIEU KHIEN DPS AUTO HELPER TREN WEB...
+echo ============================================================
+echo.
+echo Dia chi: http://127.0.0.1:47900/
+start http://127.0.0.1:47900/
+timeout /t 2 >nul
+exit
+"""
+    with open(os.path.join(STAGE_DIR, "Mo_Giao_Dien_Web.bat"), "w", encoding="utf-8") as f:
+        f.write(bat_open_ui)
+    with open(os.path.join(STAGE_DIR, "payload", "Mo_Giao_Dien_Web.bat"), "w", encoding="utf-8") as f:
+        f.write(bat_open_ui)
+
+    # 4. Create bulletproof install.ps1 (Safe ASCII strings, 0% syntax error on any PowerShell)
+    print("[4/6] Tao install.ps1 an toan tuyet doi...")
     ps1_content = """<#
   DPS Auto Helper - 1-Click Installer
 #>
 $ErrorActionPreference = "Stop"
-[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-$OutputEncoding = [System.Text.Encoding]::UTF8
 
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $payload = Join-Path $root "payload"
 
 if (-not (Test-Path $payload)) {
-    Write-Host "[LỖI] Không tìm thấy thư mục payload! Hãy giải nén toàn bộ file zip trước." -ForegroundColor Red
+    Write-Host "[LOI] Khong tim thay thu muc payload! Hay giai nen toan bo file zip truoc." -ForegroundColor Red
     exit 1
 }
 
@@ -106,7 +126,6 @@ function Find-SteamLibraries {
 
 function Find-Game {
     if (Test-GameFolder $root) { return $root }
-    # Parent dir check
     $parent = Split-Path -Parent $root
     if (Test-GameFolder $parent) { return $parent }
 
@@ -119,27 +138,27 @@ function Find-Game {
 
 $GamePath = Find-Game
 if (-not $GamePath) {
-    Write-Host "[!] Không tìm thấy thư mục cài game tự động." -ForegroundColor Yellow
-    $GamePath = Read-Host "Vui lòng dán đường dẫn thư mục chứa DPS.exe vào đây"
+    Write-Host "[!] Khong tim thay thu muc cai game tu dong." -ForegroundColor Yellow
+    $GamePath = Read-Host "Vui long dan duong dan thu muc chua DPS.exe vao day"
     if (-not (Test-GameFolder $GamePath)) {
-        Write-Host "[LỖI] Thư mục không hợp lệ! Không tìm thấy DPS.exe và GameAssembly.dll." -ForegroundColor Red
+        Write-Host "[LOI] Thu muc khong hop le! Khong tim thay DPS.exe va GameAssembly.dll." -ForegroundColor Red
         exit 1
     }
 }
 
-Write-Host "[+] Đã tìm thấy game tại: " -NoNewline
+Write-Host "[+] Da tim thay game tai: " -NoNewline
 Write-Host "$GamePath" -ForegroundColor Cyan
 
-# Kiểm tra nếu game đang bật
+# Kiem tra neu game dang chay
 $running = Get-Process "DPS" -ErrorAction SilentlyContinue
 if ($running) {
-    Write-Host "[!] Phát hiện game DPS đang chạy. Đang đóng game để cập nhật file..." -ForegroundColor Yellow
+    Write-Host "[!] Phat hien game DPS dang chay. Dang dong game de cap nhat file..." -ForegroundColor Yellow
     Stop-Process -Name "DPS" -Force -ErrorAction SilentlyContinue
     Start-Sleep -Seconds 1
 }
 
-# Sao chép payload
-Write-Host "[+] Đang cài đặt các file mod hỗ trợ vào game..." -ForegroundColor Green
+# Sao chep payload
+Write-Host "[+] Dang cai dat cac file mod vao thu muc game..." -ForegroundColor Green
 $copied = 0
 function Copy-Tree([string]$src, [string]$dst) {
     if (-not (Test-Path $dst)) { New-Item -ItemType Directory -Path $dst -Force | Out-Null }
@@ -156,26 +175,39 @@ function Copy-Tree([string]$src, [string]$dst) {
 
 Copy-Tree $payload $GamePath
 
+# Copy Mo_Giao_Dien_Web.bat
+$openBatSrc = Join-Path $root "Mo_Giao_Dien_Web.bat"
+if (Test-Path $openBatSrc) {
+    Copy-Item $openBatSrc (Join-Path $GamePath "Mo_Giao_Dien_Web.bat") -Force
+}
+
+# Copy mod_web_ui.html
+$uiHtmlSrc = Join-Path $root "mod_web_ui.html"
+if (Test-Path $uiHtmlSrc) {
+    Copy-Item $uiHtmlSrc (Join-Path $GamePath "mod_web_ui.html") -Force
+}
+
 Write-Host "============================================================" -ForegroundColor Green
-Write-Host ("  CÀI ĐẶT THÀNH CÔNG DPS AUTO HELPER! [" + $copied + " files]") -ForegroundColor Green
+Write-Host ("  CAI DAT THANH CONG DPS AUTO HELPER! [" + $copied + " files]") -ForegroundColor Green
 Write-Host "============================================================" -ForegroundColor Green
 Write-Host ""
-Write-Host "CÁC BƯỚC TIẾP THEO:" -ForegroundColor Yellow
-Write-Host "  1. Mở game DPS Desktop Pension Squad bình thường trên Steam."
-Write-Host "  2. Mở trang web điều khiển để Bật/Tắt Tự động Cất Đồ (F6) & Tự động Hợp Thành (F7)."
+Write-Host "CAC BUOC TIEP THEO:" -ForegroundColor Yellow
+Write-Host "  1. Mo game DPS Desktop Pension Squad tren Steam."
+Write-Host "  2. Nhan dup vao file 'Mo_Giao_Dien_Web.bat' de mo bang dieu khien."
+Write-Host "  3. Phim tat trong game: F6 (Tu dong Cat Do), F7 (Tu dong Hop Thanh)."
 Write-Host ""
 """
     with open(os.path.join(STAGE_DIR, "install.ps1"), "w", encoding="utf-8-sig") as f:
         f.write(ps1_content)
 
-    # Clean up any huongdan, open ui, remove/uninstall bat files per user request
+    # Clean up unnecessary files
     for unnecessary in ["Go_Cai_Dat.bat", "Huong_Dan.txt", "README.txt", "install.bat", "Cai_Dat_Tu_Dong.bat", "open-ui.bat", "remove.bat"]:
         target_f = os.path.join(STAGE_DIR, unnecessary)
         if os.path.exists(target_f):
             os.remove(target_f)
 
-    # 7. Zip package
-    print("[4/5] Đang nén thành DPS_Auto_Helper_1Click.zip...")
+    # 5. Zip package
+    print("[5/6] Dang nen thanh DPS_Auto_Helper_1Click.zip...")
     if os.path.exists(OUT_ZIP):
         os.remove(OUT_ZIP)
 
@@ -187,11 +219,11 @@ Write-Host ""
                 zf.write(abs_path, arcname=rel_path)
 
     zip_size_mb = os.path.getsize(OUT_ZIP) / (1024 * 1024)
-    print(f"[5/5] Hoàn tất! File: {OUT_ZIP} ({zip_size_mb:.2f} MB)")
+    print(f"[6/6] Hoan tat! File: {OUT_ZIP} ({zip_size_mb:.2f} MB)")
 
     # Clean up stage dir
     shutil.rmtree(STAGE_DIR)
-    print("=== ĐÃ ĐÓNG GÓI XONG THÀNH CÔNG! ===")
+    print("=== DA DONG GOI XONG THANH CONG! ===")
 
 if __name__ == "__main__":
     build_package()
