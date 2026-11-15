@@ -1316,8 +1316,11 @@
               <span class="config-label">Cất từ Kho:</span>
               <input type="number" id="stashStart" class="num-input" value="1" min="1" max="10" oninput="updateStashTabs()" onchange="updateStashTabs()">
               <span class="config-label">đến Kho:</span>
-              <input type="number" id="stashEnd" class="num-input" value="6" min="1" max="10" oninput="updateStashTabs()" onchange="updateStashTabs()">
+              <input type="number" id="stashEnd" class="num-input" value="5" min="1" max="10" oninput="updateStashTabs()" onchange="updateStashTabs()">
             </div>
+          </div>
+          <div style="font-size: 11px; color: #f59e0b; margin-top: 6px; padding: 5px 8px; background: rgba(245, 158, 11, 0.1); border-radius: 4px; border-left: 2px solid #f59e0b; line-height: 1.4;">
+            ⚠️ <strong>Khuyên dùng Kho 1 - 5:</strong> Kho 1 đến 5 là kho game gốc an toàn tuyệt đối. Kho 6 là kho DLC (StoragePack), nếu tài khoản chưa mua DLC trên Steam thì máy chủ sẽ tự động xóa vật phẩm cất vào Kho 6 do không khớp bản quyền.
           </div>
 
           <!-- Capacity Box (Only visible when connected) -->
@@ -1640,7 +1643,7 @@
       comb_min: 5,
       stash_sec: 60,
       stash_start: 1,
-      stash_end: 6,
+      stash_end: 5,
       box_interval: 3
     };
 
@@ -1652,8 +1655,8 @@
       }
       try {
         const parsed = JSON.parse(saved);
-        if (parsed.stash_end === undefined || parsed.stash_end < 6) {
-          parsed.stash_end = 6;
+        if (parsed.stash_end === undefined) {
+          parsed.stash_end = 5;
         }
         return { ...defaultSettings, ...parsed };
       } catch (e) {
@@ -2094,11 +2097,14 @@
       const eInput = document.getElementById('stashEnd');
       if (!sInput || !eInput) return;
       const start = Math.max(1, parseInt(sInput.value) || 1);
-      const end = Math.max(start, parseInt(eInput.value) || 6);
+      const end = Math.max(start, parseInt(eInput.value) || 5);
       userSettings.stash_start = start;
       userSettings.stash_end = end;
       saveSettings(userSettings);
       addLog('CẤU HÌNH', `Đã đổi phạm vi cất đồ: Kho ${start} đến Kho ${end} (đã lưu).`, 'info');
+      if (end > 5) {
+        addLog('CẢNH BÁO', 'Kho 6 là kho DLC (StoragePack). Nếu tài khoản chưa mua DLC trên Steam, máy chủ sẽ tự động xóa vật phẩm cất trong kho này!', 'warn');
+      }
       try {
         await fetch(`${API_BASE}/set?stash_start=${start}`);
         const res = await fetch(`${API_BASE}/set?stash_end=${end}`);
