@@ -1925,12 +1925,10 @@ html_template = """<!doctype html>
         parsed.stash_end = Math.max(parsed.stash_start, Math.min(8, parseInt(parsed.stash_end) || 5));
         parsed.vip_dmg = Math.max(1, Math.min(1000, parseFloat(parsed.vip_dmg) || 1));
         parsed.vip_aspd = Math.max(1, Math.min(20, parseFloat(parsed.vip_aspd) || 1));
-        // Strict safety: Detector Shield is ALWAYS ON on load, DLC is ALWAYS OFF on load
-        parsed.shield = 1;
-        parsed.dlc = 0;
-        parsed.god = 0;
-        const merged = { ...defaultSettings, ...parsed, shield: 1, dlc: 0, god: 0 };
-        saveSettings(merged);
+        parsed.shield = parsed.shield !== undefined ? (parsed.shield ? 1 : 0) : 1;
+        parsed.dlc = parsed.dlc ? 1 : 0;
+        parsed.god = parsed.god ? 1 : 0;
+        const merged = { ...defaultSettings, ...parsed };
         return merged;
       } catch (e) {
         return { ...defaultSettings };
@@ -2039,10 +2037,12 @@ html_template = """<!doctype html>
 
     async function sendVipDmg(val) {
       const num = Math.max(1, parseFloat(val) || 1);
+      userSettings.vip_dmg = num;
+      saveSettings(userSettings);
       document.getElementById('vipDmgVal').innerText = num.toFixed(2) + 'x';
       document.getElementById('vipDmgSlider').value = Math.min(50, num);
       document.getElementById('vipDmgInput').value = num;
-      addLog('CHỈ SỐ VIP', `Đang thiết lập Sát thương x${num}...`, 'info');
+      addLog('CHỈ SỐ VIP', `Đang thiết lập Sát thương x${num} (đã lưu)...`, 'info');
       try {
         const res = await fetch(`${API_BASE}/set?dmg=${num}`);
         if (res.ok) {
@@ -2061,10 +2061,12 @@ html_template = """<!doctype html>
 
     async function sendVipAspd(val) {
       const num = Math.max(1, parseFloat(val) || 1);
+      userSettings.vip_aspd = num;
+      saveSettings(userSettings);
       document.getElementById('vipAspdVal').innerText = num.toFixed(2) + 'x';
       document.getElementById('vipAspdSlider').value = Math.min(20, num);
       document.getElementById('vipAspdInput').value = num;
-      addLog('CHỈ SỐ VIP', `Đang thiết lập Tốc độ đánh x${num}...`, 'info');
+      addLog('CHỈ SỐ VIP', `Đang thiết lập Tốc độ đánh x${num} (đã lưu)...`, 'info');
       try {
         const res = await fetch(`${API_BASE}/set?aspd=${num}`);
         if (res.ok) {
@@ -2078,8 +2080,10 @@ html_template = """<!doctype html>
 
     async function onToggleGod(el) {
       const val = el.checked ? 1 : 0;
+      userSettings.god = val;
+      saveSettings(userSettings);
       updateBadge('badgeGod', val, 'ĐANG BẬT BẤT TỬ', 'Đang Tắt');
-      addLog('GOD MODE (F1)', el.checked ? 'ĐÃ BẬT Bất tử (Miễn nhiễm sát thương 100%)!' : 'Đã TẮT Bất tử.', el.checked ? 'ok' : 'warn');
+      addLog('GOD MODE (F1)', el.checked ? 'ĐÃ BẬT Bất tử (Miễn nhiễm sát thương 100% - đã lưu cho phiên sau)!' : 'Đã TẮT Bất tử.', el.checked ? 'ok' : 'warn');
       try {
         const res = await fetch(`${API_BASE}/set?god=${val}`);
         if (res.ok) updateStatus(await res.json());
@@ -2090,8 +2094,10 @@ html_template = """<!doctype html>
 
     async function onToggleShield(el) {
       const val = el.checked ? 1 : 0;
+      userSettings.shield = val;
+      saveSettings(userSettings);
       updateBadge('badgeShield', val, 'ĐANG BẬT BẢO VỆ', 'Đang Tắt (Nguy hiểm)');
-      addLog('LÁ CHẮN (F2)', el.checked ? 'ĐÃ BẬT Lá chắn chống phát hiện (Detector Shield)!' : 'ĐÃ TẮT Lá chắn (Cảnh báo: Anti-cheat game có thể quét)!', el.checked ? 'ok' : 'err');
+      addLog('LÁ CHẮN (F2)', el.checked ? 'ĐÃ BẬT Lá chắn chống phát hiện (đã lưu cho phiên sau)!' : 'ĐÃ TẮT Lá chắn (Cảnh báo: Anti-cheat game có thể quét)!', el.checked ? 'ok' : 'err');
       try {
         const res = await fetch(`${API_BASE}/set?shield=${val}`);
         if (res.ok) updateStatus(await res.json());
@@ -2102,12 +2108,20 @@ html_template = """<!doctype html>
 
     async function resetVipToNormal() {
       addLog('CHỈ SỐ VIP', 'Đang đưa các chỉ số về chuẩn (1x Sát thương, 1x Tốc đánh)...', 'info');
+      userSettings.vip_dmg = 1;
+      userSettings.vip_aspd = 1;
+      saveSettings(userSettings);
       await sendVipDmg(1);
       await sendVipAspd(1);
     }
 
     async function triggerPanic() {
       addLog('PANIC (F12)', 'Đang gửi lệnh khẩn cấp Panic (Tắt God Mode, reset chỉ số)...', 'warn');
+      userSettings.god = 0;
+      userSettings.vip_dmg = 1;
+      userSettings.vip_aspd = 1;
+      saveSettings(userSettings);
+      applySettingsToUI();
       try {
         await fetch(`${API_BASE}/set?god=0`);
         await fetch(`${API_BASE}/set?dmg=1`);
@@ -2134,6 +2148,26 @@ html_template = """<!doctype html>
       const tShield = document.getElementById('toggleShield');
       if (tShield) tShield.checked = !!userSettings.shield;
       updateBadge('badgeShield', userSettings.shield, 'ĐANG BẬT BẢO VỆ', 'Đang Tắt (Nguy hiểm)');
+
+      const tGod = document.getElementById('toggleGod');
+      if (tGod) tGod.checked = !!userSettings.god;
+      updateBadge('badgeGod', userSettings.god, 'ĐANG BẬT BẤT TỬ', 'Đang Tắt');
+
+      const dVal = userSettings.vip_dmg || 1;
+      const dSlider = document.getElementById('vipDmgSlider');
+      const dInput = document.getElementById('vipDmgInput');
+      const dText = document.getElementById('vipDmgVal');
+      if (dText) dText.innerText = Number(dVal).toFixed(2) + 'x';
+      if (dSlider) dSlider.value = Math.min(50, dVal);
+      if (dInput) dInput.value = dVal;
+
+      const aVal = userSettings.vip_aspd || 1;
+      const aSlider = document.getElementById('vipAspdSlider');
+      const aInput = document.getElementById('vipAspdInput');
+      const aText = document.getElementById('vipAspdVal');
+      if (aText) aText.innerText = Number(aVal).toFixed(2) + 'x';
+      if (aSlider) aSlider.value = Math.min(20, aVal);
+      if (aInput) aInput.value = aVal;
 
       document.getElementById('combineInterval').value = userSettings.comb_min;
       document.getElementById('stashInterval').value = userSettings.stash_sec;
@@ -2276,9 +2310,9 @@ html_template = """<!doctype html>
         await fetch(`${API_BASE}/set?stash_start=${userSettings.stash_start}`);
         await fetch(`${API_BASE}/set?stash_end=${userSettings.stash_end}`);
         await fetch(`${API_BASE}/set?auto=${userSettings.auto_box}`);
-        await fetch(`${API_BASE}/set?dlc=0`);
-        await fetch(`${API_BASE}/set?god=0`);
-        await fetch(`${API_BASE}/set?shield=1`);
+        await fetch(`${API_BASE}/set?dlc=${userSettings.dlc !== undefined ? userSettings.dlc : 0}`);
+        await fetch(`${API_BASE}/set?god=${userSettings.god !== undefined ? userSettings.god : 0}`);
+        await fetch(`${API_BASE}/set?shield=${userSettings.shield !== undefined ? userSettings.shield : 1}`);
         await fetch(`${API_BASE}/set?dmg=${userSettings.vip_dmg || 1}`);
         await fetch(`${API_BASE}/set?aspd=${userSettings.vip_aspd || 1}`);
         addLog('ĐỒNG BỘ', 'Đồng bộ cấu hình phiên trước thành công!', 'ok');
@@ -2444,6 +2478,32 @@ html_template = """<!doctype html>
       if (data.shield !== undefined) {
         document.getElementById('toggleShield').checked = !!data.shield;
         updateBadge('badgeShield', data.shield, 'ĐANG BẬT BẢO VỆ', 'Đang Tắt (Nguy hiểm)');
+      }
+
+      // Sync and persist any updates triggered directly in game via hotkeys
+      let needSave = false;
+      if (data.dlc !== undefined && userSettings.dlc !== data.dlc) {
+        userSettings.dlc = data.dlc;
+        needSave = true;
+      }
+      if (data.god !== undefined && userSettings.god !== data.god) {
+        userSettings.god = data.god;
+        needSave = true;
+      }
+      if (data.shield !== undefined && userSettings.shield !== data.shield) {
+        userSettings.shield = data.shield;
+        needSave = true;
+      }
+      if (data.dmg !== undefined && userSettings.vip_dmg !== data.dmg) {
+        userSettings.vip_dmg = data.dmg;
+        needSave = true;
+      }
+      if (data.aspd !== undefined && userSettings.vip_aspd !== data.aspd) {
+        userSettings.vip_aspd = data.aspd;
+        needSave = true;
+      }
+      if (needSave) {
+        saveSettings(userSettings);
       }
     }
 
