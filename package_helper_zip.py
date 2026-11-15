@@ -103,9 +103,10 @@ StashEndTab = 5
     with open(os.path.join(target_cfg_dir, "dps_workshop.cfg"), "w", encoding="utf-8") as f:
         f.write(default_workshop_cfg)
 
-    # 4. Create pure ASCII Cai_Dat_1Click.bat
-    print("[3/5] Tao Cai_Dat_1Click.bat...")
-    bat_install = """@echo off
+    # 4. Create 100% Pure Windows Batch Cai_Dat_1Click.bat (No PowerShell / No AV Flag)
+    print("[3/4] Tao Cai_Dat_1Click.bat (100% Pure Batch - Zero AV Flag)...")
+    bat_install = r"""@echo off
+setlocal enabledelayedexpansion
 title Cai Dat DPS Auto Helper (1-Click)
 cls
 echo ============================================================
@@ -113,129 +114,144 @@ echo   DPS AUTO HELPER - CAI DAT 1-CLICK TU DONG
 echo ============================================================
 echo.
 
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0install.ps1"
+set "GAME_DIR="
 
+:: 1. Check if bat is run directly inside game folder
+if exist "%~dp0DPS.exe" if exist "%~dp0GameAssembly.dll" (
+    set "GAME_DIR=%~dp0"
+    goto :FoundGame
+)
+
+:: 2. Check if bat is in a subfolder inside game folder
+if exist "%~dp0..\DPS.exe" if exist "%~dp0..\GameAssembly.dll" (
+    set "GAME_DIR=%~dp0.."
+    goto :FoundGame
+)
+
+:: 3. Check Steam registry HKCU
+for /f "tokens=2*" %%a in ('reg query "HKCU\Software\Valve\Steam" /v "SteamPath" 2^>nul') do (
+    set "STEAMPATH=%%b"
+)
+
+:: If not in HKCU, check HKLM 64-bit
+if not defined STEAMPATH (
+    for /f "tokens=2*" %%a in ('reg query "HKLM\SOFTWARE\WOW6432Node\Valve\Steam" /v "InstallPath" 2^>nul') do (
+        set "STEAMPATH=%%b"
+    )
+)
+
+if defined STEAMPATH (
+    set "STEAMPATH=!STEAMPATH:/=\!"
+    if exist "!STEAMPATH!\steamapps\common\DPS Desktop Pension Squad\DPS.exe" (
+        set "GAME_DIR=!STEAMPATH!\steamapps\common\DPS Desktop Pension Squad"
+        goto :FoundGame
+    )
+    if exist "!STEAMPATH!\steamapps\libraryfolders.vdf" (
+        for /f "tokens=1,2 delims=	" %%i in ('findstr /i "\"path\"" "!STEAMPATH!\steamapps\libraryfolders.vdf" 2^>nul') do (
+            set "LIBPATH=%%j"
+            set "LIBPATH=!LIBPATH:"=!"
+            set "LIBPATH=!LIBPATH:\\=\!"
+            if exist "!LIBPATH!\steamapps\common\DPS Desktop Pension Squad\DPS.exe" (
+                set "GAME_DIR=!LIBPATH!\steamapps\common\DPS Desktop Pension Squad"
+                goto :FoundGame
+            )
+        )
+    )
+)
+
+:: 4. Check common drives
+for %%d in (C D E F G H) do (
+    if not defined GAME_DIR (
+        if exist "%%d:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad\DPS.exe" (
+            set "GAME_DIR=%%d:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad"
+            goto :FoundGame
+        )
+        if exist "%%d:\Program Files (x86)\Steam\steamapps\common\DPS Desktop Pension Squad\DPS.exe" (
+            set "GAME_DIR=%%d:\Program Files (x86)\Steam\steamapps\common\DPS Desktop Pension Squad"
+            goto :FoundGame
+        )
+        if exist "%%d:\Steam\steamapps\common\DPS Desktop Pension Squad\DPS.exe" (
+            set "GAME_DIR=%%d:\Steam\steamapps\common\DPS Desktop Pension Squad"
+            goto :FoundGame
+        )
+    )
+)
+
+:PromptUser
+if not defined GAME_DIR (
+    echo [!] Khong tim thay thu muc game Steam tu dong.
+    echo.
+    set /p "GAME_DIR=Vui long dan duong dan thu muc chua DPS.exe vao day: "
+    set "GAME_DIR=!GAME_DIR:"=!"
+    if not exist "!GAME_DIR!\DPS.exe" (
+        echo.
+        echo [LOI] Duong dan khong hop le! Khong tim thay file DPS.exe.
+        echo.
+        pause
+        exit /b 1
+    )
+)
+
+:FoundGame
+echo [+] Da tim thay thu muc game:
+echo     "!GAME_DIR!"
+echo.
+
+:: Check payload folder
+if not exist "%~dp0payload" (
+    echo [LOI] Khong tim thay thu muc 'payload'!
+    echo Vui long giai nen toan bo file ZIP truoc khi chay Cai_Dat_1Click.bat.
+    echo.
+    pause
+    exit /b 1
+)
+
+:: Check if game is running and close it safely
+tasklist /fi "imagename eq DPS.exe" 2>nul | findstr /i "DPS.exe" >nul
+if not errorlevel 1 (
+    echo [!] Game DPS dang chay. Dang tat game de cap nhat file mod...
+    taskkill /f /im DPS.exe >nul 2>&1
+    timeout /t 1 /nobreak >nul
+)
+
+:: Copy payload files into game folder
+echo [+] Dang sao chep cac file mod vao thu muc game...
+xcopy "%~dp0payload\*" "!GAME_DIR!\" /E /I /Y /Q >nul
+
+if errorlevel 1 (
+    echo [LOI] Co loi xay ra khi sao chep file!
+    echo Vui long thu chay bang quyen Administrator hoac kiem tra dung luong o cung.
+    echo.
+    pause
+    exit /b 1
+)
+
+echo.
+echo ============================================================
+echo   CAI DAT THANH CONG DPS AUTO HELPER!
+echo ============================================================
+echo.
+echo CAC BUOC TIEP THEO:
+echo   1. Mo game DPS Desktop Pension Squad tren Steam.
+echo   2. Mo trinh duyet va truy cap link giao dien sau de dieu khien:
+echo      https://titlee2111.github.io/dps-auto-helper/
+echo   3. Phim tat trong game: F6 (Tu Dong Cat Do), F7 (Tu Dong Hop Thanh).
 echo.
 pause
 """
     with open(os.path.join(STAGE_DIR, "Cai_Dat_1Click.bat"), "w", encoding="ascii") as f:
         f.write(bat_install)
 
-    # 5. Create 100% pure ASCII bulletproof install.ps1
-    print("[4/5] Tao install.ps1 (100% Pure ASCII - 0% parse error on any locale)...")
-    ps1_content = """<#
-  DPS Auto Helper - 1-Click Installer
-  100% Pure ASCII script to guarantee 0% syntax errors across all Windows language locales
-#>
-$ErrorActionPreference = "Stop"
-
-$root = Split-Path -Parent $MyInvocation.MyCommand.Path
-$payload = Join-Path $root "payload"
-
-if (-not (Test-Path $payload)) {
-    Write-Host "[LOI] Khong tim thay thu muc payload! Hay giai nen toan bo file zip truoc." -ForegroundColor Red
-    exit 1
-}
-
-function Test-GameFolder([string]$path) {
-    if ([string]::IsNullOrWhiteSpace($path)) { return $false }
-    return (Test-Path (Join-Path $path "DPS.exe")) -and (Test-Path (Join-Path $path "GameAssembly.dll"))
-}
-
-function Find-SteamLibraries {
-    $libraries = New-Object System.Collections.Generic.List[string]
-    $steam = (Get-ItemProperty "HKCU:\\Software\\Valve\\Steam" -ErrorAction SilentlyContinue).SteamPath
-    if (-not $steam) { $steam = (Get-ItemProperty "HKLM:\\SOFTWARE\\WOW6432Node\\Valve\\Steam" -ErrorAction SilentlyContinue).InstallPath }
-
-    if ($steam -and (Test-Path $steam)) {
-        $libraries.Add($steam)
-        $vdf = Join-Path $steam "steamapps\\libraryfolders.vdf"
-        if (Test-Path $vdf) {
-            foreach ($line in Get-Content $vdf) {
-                if ($line -match '"path"\\s+"([^"]+)"') {
-                    $cand = $matches[1] -replace '\\\\\\\\', '\\'
-                    if (Test-Path $cand) { $libraries.Add($cand) }
-                }
-            }
-        }
-    }
-    return $libraries | Select-Object -Unique
-}
-
-function Find-Game {
-    if (Test-GameFolder $root) { return $root }
-    $parent = Split-Path -Parent $root
-    if (Test-GameFolder $parent) { return $parent }
-
-    foreach ($library in Find-SteamLibraries) {
-        $candidate = Join-Path $library "steamapps\\common\\DPS Desktop Pension Squad"
-        if (Test-GameFolder $candidate) { return $candidate }
-    }
-    return $null
-}
-
-$GamePath = Find-Game
-if (-not $GamePath) {
-    Write-Host "[!] Khong tim thay thu muc cai game tu dong." -ForegroundColor Yellow
-    $GamePath = Read-Host "Vui long dan duong dan thu muc chua DPS.exe vao day"
-    if (-not (Test-GameFolder $GamePath)) {
-        Write-Host "[LOI] Thu muc khong hop le! Khong tim thay DPS.exe va GameAssembly.dll." -ForegroundColor Red
-        exit 1
-    }
-}
-
-Write-Host "[+] Da tim thay game tai: " -NoNewline
-Write-Host "$GamePath" -ForegroundColor Cyan
-
-# Kiem tra neu game dang chay
-$running = Get-Process "DPS" -ErrorAction SilentlyContinue
-if ($running) {
-    Write-Host "[!] Phat hien game DPS dang chay. Dang dong game de cap nhat file..." -ForegroundColor Yellow
-    Stop-Process -Name "DPS" -Force -ErrorAction SilentlyContinue
-    Start-Sleep -Seconds 1
-}
-
-# Sao chep payload
-Write-Host "[+] Dang cai dat cac file mod vao thu muc game..." -ForegroundColor Green
-$copied = 0
-function Copy-Tree([string]$src, [string]$dst) {
-    if (-not (Test-Path $dst)) { New-Item -ItemType Directory -Path $dst -Force | Out-Null }
-    foreach ($item in Get-ChildItem $src -Force) {
-        $target = Join-Path $dst $item.Name
-        if ($item.PSIsContainer) {
-            Copy-Tree $item.FullName $target
-        } else {
-            Copy-Item $item.FullName $target -Force
-            $script:copied++
-        }
-    }
-}
-
-Copy-Tree $payload $GamePath
-
-Write-Host "============================================================" -ForegroundColor Green
-Write-Host ("  CAI DAT THANH CONG DPS AUTO HELPER! [" + $copied + " files]") -ForegroundColor Green
-Write-Host "============================================================" -ForegroundColor Green
-Write-Host ""
-Write-Host "CAC BUOC TIEP THEO:" -ForegroundColor Yellow
-Write-Host "  1. Mo game DPS Desktop Pension Squad tren Steam."
-Write-Host "  2. Mo trinh duyet va truy cap link giao dien sau de dieu khien:"
-Write-Host "     https://titlee2111.github.io/dps-auto-helper/" -ForegroundColor Cyan
-Write-Host "  3. Phim tat trong game: F6 (Tu Dong Cat Do), F7 (Tu Dong Hop Thanh)."
-Write-Host ""
-"""
-    with open(os.path.join(STAGE_DIR, "install.ps1"), "w", encoding="ascii") as f:
-        f.write(ps1_content)
-
-    # Clean up any HTML or batch files that shouldn't be in the zip
+    # Clean up any HTML, powershell or unnecessary batch files
+    print("[4/4] Don dep file thua...")
     for root, dirs, files in os.walk(STAGE_DIR):
         for f in files:
-            if f.endswith(".html") or f == "Mo_Giao_Dien_Web.bat":
+            if f.endswith(".html") or f.endswith(".ps1") or f == "Mo_Giao_Dien_Web.bat":
                 f_path = os.path.join(root, f)
                 print(f"[XOA FILE THUA] {f_path}")
                 os.remove(f_path)
 
-    for unnecessary in ["Go_Cai_Dat.bat", "Huong_Dan.txt", "README.txt", "install.bat", "Cai_Dat_Tu_Dong.bat", "open-ui.bat", "remove.bat"]:
+    for unnecessary in ["install.ps1", "Go_Cai_Dat.bat", "Huong_Dan.txt", "README.txt", "install.bat", "Cai_Dat_Tu_Dong.bat", "open-ui.bat", "remove.bat"]:
         target_f = os.path.join(STAGE_DIR, unnecessary)
         if os.path.exists(target_f):
             os.remove(target_f)
