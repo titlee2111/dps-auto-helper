@@ -4,10 +4,15 @@ import zipfile
 
 BASE_DIR = r"C:\Users\Son\Desktop\dps-auto-helper"
 STAGE_DIR = os.path.join(BASE_DIR, "staging")
-SRC_ZIP = r"g:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad\DPS-Trainer.zip"
-SRC_DLL = r"g:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad\BepInEx\plugins\DPS.Trainer.dll"
-SRC_CFG = r"g:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad\BepInEx\config\dps_workshop.cfg"
-SRC_TRAINER_CFG = r"g:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad\BepInEx\config\ofx.dps.trainer.cfg"
+GAME_DIR = r"g:\SteamLibrary\steamapps\common\DPS Desktop Pension Squad"
+SRC_ZIP = os.path.join(GAME_DIR, "DPS-Trainer.zip")
+SRC_WINHTTP = os.path.join(GAME_DIR, "winhttp.dll")
+SRC_SYNC_DLL = os.path.join(GAME_DIR, "BepInEx", "core", "DPS.RuntimeSync.dll")
+SRC_INTEROP_DIR = os.path.join(GAME_DIR, "BepInEx", "interop")
+SRC_BIE_CFG = os.path.join(GAME_DIR, "BepInEx", "config", "BepInEx.cfg")
+SRC_DLL = os.path.join(GAME_DIR, "BepInEx", "plugins", "DPS.Trainer.dll")
+SRC_CFG = os.path.join(GAME_DIR, "BepInEx", "config", "dps_workshop.cfg")
+SRC_TRAINER_CFG = os.path.join(GAME_DIR, "BepInEx", "config", "ofx.dps.trainer.cfg")
 OUT_ZIP = os.path.join(BASE_DIR, "DPS_Auto_Helper_1Click.zip")
 
 def build_package():
@@ -31,14 +36,45 @@ def build_package():
                     with z.open(item) as src_f, open(target_path, 'wb') as dst_f:
                         dst_f.write(src_f.read())
 
-    # 2. Update DPS.Trainer.dll
-    print("[2/5] Cap nhat ban build DPS.Trainer.dll moi nhat (AutoOpen + VIP defaults OFF + Realtime HUD)...")
-    target_dll = os.path.join(STAGE_DIR, "payload", "BepInEx", "plugins", "DPS.Trainer.dll")
+    # 2. Update Build 26724895 compatibility files + DPS.Trainer.dll
+    print("[2/5] Cap nhat winhttp.dll, DPS.RuntimeSync.dll, unsealed interop va DPS.Trainer.dll...")
+    payload_dir = os.path.join(STAGE_DIR, "payload")
+    shutil.copy2(SRC_WINHTTP, os.path.join(payload_dir, "winhttp.dll"))
+    shutil.copy2(SRC_SYNC_DLL, os.path.join(payload_dir, "BepInEx", "core", "DPS.RuntimeSync.dll"))
+
+    target_interop_dir = os.path.join(payload_dir, "BepInEx", "interop")
+    if os.path.exists(target_interop_dir):
+        shutil.rmtree(target_interop_dir)
+    shutil.copytree(SRC_INTEROP_DIR, target_interop_dir)
+
+    target_dll = os.path.join(payload_dir, "BepInEx", "plugins", "DPS.Trainer.dll")
     shutil.copy2(SRC_DLL, target_dll)
 
-    # 3. Write default configs with safe VIP defaults
-    target_cfg_dir = os.path.join(STAGE_DIR, "payload", "BepInEx", "config")
+    # 3. Write release BepInEx.cfg + default plugin configs with safe VIP defaults
+    target_cfg_dir = os.path.join(payload_dir, "BepInEx", "config")
     os.makedirs(target_cfg_dir, exist_ok=True)
+
+    with open(SRC_BIE_CFG, "r", encoding="utf-8") as f:
+        bie_lines = f.read().splitlines(True)
+
+    in_console = False
+    out_lines = []
+    for line in bie_lines:
+        stripped = line.strip()
+        if stripped.startswith("[") and stripped.endswith("]"):
+            in_console = (stripped == "[Logging.Console]")
+        if stripped.startswith("UpdateInteropAssemblies ="):
+            line = "UpdateInteropAssemblies = false\n"
+        elif stripped.startswith("PreloadIL2CPPInteropAssemblies ="):
+            line = "PreloadIL2CPPInteropAssemblies = false\n"
+        elif in_console and stripped.startswith("Enabled ="):
+            line = "Enabled = false\n"
+        elif stripped.startswith("InstantFlushing ="):
+            line = "InstantFlushing = false\n"
+        out_lines.append(line)
+
+    with open(os.path.join(target_cfg_dir, "BepInEx.cfg"), "w", encoding="utf-8", newline="") as f:
+        f.write("".join(out_lines))
 
     default_trainer_cfg = """## Settings file was created by plugin DPS Trainer v0.6.0
 ## Plugin GUID: ofx.dps.trainer

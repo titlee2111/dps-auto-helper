@@ -1318,9 +1318,9 @@ html_template = """<!doctype html>
     <div class="alert-banner" id="topAlert">
       <div class="alert-banner-content">
         <span style="font-size: 18px;">⚠️</span>
-        <div><b>Lưu ý quan trọng:</b> Tool điều khiển trực tiếp thông qua game. Bạn cần tải gói cài đặt 1–Click để kích hoạt mod bên trong thư mục game Steam trước khi sử dụng.</div>
+        <div><b>Thông báo cập nhật 17/11:</b> Sau bản update ngày <b>17/11</b> của game, người dùng cần <b>tải lại file 1–Click mới</b> và cài đặt lại để có thể kết nối và sử dụng web bình thường.</div>
       </div>
-      <button class="alert-banner-btn" onclick="openDownloadModal()">📥 Tải File 1-Click Ngay</button>
+      <button class="alert-banner-btn" onclick="openDownloadModal()">📥 Tải File 1-Click Mới</button>
       <button class="alert-close-btn" onclick="dismissAlert()" title="Đóng thông báo">✕</button>
     </div>
 
@@ -1715,7 +1715,7 @@ html_template = """<!doctype html>
             <div style="font-size: 32px;">📥</div>
             <div>
               <div style="font-weight: 700; font-size: 14px; color: #fff;">DPS_Auto_Helper_1Click.zip</div>
-              <div style="font-size: 12px; color: var(--dim); margin-top: 3px;">Phiên bản mới nhất • Đầy đủ runtime • Kích thước: ~57 MB</div>
+              <div style="font-size: 12px; color: var(--dim); margin-top: 3px;">Cập nhật cho bản game 17/11 • Đầy đủ runtime • Kích thước: ~63 MB</div>
             </div>
           </div>
           <a href="https://github.com/titlee2111/dps-auto-helper/raw/main/DPS_Auto_Helper_1Click.zip" class="btn-download-rect" download>
