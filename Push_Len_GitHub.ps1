@@ -48,7 +48,7 @@ if (-not $isAuthed) {
 Write-Host ""
 Write-Host "[1/3] Đang cập nhật và commit các file mới..." -ForegroundColor Green
 & $git add -A
-& $git commit -m "update: split layout with controls on left and realtime action log on right" 2>$null
+& $git commit -m "chore: update web dashboard and docs" 2>$null
 
 Write-Host ""
 Write-Host "[2/3] Đang đẩy (Push) toàn bộ code và file lên nhánh main của GitHub..." -ForegroundColor Green
@@ -61,7 +61,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 Write-Host ""
-Write-Host "[3/3] Đang tải file DPS_Auto_Helper_1Click.zip (57MB) lên mục Releases..." -ForegroundColor Green
+Write-Host "[3/3] Đang tải file DPS_Auto_Helper_1Click.zip lên mục Releases..." -ForegroundColor Green
 $zipPath = Join-Path $root "DPS_Auto_Helper_1Click.zip"
 if (Test-Path $zipPath) {
     & $gh release view v1.0.0 2>$null

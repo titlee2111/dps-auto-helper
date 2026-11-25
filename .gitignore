@@ -6,3 +6,5 @@ donate_*.html
 staging/
 __pycache__/
 *.pyc
+*.zip
+DPS_Auto_Helper_1Click/
